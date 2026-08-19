@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "customer",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:customer"],
+      "port": 3010
+    },
+    {
+      "name": "seller",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:seller"],
+      "port": 3001
+    },
+    {
+      "name": "admin",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:admin"],
+      "port": 3002
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@voltech/database",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./enums": "./src/generated/prisma/enums.ts"
+  },
+  "scripts": {
+    "generate": "prisma generate",
+    "migrate": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "studio": "prisma studio",
+    "seed": "tsx prisma/seed.ts",
+    "format": "prisma format"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "pg": "^8.13.1",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "prisma": "^7.9.1",
+    "tsx": "^4.23.12",
+    "@types/pg": "^8.11.10",
+    "bcryptjs": "^3.0.3"
+  }
+}

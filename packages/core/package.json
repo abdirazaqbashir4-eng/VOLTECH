@@ -1,0 +1,23 @@
+{
+  "name": "@voltech/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./authenticate": "./src/authenticate.ts",
+    "./enums": "./src/enums.ts",
+    "./money": "./src/money.ts",
+    "./ids": "./src/ids.ts",
+    "./password": "./src/password.ts",
+    "./payments": "./src/payments/index.ts",
+    "./payments/*": "./src/payments/*.ts",
+    "./marketplace/*": "./src/marketplace/*.ts"
+  },
+  "dependencies": {
+    "@voltech/database": "*",
+    "bcryptjs": "^3.0.3",
+    "zod": "^4.4.3"
+  }
+}
