@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { toCardData } from "@/lib/catalog";
+import { SELLER_CENTER_URL } from "@/lib/links";
 
 const cardInclude = {
   images: { orderBy: { sortOrder: "asc" as const }, take: 1 },
@@ -54,7 +55,7 @@ export default async function HomePage() {
                 <h2 className="text-xl font-bold">Become a seller</h2>
                 <p className="mt-1 text-sm text-white/90">Reach thousands of buyers. Set up your store in minutes.</p>
                 <a
-                  href="http://localhost:3001/apply"
+                  href={`${SELLER_CENTER_URL}/apply`}
                   className="mt-4 inline-flex w-fit items-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-brand-teal-dark hover:bg-white/90"
                 >
                   Apply now

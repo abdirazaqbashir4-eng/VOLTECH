@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SELLER_CENTER_URL } from "@/lib/links";
 
 export default function Footer() {
   return (
@@ -24,12 +25,12 @@ export default function Footer() {
           <h3 className="mb-3 font-semibold text-slate-900">Sell on VOLTECH</h3>
           <ul className="space-y-2 text-slate-600">
             <li>
-              <a href="http://localhost:3001/apply" className="hover:text-brand-teal">
+              <a href={`${SELLER_CENTER_URL}/apply`} className="hover:text-brand-teal">
                 Become a seller
               </a>
             </li>
             <li>
-              <a href="http://localhost:3001/login" className="hover:text-brand-teal">
+              <a href={`${SELLER_CENTER_URL}/login`} className="hover:text-brand-teal">
                 Seller Center
               </a>
             </li>

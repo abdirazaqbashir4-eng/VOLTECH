@@ -18,6 +18,14 @@
 # unless told otherwise. tailwindcss, @tailwindcss/postcss, typescript, and
 # the @types/* packages all live in devDependencies and are needed to run
 # `next build` itself, not just for local dev.
+#
+# AUTH_URL is set explicitly per service (rather than relying on `trustHost`
+# alone) because in practice, on Render, the request Host header the app
+# sees is the internal `localhost:$PORT` binding, not the public domain —
+# Auth.js's own redirect/callbackUrl construction picked that up and
+# produced broken links like `/login?callbackUrl=https://localhost:10000/...`
+# until this was set. If you rename a service, update its AUTH_URL to match
+# (it must be the service's own onrender.com URL, or your custom domain).
 
 databases:
   - name: voltech-postgres
@@ -46,6 +54,10 @@ services:
           property: connectionString
       - key: AUTH_SECRET
         generateValue: true
+      - key: AUTH_URL
+        value: https://voltech-customer.onrender.com
+      - key: NEXT_PUBLIC_SELLER_URL
+        value: https://voltech-seller.onrender.com
 
   - type: web
     name: voltech-seller
@@ -63,6 +75,8 @@ services:
           property: connectionString
       - key: AUTH_SECRET
         generateValue: true
+      - key: AUTH_URL
+        value: https://voltech-seller.onrender.com
 
   - type: web
     name: voltech-admin
@@ -80,3 +94,5 @@ services:
           property: connectionString
       - key: AUTH_SECRET
         generateValue: true
+      - key: AUTH_URL
+        value: https://voltech-admin.onrender.com
