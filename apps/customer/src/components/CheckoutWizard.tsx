@@ -100,13 +100,27 @@ export default function CheckoutWizard({
   return (
     <div className="grid gap-8 lg:grid-cols-3">
       <div className="space-y-6 lg:col-span-2">
-        <ol className="flex gap-4 text-sm">
-          {steps.map((s, i) => (
-            <li key={s.key} className={`flex items-center gap-1 ${step === s.key ? "font-semibold text-brand-teal" : "text-slate-400"}`}>
-              <span className="flex h-5 w-5 items-center justify-center rounded-full border text-xs">{i + 1}</span>
-              {s.label}
-            </li>
-          ))}
+        <ol className="flex items-center text-sm">
+          {steps.map((s, i) => {
+            const currentIndex = steps.findIndex((x) => x.key === step);
+            const done = i < currentIndex;
+            const active = i === currentIndex;
+            return (
+              <li key={s.key} className="flex flex-1 items-center last:flex-none">
+                <div className={`flex items-center gap-1.5 ${active ? "font-semibold text-brand-teal" : done ? "text-slate-700" : "text-slate-400"}`}>
+                  <span
+                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
+                      done ? "bg-brand-teal text-white" : active ? "border-2 border-brand-teal text-brand-teal" : "border border-[var(--border)] text-slate-400"
+                    }`}
+                  >
+                    {done ? "✓" : i + 1}
+                  </span>
+                  <span className="hidden sm:inline">{s.label}</span>
+                </div>
+                {i < steps.length - 1 && <span className={`mx-2 h-px flex-1 ${done ? "bg-brand-teal" : "bg-[var(--border)]"}`} />}
+              </li>
+            );
+          })}
         </ol>
 
         {step === "address" && (
