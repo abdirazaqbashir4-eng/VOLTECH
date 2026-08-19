@@ -4,6 +4,7 @@ import { db } from "@voltech/database";
 import { auth } from "@/auth";
 import { formatKES } from "@voltech/core/money";
 import ReturnRequestButton from "@/components/ReturnRequestButton";
+import StatusBadge from "@/components/StatusBadge";
 
 export const metadata: Metadata = { title: "Order details" };
 
@@ -26,7 +27,10 @@ export default async function OrderDetailPage({ params }: PageProps<"/account/or
 
   return (
     <div>
-      <h1 className="mb-1 text-xl font-bold text-slate-900">Order {order.orderNumber}</h1>
+      <div className="mb-1 flex flex-wrap items-center gap-2">
+        <h1 className="text-xl font-bold text-slate-900">Order {order.orderNumber}</h1>
+        <StatusBadge status={order.status} />
+      </div>
       <p className="mb-6 text-sm text-slate-500">Placed {new Date(order.createdAt).toLocaleString()}</p>
 
       <div className="space-y-4">
@@ -34,7 +38,7 @@ export default async function OrderDetailPage({ params }: PageProps<"/account/or
           <div key={so.id} className="rounded-lg border border-[var(--border)] p-4">
             <div className="flex items-center justify-between">
               <p className="font-medium text-slate-900">{so.seller.storeName}</p>
-              <span className="rounded-full bg-[var(--surface)] px-2 py-0.5 text-xs font-medium text-slate-700">{so.status}</span>
+              <StatusBadge status={so.status} />
             </div>
             {so.trackingNumber && <p className="text-xs text-slate-500">Tracking: {so.trackingNumber}</p>}
             <ul className="mt-2 space-y-1 text-sm text-slate-700">

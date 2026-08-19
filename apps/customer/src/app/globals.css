@@ -26,12 +26,20 @@
   --color-border: var(--border);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-}
+/* Cascade layers: Tailwind wraps its own rules in @layer (theme/base/
+   components/utilities). An unlayered rule beats ALL layered rules
+   regardless of selector specificity or source order — so these base
+   styles must live in @layer base too, or every text-color utility
+   (`text-brand-teal`, `hover:text-brand-teal`, ...) applied to a <body>
+   or <a> descendant would be silently overridden by these instead. */
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
 
-a {
-  color: inherit;
+  a {
+    color: inherit;
+  }
 }

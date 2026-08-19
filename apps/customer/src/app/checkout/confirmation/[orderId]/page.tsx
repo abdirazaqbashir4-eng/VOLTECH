@@ -6,6 +6,7 @@ import { auth } from "@/auth";
 import { formatKES } from "@voltech/core/money";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import StatusBadge from "@/components/StatusBadge";
 
 export const metadata: Metadata = { title: "Order confirmed" };
 
@@ -33,7 +34,9 @@ export default async function OrderConfirmationPage({ params }: PageProps<"/chec
           <p className="text-3xl">✅</p>
           <h1 className="mt-2 text-xl font-bold text-slate-900">Order confirmed</h1>
           <p className="mt-1 text-slate-600">Order number: <span className="font-medium">{order.orderNumber}</span></p>
-          <p className="text-sm text-slate-500">Payment status: {order.payment?.status ?? "PENDING"}</p>
+          <div className="mt-2 flex justify-center">
+            <StatusBadge status={order.payment?.status ?? "PENDING"} />
+          </div>
         </div>
 
         <div className="mt-6 space-y-4">
