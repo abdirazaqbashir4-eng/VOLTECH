@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FilterSidebar from "@/components/FilterSidebar";
+import FilterDrawer from "@/components/FilterDrawer";
 import SortSelect from "@/components/SortSelect";
 import ProductGrid from "@/components/ProductGrid";
 import { queryListing, getFilterOptions, type ListingFilters } from "@/lib/listing";
@@ -39,14 +40,32 @@ export default async function SearchPage({ searchParams }: PageProps<"/search">)
           <h1 className="text-lg font-bold text-slate-900">{q ? `Results for "${q}"` : "All products"}</h1>
           <SortSelect current={sort} />
         </div>
-        <div className="flex flex-col gap-6 lg:flex-row">
+        <FilterDrawer>
           <FilterSidebar
             brands={brands}
             basePath="/search"
             current={{ q, brand, minPrice: sp.minPrice as string, maxPrice: sp.maxPrice as string, minRating: sp.minRating as string, discountedOnly: sp.discountedOnly as string, sort }}
           />
+        </FilterDrawer>
+
+        <div className="flex flex-col gap-6 lg:flex-row">
+          <div className="hidden lg:block">
+            <FilterSidebar
+              brands={brands}
+              basePath="/search"
+              current={{ q, brand, minPrice: sp.minPrice as string, maxPrice: sp.maxPrice as string, minRating: sp.minRating as string, discountedOnly: sp.discountedOnly as string, sort }}
+            />
+          </div>
           <div className="flex-1">
-            <ProductGrid items={items} total={total} page={page} pageCount={pageCount} basePath="/search" query={{ q, sort, brand, minPrice: sp.minPrice as string, maxPrice: sp.maxPrice as string, minRating: sp.minRating as string, discountedOnly: sp.discountedOnly as string }} />
+            <ProductGrid
+              items={items}
+              total={total}
+              page={page}
+              pageCount={pageCount}
+              basePath="/search"
+              query={{ q, sort, brand, minPrice: sp.minPrice as string, maxPrice: sp.maxPrice as string, minRating: sp.minRating as string, discountedOnly: sp.discountedOnly as string }}
+              isAuthenticated={!!session?.user}
+            />
           </div>
         </div>
       </main>

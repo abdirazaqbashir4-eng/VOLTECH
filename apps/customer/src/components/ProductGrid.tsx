@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ProductCard from "./ProductCard";
+import EmptyState from "./EmptyState";
 import { toCardData } from "@/lib/catalog";
 
 type Item = Parameters<typeof toCardData>[0];
@@ -11,6 +12,7 @@ export default function ProductGrid({
   pageCount,
   basePath,
   query,
+  isAuthenticated = false,
 }: {
   items: Item[];
   total: number;
@@ -18,6 +20,7 @@ export default function ProductGrid({
   pageCount: number;
   basePath: string;
   query: Record<string, string | undefined>;
+  isAuthenticated?: boolean;
 }) {
   const pageHref = (p: number) => {
     const params = new URLSearchParams(Object.entries(query).filter(([, v]) => v) as [string, string][]);
@@ -26,15 +29,31 @@ export default function ProductGrid({
   };
 
   if (items.length === 0) {
-    return <p className="py-16 text-center text-sm text-slate-500">No products match these filters.</p>;
+    return query.q ? (
+      <EmptyState
+        icon="🔍"
+        title={`No results for "${query.q}"`}
+        description="Check the spelling, try a more general term, or browse by category instead."
+        actionHref="/categories"
+        actionLabel="Browse categories"
+      />
+    ) : (
+      <EmptyState
+        icon="🔍"
+        title="No products match these filters"
+        description="Try widening your price range or clearing a filter."
+        actionHref={basePath}
+        actionLabel="Clear filters"
+      />
+    );
   }
 
   return (
     <div>
       <p className="mb-3 text-sm text-slate-500">{total} results</p>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {items.map((p) => (
-          <ProductCard key={p.slug} product={toCardData(p)} />
+          <ProductCard key={p.slug} product={toCardData(p)} isAuthenticated={isAuthenticated} />
         ))}
       </div>
       {pageCount > 1 && (

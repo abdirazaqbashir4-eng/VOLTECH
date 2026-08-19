@@ -6,6 +6,7 @@ import { formatKES } from "@voltech/core/money";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartItemRow from "@/components/CartItemRow";
+import EmptyState from "@/components/EmptyState";
 
 export const metadata: Metadata = { title: "Your cart" };
 
@@ -19,12 +20,7 @@ export default async function CartPage() {
         <h1 className="mb-6 text-xl font-bold text-slate-900">Your cart</h1>
 
         {!session?.user ? (
-          <div className="rounded-lg border border-[var(--border)] p-8 text-center">
-            <p className="mb-4 text-slate-600">Sign in to view your cart.</p>
-            <Link href="/login?callbackUrl=/cart" className="rounded-md bg-brand-teal px-5 py-2.5 font-medium text-white hover:bg-brand-teal-dark">
-              Sign in
-            </Link>
-          </div>
+          <EmptyState icon="🛒" title="Sign in to view your cart" actionHref="/login?callbackUrl=/cart" actionLabel="Sign in" />
         ) : (
           <CartContent userId={session.user.id} />
         )}
@@ -39,12 +35,13 @@ async function CartContent({ userId }: { userId: string }) {
 
   if (sellerGroups.length === 0 && savedItems.length === 0) {
     return (
-      <div className="rounded-lg border border-[var(--border)] p-8 text-center">
-        <p className="mb-4 text-slate-600">Your cart is empty.</p>
-        <Link href="/" className="rounded-md bg-brand-teal px-5 py-2.5 font-medium text-white hover:bg-brand-teal-dark">
-          Continue shopping
-        </Link>
-      </div>
+      <EmptyState
+        icon="🛒"
+        title="Your cart is empty"
+        description="Browse the marketplace and add items to get started."
+        actionHref="/"
+        actionLabel="Continue shopping"
+      />
     );
   }
 
