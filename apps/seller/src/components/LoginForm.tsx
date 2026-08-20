@@ -1,14 +1,38 @@
 "use client";
 
-import { useActionState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { loginAction } from "@/app/actions/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { firebaseAuth } from "@/lib/firebaseClient";
+import { establishSession, friendlyAuthError } from "@/lib/authClient";
 
 export default function LoginForm() {
-  const [state, formAction, isPending] = useActionState(loginAction, { error: null as string | null });
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+    const form = new FormData(e.currentTarget);
+    const email = String(form.get("email") ?? "");
+    const password = String(form.get("password") ?? "");
+
+    startTransition(async () => {
+      try {
+        const credential = await signInWithEmailAndPassword(firebaseAuth, email, password);
+        await establishSession(credential.user);
+        router.push("/dashboard");
+        router.refresh();
+      } catch (err) {
+        setError(friendlyAuthError(err));
+      }
+    });
+  }
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label className="mb-1 block text-sm font-medium text-slate-700">Email</label>
         <input name="email" type="email" required className="w-full rounded-md border border-[var(--border)] px-3 py-2" />
@@ -17,7 +41,7 @@ export default function LoginForm() {
         <label className="mb-1 block text-sm font-medium text-slate-700">Password</label>
         <input name="password" type="password" required className="w-full rounded-md border border-[var(--border)] px-3 py-2" />
       </div>
-      {state.error && <p className="text-sm text-red-600">{state.error}</p>}
+      {error && <p className="text-sm text-red-600">{error}</p>}
       <button type="submit" disabled={isPending} className="w-full rounded-md bg-brand-teal py-2.5 font-semibold text-white hover:bg-brand-teal-dark disabled:opacity-50">
         {isPending ? "Signing in..." : "Sign in"}
       </button>

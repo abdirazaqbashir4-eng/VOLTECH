@@ -23,7 +23,7 @@ datasource db {
 model User {
   id              String    @id @default(cuid())
   email           String    @unique
-  passwordHash    String
+  firebaseUid     String    @unique // Firebase Auth owns credentials; this is the only link to it.
   role            String    @default("CUSTOMER") // CUSTOMER | SELLER | ADMIN | SUPER_ADMIN
   fullName        String
   phone           String?

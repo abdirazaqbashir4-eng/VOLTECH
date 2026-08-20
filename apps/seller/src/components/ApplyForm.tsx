@@ -2,11 +2,14 @@
 
 import { useActionState, useState } from "react";
 import { submitApplicationAction } from "@/app/actions/apply";
+import FileUploadField from "./FileUploadField";
 
 export default function ApplyForm() {
   const [state, formAction, isPending] = useActionState(submitApplicationAction, { error: null as string | null });
   const [payoutMethod, setPayoutMethod] = useState<"MPESA" | "BANK">("MPESA");
   const [businessType, setBusinessType] = useState<"INDIVIDUAL" | "REGISTERED_BUSINESS">("INDIVIDUAL");
+  const [idDocumentUrl, setIdDocumentUrl] = useState("");
+  const [proofOfAddressUrl, setProofOfAddressUrl] = useState("");
 
   return (
     <form action={formAction} className="space-y-6">
@@ -35,10 +38,15 @@ export default function ApplyForm() {
         </select>
         <input name="idNumber" placeholder="ID / Passport number" required className="w-full rounded-md border border-[var(--border)] px-3 py-2" />
         <div>
-          <input name="idDocumentUrl" placeholder="Link to a scan/photo of your ID document" required className="w-full rounded-md border border-[var(--border)] px-3 py-2" />
-          <p className="mt-1 text-xs text-slate-500">Upload your document to any file host and paste the link — direct file upload isn&apos;t wired up in this build.</p>
+          <input type="hidden" name="idDocumentUrl" value={idDocumentUrl} required />
+          <p className="mb-1 text-sm text-slate-700">ID document scan/photo</p>
+          <FileUploadField folder="kyc-documents" value={idDocumentUrl} onChange={setIdDocumentUrl} accept="image/*,.pdf" label="Upload ID document" />
         </div>
-        <input name="proofOfAddressUrl" placeholder="Link to proof of address (optional)" className="w-full rounded-md border border-[var(--border)] px-3 py-2" />
+        <div>
+          <input type="hidden" name="proofOfAddressUrl" value={proofOfAddressUrl} />
+          <p className="mb-1 text-sm text-slate-700">Proof of address (optional)</p>
+          <FileUploadField folder="kyc-documents" value={proofOfAddressUrl} onChange={setProofOfAddressUrl} accept="image/*,.pdf" label="Upload proof of address" />
+        </div>
       </section>
 
       <section className="space-y-3">

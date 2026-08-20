@@ -1,14 +1,42 @@
 "use client";
 
-import { useActionState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { signInWithCustomToken } from "firebase/auth";
+import { firebaseAuth } from "@/lib/firebaseClient";
+import { establishSession, friendlyAuthError } from "@/lib/authClient";
 import { registerAction } from "@/app/actions/auth";
 
 export default function RegisterForm() {
-  const [state, formAction, isPending] = useActionState(registerAction, { error: null as string | null });
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+    const formData = new FormData(e.currentTarget);
+
+    startTransition(async () => {
+      const result = await registerAction(null, formData);
+      if (result.error || !result.customToken) {
+        setError(result.error ?? "Could not create your account.");
+        return;
+      }
+      try {
+        const credential = await signInWithCustomToken(firebaseAuth, result.customToken);
+        await establishSession(credential.user);
+        router.push("/apply");
+        router.refresh();
+      } catch (err) {
+        setError(friendlyAuthError(err));
+      }
+    });
+  }
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label className="mb-1 block text-sm font-medium text-slate-700">Full name</label>
         <input name="fullName" required className="w-full rounded-md border border-[var(--border)] px-3 py-2" />
@@ -25,7 +53,7 @@ export default function RegisterForm() {
         <label className="mb-1 block text-sm font-medium text-slate-700">Password</label>
         <input name="password" type="password" required minLength={8} className="w-full rounded-md border border-[var(--border)] px-3 py-2" />
       </div>
-      {state.error && <p className="text-sm text-red-600">{state.error}</p>}
+      {error && <p className="text-sm text-red-600">{error}</p>}
       <button type="submit" disabled={isPending} className="w-full rounded-md bg-brand-teal py-2.5 font-semibold text-white hover:bg-brand-teal-dark disabled:opacity-50">
         {isPending ? "Creating account..." : "Continue to seller application"}
       </button>

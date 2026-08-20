@@ -25,6 +25,6 @@
     "prisma": "^7.9.1",
     "tsx": "^4.23.12",
     "@types/pg": "^8.11.10",
-    "bcryptjs": "^3.0.3"
+    "firebase-admin": "^13.0.2"
   }
 }

@@ -17,7 +17,7 @@ packages/
 ```
 
 Each app is a separate Next.js deployment with its own auth session (distinct
-cookie names — see `src/auth.config.ts` in each app), its own role gate
+cookie names — see `src/auth.ts` in each app), its own role gate
 (`requireSeller` / `requireAdmin`), and its own `proxy.ts` (Next 16's renamed
 `middleware.ts`) for route protection. A customer can never reach seller or
 admin routes and vice versa — enforced both at the proxy layer and again
@@ -50,13 +50,65 @@ npm run dev:seller     # in another      → http://localhost:3001
 npm run dev:admin      # in another      → http://localhost:3002
 ```
 
-Seeded accounts (all created by `npm run db:seed`):
+Seeded accounts (all created by `npm run db:seed`, in both Postgres and
+Firebase Auth — see "Authentication" below):
 
 | Role     | Email                     | Password       |
 |----------|---------------------------|----------------|
 | Admin    | admin@voltech.africa      | Admin123!      |
 | Seller   | seller@voltech.africa     | Seller123!     |
 | Customer | customer@voltech.africa   | Customer123!   |
+
+## Authentication
+
+Firebase Auth owns credentials (password hashing, sign-in, rate-limiting);
+Postgres stays the source of truth for identity, role, and profile data.
+`User.firebaseUid` is the only link between them. Role is stored in both
+places — in Postgres for queries/joins, and as a Firebase custom claim
+(`{ role, appUserId }`, set via the Admin SDK on registration/creation) so
+`proxy.ts` and `auth()` can verify a session and read the role straight from
+the verified claims, with no database round-trip on every request.
+
+Flow: the client signs in with the Firebase client SDK, gets a short-lived
+ID token, and POSTs it to that app's `/api/session` route, which verifies it
+with the Admin SDK and mints a 14-day HttpOnly session cookie
+(`createSessionCookie`) — this is what `auth()` reads on every subsequent
+request. Registration is a Server Action that creates the Firebase user via
+the Admin SDK, creates the matching Postgres row, and returns a custom token
+for the client to sign in with (`signInWithCustomToken`) before the same
+session-cookie exchange.
+
+### Firebase setup (one-time, in the Firebase Console)
+
+1. **Authentication → Sign-in method** → enable **Email/Password**.
+2. **Authentication → Settings → Authorized domains** → add each app's
+   domain (`voltech-customer.onrender.com`, `voltech-seller.onrender.com`,
+   `voltech-admin.onrender.com`, plus `localhost` for local dev, which is
+   usually pre-added). Firebase Auth rejects client sign-in from origins not
+   on this list.
+3. **Project Settings → Service Accounts → Generate new private key** →
+   downloads a JSON file with `project_id`, `client_email`, and
+   `private_key`. Set these as `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`,
+   `FIREBASE_PRIVATE_KEY` — locally in `.env` (each app, plus
+   `packages/database/.env` for seeding), and in Render (see below). This
+   is a real secret — never commit it or paste it anywhere public.
+4. **Storage → Get started** (if not already enabled) — needed for the
+   seller product-image and KYC-document uploads. Suggested rules:
+
+   ```
+   rules_version = '2';
+   service firebase.storage {
+     match /b/{bucket}/o {
+       match /product-images/{uid}/{fileName} {
+         allow read: if true;
+         allow write: if request.auth != null && request.auth.uid == uid;
+       }
+       match /kyc-documents/{uid}/{fileName} {
+         allow read, write: if request.auth != null && request.auth.uid == uid;
+       }
+     }
+   }
+   ```
 
 ## Database
 
@@ -94,11 +146,14 @@ shared Postgres database and the three web services in one shot.
 5. Read the free-tier notes at the top of `render.yaml` before relying on
    this for anything real — free Postgres expires after 30 days, and free
    web services spin down when idle.
-
-`AUTH_SECRET` is auto-generated per service by the Blueprint.
-`NEXTAUTH_URL` is intentionally not set — each app's `auth.config.ts` sets
-`trustHost: true`, which is what Auth.js v5 needs outside Vercel (Render
-included) instead.
+6. Complete the Firebase Console steps under "Authentication" above if you
+   haven't already, then set `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`,
+   and `FIREBASE_PRIVATE_KEY` on **all three services** in the Render
+   dashboard (`render.yaml` marks these `sync: false` deliberately — a
+   service-account private key doesn't belong in a file in this repo).
+   Login/register won't work on any app until this is done, since the
+   Admin SDK throws at import time without it (same fail-loud pattern as a
+   missing `DATABASE_URL`).
 
 ## Payments
 
@@ -118,7 +173,15 @@ doesn't have.
 Every piece of financial and inventory logic below was exercised through
 the actual running apps (not just written), including a full seller
 onboarding cycle: register → apply → admin-approve → create product →
-admin-approve product → live on marketplace.
+admin-approve product → live on marketplace. This was all verified before
+the Firebase Auth migration; the migration preserves the exact same
+`auth()` session shape everywhere (`session.user.id`/`role`), so none of
+this logic itself changed — but the auth/upload plumbing itself (register →
+Firebase user → session cookie → role-gated routes; file upload → Storage →
+product image) still needs a live pass after the Firebase Console setup
+above is complete, since none of it can be exercised without a real
+Firebase project and there's no local Postgres in this environment to test
+against either.
 
 - Multi-seller cart → checkout → mock payment → order creation
 - Server-side commission calculation (global/category/seller resolution order)
@@ -131,9 +194,6 @@ admin-approve product → live on marketplace.
 
 ## Known gaps (by design, not oversight)
 
-- **File uploads**: seller KYC docs and product images are URL fields (paste
-  a link), not a real upload pipeline — no object storage (S3/Cloudinary) is
-  wired up. Documented explicitly in the seller apply form.
 - **Coupon management UI**: the `Coupon` model, checkout redemption, and
   discount calculation are fully implemented and wired into checkout, but
   there's no admin/seller UI to *create* coupons yet — only promotions have

@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { createProductAction } from "@/app/actions/products";
+import FileUploadField from "./FileUploadField";
 
 interface VariantRow {
   id: string;
@@ -69,22 +70,24 @@ export default function ProductForm({ categories, brands }: { categories: { id: 
       <section className="space-y-3 rounded-lg border border-[var(--border)] bg-white p-5">
         <h2 className="font-semibold text-slate-900">Images</h2>
         {images.map((url, i) => (
-          <div key={i} className="flex gap-2">
-            <input
-              value={url}
-              onChange={(e) => setImages((prev) => prev.map((u, idx) => (idx === i ? e.target.value : u)))}
-              placeholder="Image URL"
-              className="flex-1 rounded-md border border-[var(--border)] px-3 py-2 text-sm"
-            />
+          <div key={i} className="flex items-start gap-2">
+            <div className="flex-1">
+              <FileUploadField
+                folder="product-images"
+                value={url}
+                onChange={(newUrl) => setImages((prev) => prev.map((u, idx) => (idx === i ? newUrl : u)))}
+                label={`Upload image ${i + 1}`}
+              />
+            </div>
             {images.length > 1 && (
-              <button type="button" onClick={() => setImages((prev) => prev.filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-red-600">
+              <button type="button" onClick={() => setImages((prev) => prev.filter((_, idx) => idx !== i))} className="mt-2 text-slate-400 hover:text-red-600">
                 ✕
               </button>
             )}
           </div>
         ))}
         <button type="button" onClick={() => setImages((prev) => [...prev, ""])} className="text-sm text-brand-teal hover:underline">
-          + Add image URL
+          + Add another image
         </button>
       </section>
 

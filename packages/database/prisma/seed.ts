@@ -1,6 +1,7 @@
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import bcrypt from "bcryptjs";
+import { cert, initializeApp } from "firebase-admin/app";
+import { getAuth } from "firebase-admin/auth";
 
 if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL is not set. Point it at a PostgreSQL connection string.");
@@ -8,12 +9,31 @@ if (!process.env.DATABASE_URL) {
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const db = new PrismaClient({ adapter });
 
-function slugify(s: string) {
-  return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+// Standalone Firebase Admin init (not imported from @voltech/core) — this
+// package has no dependency on @voltech/core, and core depends on
+// @voltech/database, so importing core's copy here would be circular.
+if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PRIVATE_KEY) {
+  throw new Error("FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL and FIREBASE_PRIVATE_KEY must be set to seed demo accounts.");
+}
+const firebaseApp = initializeApp({
+  credential: cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+  }),
+});
+const firebaseAuth = getAuth(firebaseApp);
+
+async function getOrCreateFirebaseUser(email: string, password: string, displayName: string) {
+  try {
+    return await firebaseAuth.getUserByEmail(email);
+  } catch {
+    return firebaseAuth.createUser({ email, password, displayName });
+  }
 }
 
-async function hash(pw: string) {
-  return bcrypt.hash(pw, 10);
+function slugify(s: string) {
+  return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
 async function main() {
@@ -77,34 +97,38 @@ async function main() {
 
   // --- Admin -------------------------------------------------------------
   const adminEmail = "admin@voltech.africa";
+  const adminFirebaseUser = await getOrCreateFirebaseUser(adminEmail, "Admin123!", "VOLTECH Admin");
   const adminUser = await db.user.upsert({
     where: { email: adminEmail },
     update: {},
     create: {
       email: adminEmail,
-      passwordHash: await hash("Admin123!"),
+      firebaseUid: adminFirebaseUser.uid,
       fullName: "VOLTECH Admin",
       role: "SUPER_ADMIN",
       status: "ACTIVE",
       emailVerifiedAt: new Date(),
     },
   });
+  await firebaseAuth.setCustomUserClaims(adminFirebaseUser.uid, { role: "SUPER_ADMIN", appUserId: adminUser.id });
   console.log(`Admin: ${adminEmail} / Admin123!`);
 
   // --- Demo seller ---------------------------------------------------
   const sellerEmail = "seller@voltech.africa";
+  const sellerFirebaseUser = await getOrCreateFirebaseUser(sellerEmail, "Seller123!", "Jane Mwangi");
   const sellerUser = await db.user.upsert({
     where: { email: sellerEmail },
     update: {},
     create: {
       email: sellerEmail,
-      passwordHash: await hash("Seller123!"),
+      firebaseUid: sellerFirebaseUser.uid,
       fullName: "Jane Mwangi",
       role: "SELLER",
       status: "ACTIVE",
       emailVerifiedAt: new Date(),
     },
   });
+  await firebaseAuth.setCustomUserClaims(sellerFirebaseUser.uid, { role: "SELLER", appUserId: sellerUser.id });
   const seller = await db.sellerProfile.upsert({
     where: { userId: sellerUser.id },
     update: {},
@@ -122,12 +146,13 @@ async function main() {
 
   // --- Demo customer ---------------------------------------------------
   const customerEmail = "customer@voltech.africa";
-  await db.user.upsert({
+  const customerFirebaseUser = await getOrCreateFirebaseUser(customerEmail, "Customer123!", "Amina Yusuf");
+  const customerUser = await db.user.upsert({
     where: { email: customerEmail },
     update: {},
     create: {
       email: customerEmail,
-      passwordHash: await hash("Customer123!"),
+      firebaseUid: customerFirebaseUser.uid,
       fullName: "Amina Yusuf",
       role: "CUSTOMER",
       status: "ACTIVE",
@@ -146,6 +171,7 @@ async function main() {
       },
     },
   });
+  await firebaseAuth.setCustomUserClaims(customerFirebaseUser.uid, { role: "CUSTOMER", appUserId: customerUser.id });
   console.log(`Customer: ${customerEmail} / Customer123!`);
 
   // --- Demo products ---------------------------------------------------

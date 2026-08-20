@@ -6,18 +6,18 @@
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
-    "./authenticate": "./src/authenticate.ts",
     "./enums": "./src/enums.ts",
     "./money": "./src/money.ts",
     "./ids": "./src/ids.ts",
-    "./password": "./src/password.ts",
+    "./firebase-admin": "./src/firebase-admin.ts",
     "./payments": "./src/payments/index.ts",
     "./payments/*": "./src/payments/*.ts",
     "./marketplace/*": "./src/marketplace/*.ts"
   },
   "dependencies": {
     "@voltech/database": "*",
-    "bcryptjs": "^3.0.3",
+    "firebase-admin": "^13.0.2",
+    "server-only": "^0.0.1",
     "zod": "^4.4.3"
   }
 }

@@ -19,13 +19,18 @@
 # the @types/* packages all live in devDependencies and are needed to run
 # `next build` itself, not just for local dev.
 #
-# AUTH_URL is set explicitly per service (rather than relying on `trustHost`
-# alone) because in practice, on Render, the request Host header the app
-# sees is the internal `localhost:$PORT` binding, not the public domain —
-# Auth.js's own redirect/callbackUrl construction picked that up and
-# produced broken links like `/login?callbackUrl=https://localhost:10000/...`
-# until this was set. If you rename a service, update its AUTH_URL to match
-# (it must be the service's own onrender.com URL, or your custom domain).
+# Auth is Firebase Auth (not this file's job to configure Firebase itself —
+# see README's "Firebase setup" section for the Console steps). Two kinds
+# of Firebase env var below:
+#   - NEXT_PUBLIC_FIREBASE_* — the client config, not a secret, safe as a
+#     plain `value:` (Firebase enforces access via Security Rules /
+#     Authorized domains, not by hiding this object).
+#   - FIREBASE_PROJECT_ID / FIREBASE_CLIENT_EMAIL / FIREBASE_PRIVATE_KEY —
+#     a real secret from a service-account key (Admin SDK). `sync: false`
+#     means Render will NOT set these from this file — set them directly
+#     in the Render dashboard on all three services after the first deploy,
+#     from Firebase Console > Project Settings > Service Accounts >
+#     Generate new private key. Never put the actual key in this file.
 
 databases:
   - name: voltech-postgres
@@ -52,12 +57,26 @@ services:
         fromDatabase:
           name: voltech-postgres
           property: connectionString
-      - key: AUTH_SECRET
-        generateValue: true
-      - key: AUTH_URL
-        value: https://voltech-customer.onrender.com
       - key: NEXT_PUBLIC_SELLER_URL
         value: https://voltech-seller.onrender.com
+      - key: NEXT_PUBLIC_FIREBASE_API_KEY
+        value: AIzaSyCpabW74dXyP2FwTAakSm1PbIjlTqbE3ds
+      - key: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+        value: voltech-148ca.firebaseapp.com
+      - key: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+        value: voltech-148ca
+      - key: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+        value: voltech-148ca.firebasestorage.app
+      - key: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+        value: "765763252003"
+      - key: NEXT_PUBLIC_FIREBASE_APP_ID
+        value: "1:765763252003:web:7953a599288f470e796696"
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: FIREBASE_CLIENT_EMAIL
+        sync: false
+      - key: FIREBASE_PRIVATE_KEY
+        sync: false
 
   - type: web
     name: voltech-seller
@@ -73,10 +92,24 @@ services:
         fromDatabase:
           name: voltech-postgres
           property: connectionString
-      - key: AUTH_SECRET
-        generateValue: true
-      - key: AUTH_URL
-        value: https://voltech-seller.onrender.com
+      - key: NEXT_PUBLIC_FIREBASE_API_KEY
+        value: AIzaSyCpabW74dXyP2FwTAakSm1PbIjlTqbE3ds
+      - key: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+        value: voltech-148ca.firebaseapp.com
+      - key: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+        value: voltech-148ca
+      - key: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+        value: voltech-148ca.firebasestorage.app
+      - key: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+        value: "765763252003"
+      - key: NEXT_PUBLIC_FIREBASE_APP_ID
+        value: "1:765763252003:web:7953a599288f470e796696"
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: FIREBASE_CLIENT_EMAIL
+        sync: false
+      - key: FIREBASE_PRIVATE_KEY
+        sync: false
 
   - type: web
     name: voltech-admin
@@ -92,7 +125,21 @@ services:
         fromDatabase:
           name: voltech-postgres
           property: connectionString
-      - key: AUTH_SECRET
-        generateValue: true
-      - key: AUTH_URL
-        value: https://voltech-admin.onrender.com
+      - key: NEXT_PUBLIC_FIREBASE_API_KEY
+        value: AIzaSyCpabW74dXyP2FwTAakSm1PbIjlTqbE3ds
+      - key: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+        value: voltech-148ca.firebaseapp.com
+      - key: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+        value: voltech-148ca
+      - key: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+        value: voltech-148ca.firebasestorage.app
+      - key: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+        value: "765763252003"
+      - key: NEXT_PUBLIC_FIREBASE_APP_ID
+        value: "1:765763252003:web:7953a599288f470e796696"
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: FIREBASE_CLIENT_EMAIL
+        sync: false
+      - key: FIREBASE_PRIVATE_KEY
+        sync: false
