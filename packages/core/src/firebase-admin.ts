@@ -10,6 +10,58 @@ const globalForFirebase = globalThis as unknown as { voltechFirebaseApp?: App };
 function getFirebaseApp(): App {
   if (globalForFirebase.voltechFirebaseApp) return globalForFirebase.voltechFirebaseApp;
 
+  const { projectId, clientEmail, privateKey } = resolveCredentials();
+
+  const app =
+    getApps()[0] ??
+    initializeApp({
+      credential: cert({ projectId, clientEmail, privateKey }),
+    });
+  globalForFirebase.voltechFirebaseApp = app;
+  return app;
+}
+
+/**
+ * Two ways to configure the Admin SDK credential, tried in this order:
+ *
+ * 1. FIREBASE_SERVICE_ACCOUNT_BASE64 — the *entire* service-account JSON
+ *    file, base64-encoded, as one env var. Preferred: base64 output is a
+ *    single line of plain alphanumeric characters (plus +/=), so there's
+ *    nothing for a dashboard's env-var text box to mangle — no newlines to
+ *    collapse, no quotes to strip, no marker line to accidentally drop.
+ *    Generate it with (PowerShell):
+ *      [Convert]::ToBase64String([IO.File]::ReadAllBytes("service-account.json"))
+ *    or (bash): base64 -w0 service-account.json
+ *
+ * 2. FIREBASE_PROJECT_ID / FIREBASE_CLIENT_EMAIL / FIREBASE_PRIVATE_KEY —
+ *    the three fields set separately. Kept as a fallback for anyone who's
+ *    already set these up, but the private key is a multiline PEM value,
+ *    which is exactly the kind of thing dashboard paste boxes tend to
+ *    corrupt (missing BEGIN/END markers, dropped newlines, wrapped-in-
+ *    quotes) — prefer option 1 when setting this up fresh.
+ */
+function resolveCredentials(): { projectId: string; clientEmail: string; privateKey: string } {
+  const encoded = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64;
+  if (encoded) {
+    let parsed: { project_id?: string; client_email?: string; private_key?: string };
+    try {
+      parsed = JSON.parse(Buffer.from(encoded.trim(), "base64").toString("utf8"));
+    } catch (err) {
+      throw new Error(
+        `FIREBASE_SERVICE_ACCOUNT_BASE64 isn't valid base64-encoded JSON (${(err as Error).message}). Regenerate it from the full service-account JSON file.`,
+      );
+    }
+    if (!parsed.project_id || !parsed.client_email || !parsed.private_key) {
+      const missing = [
+        !parsed.project_id && "project_id",
+        !parsed.client_email && "client_email",
+        !parsed.private_key && "private_key",
+      ].filter(Boolean);
+      throw new Error(`FIREBASE_SERVICE_ACCOUNT_BASE64 decoded to JSON missing field(s): ${missing.join(", ")}.`);
+    }
+    return { projectId: parsed.project_id, clientEmail: parsed.client_email, privateKey: normalizePrivateKey(parsed.private_key) };
+  }
+
   const projectId = process.env.FIREBASE_PROJECT_ID;
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
   const privateKey = process.env.FIREBASE_PRIVATE_KEY;
@@ -19,20 +71,11 @@ function getFirebaseApp(): App {
       !clientEmail && "FIREBASE_CLIENT_EMAIL",
       !privateKey && "FIREBASE_PRIVATE_KEY",
     ].filter(Boolean);
-    throw new Error(`Missing env var(s): ${missing.join(", ")} — set from a Firebase service account key to verify sessions or manage users.`);
+    throw new Error(
+      `Missing env var(s): ${missing.join(", ")} — set FIREBASE_SERVICE_ACCOUNT_BASE64 (recommended) or all three of these, from a Firebase service account key, to verify sessions or manage users.`,
+    );
   }
-
-  const app =
-    getApps()[0] ??
-    initializeApp({
-      credential: cert({
-        projectId,
-        clientEmail,
-        privateKey: normalizePrivateKey(privateKey),
-      }),
-    });
-  globalForFirebase.voltechFirebaseApp = app;
-  return app;
+  return { projectId, clientEmail, privateKey: normalizePrivateKey(privateKey) };
 }
 
 /**

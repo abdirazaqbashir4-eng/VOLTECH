@@ -12,14 +12,11 @@ const db = new PrismaClient({ adapter });
 // Standalone Firebase Admin init (not imported from @voltech/core) — this
 // package has no dependency on @voltech/core, and core depends on
 // @voltech/database, so importing core's copy here would be circular.
-if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PRIVATE_KEY) {
-  throw new Error("FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL and FIREBASE_PRIVATE_KEY must be set to seed demo accounts.");
-}
-
-// Same normalization as packages/core/src/firebase-admin.ts (duplicated,
-// not imported, for the circular-dependency reason above) — handles
-// escaped "\n", wrapping quotes, and \r\n, and fails loudly if the result
-// still isn't a complete PEM block instead of a cryptic OpenSSL error.
+// Same two config options as packages/core/src/firebase-admin.ts
+// (duplicated, not imported, for the reason above) — FIREBASE_SERVICE_ACCOUNT_BASE64
+// (the whole service-account JSON, base64-encoded, preferred — a single-line
+// value with nothing for a paste box to corrupt) or the three separate
+// FIREBASE_PROJECT_ID/CLIENT_EMAIL/PRIVATE_KEY vars as a fallback.
 function normalizePrivateKey(raw: string): string {
   let key = raw.trim();
   if ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'"))) {
@@ -32,11 +29,38 @@ function normalizePrivateKey(raw: string): string {
   return key;
 }
 
-const firebaseApp = initializeApp({
-  credential: cert({
+function resolveSeedCredentials(): { projectId: string; clientEmail: string; privateKey: string } {
+  const encoded = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64;
+  if (encoded) {
+    const parsed = JSON.parse(Buffer.from(encoded.trim(), "base64").toString("utf8")) as {
+      project_id?: string;
+      client_email?: string;
+      private_key?: string;
+    };
+    if (!parsed.project_id || !parsed.client_email || !parsed.private_key) {
+      throw new Error("FIREBASE_SERVICE_ACCOUNT_BASE64 decoded to JSON missing project_id/client_email/private_key.");
+    }
+    return { projectId: parsed.project_id, clientEmail: parsed.client_email, privateKey: normalizePrivateKey(parsed.private_key) };
+  }
+
+  if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PRIVATE_KEY) {
+    throw new Error(
+      "Set FIREBASE_SERVICE_ACCOUNT_BASE64 (recommended) or all of FIREBASE_PROJECT_ID/FIREBASE_CLIENT_EMAIL/FIREBASE_PRIVATE_KEY to seed demo accounts.",
+    );
+  }
+  return {
     projectId: process.env.FIREBASE_PROJECT_ID,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
     privateKey: normalizePrivateKey(process.env.FIREBASE_PRIVATE_KEY),
+  };
+}
+
+const seedCredentials = resolveSeedCredentials();
+const firebaseApp = initializeApp({
+  credential: cert({
+    projectId: seedCredentials.projectId,
+    clientEmail: seedCredentials.clientEmail,
+    privateKey: seedCredentials.privateKey,
   }),
 });
 const firebaseAuth = getAuth(firebaseApp);

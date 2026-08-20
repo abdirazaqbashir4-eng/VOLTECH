@@ -20,17 +20,25 @@
 # `next build` itself, not just for local dev.
 #
 # Auth is Firebase Auth (not this file's job to configure Firebase itself —
-# see README's "Firebase setup" section for the Console steps). Two kinds
+# see README's "Firebase setup" section for the Console steps). Three kinds
 # of Firebase env var below:
 #   - NEXT_PUBLIC_FIREBASE_* — the client config, not a secret, safe as a
 #     plain `value:` (Firebase enforces access via Security Rules /
 #     Authorized domains, not by hiding this object).
+#   - FIREBASE_SERVICE_ACCOUNT_BASE64 (recommended) — the whole service-
+#     account JSON, base64-encoded, as one env var. `sync: false` — set it
+#     directly in the Render dashboard on all three services, from
+#     Firebase Console > Project Settings > Service Accounts > Generate
+#     new private key, then locally:
+#       PowerShell: [Convert]::ToBase64String([IO.File]::ReadAllBytes("service-account.json"))
+#       bash:       base64 -w0 service-account.json
+#     A single-line base64 value is easy to paste correctly; a multiline
+#     PEM private key pasted directly into a dashboard text box is not —
+#     it's very easy to accidentally drop the BEGIN/END marker lines.
 #   - FIREBASE_PROJECT_ID / FIREBASE_CLIENT_EMAIL / FIREBASE_PRIVATE_KEY —
-#     a real secret from a service-account key (Admin SDK). `sync: false`
-#     means Render will NOT set these from this file — set them directly
-#     in the Render dashboard on all three services after the first deploy,
-#     from Firebase Console > Project Settings > Service Accounts >
-#     Generate new private key. Never put the actual key in this file.
+#     the same credential as three separate vars instead, used only if
+#     FIREBASE_SERVICE_ACCOUNT_BASE64 isn't set. Never put the actual
+#     values in this file.
 
 databases:
   - name: voltech-postgres
@@ -71,6 +79,8 @@ services:
         value: "765763252003"
       - key: NEXT_PUBLIC_FIREBASE_APP_ID
         value: "1:765763252003:web:7953a599288f470e796696"
+      - key: FIREBASE_SERVICE_ACCOUNT_BASE64
+        sync: false
       - key: FIREBASE_PROJECT_ID
         sync: false
       - key: FIREBASE_CLIENT_EMAIL
@@ -104,6 +114,8 @@ services:
         value: "765763252003"
       - key: NEXT_PUBLIC_FIREBASE_APP_ID
         value: "1:765763252003:web:7953a599288f470e796696"
+      - key: FIREBASE_SERVICE_ACCOUNT_BASE64
+        sync: false
       - key: FIREBASE_PROJECT_ID
         sync: false
       - key: FIREBASE_CLIENT_EMAIL
@@ -137,6 +149,8 @@ services:
         value: "765763252003"
       - key: NEXT_PUBLIC_FIREBASE_APP_ID
         value: "1:765763252003:web:7953a599288f470e796696"
+      - key: FIREBASE_SERVICE_ACCOUNT_BASE64
+        sync: false
       - key: FIREBASE_PROJECT_ID
         sync: false
       - key: FIREBASE_CLIENT_EMAIL
