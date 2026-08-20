@@ -28,8 +28,7 @@ export async function registerAction(_prevState: unknown, formData: FormData) {
     // Any other failure (bad Admin SDK credentials, network, etc.) — log the
     // real cause server-side instead of misreporting it as a duplicate email.
     console.error("createFirebaseUser failed:", err);
-    // TEMPORARY: surfacing the real error to diagnose a repeat live failure.
-    return { error: `DEBUG(createFirebaseUser): ${(err as Error)?.message ?? String(err)}`, customToken: null };
+    return { error: "Could not create your account right now. Please try again shortly.", customToken: null };
   }
 
   try {
@@ -51,7 +50,6 @@ export async function registerAction(_prevState: unknown, formData: FormData) {
     // Roll back the Firebase account so the email isn't stuck unusable.
     await deleteFirebaseUser(firebaseUser.uid).catch(() => {});
     console.error(err);
-    // TEMPORARY: surfacing the real error to diagnose a repeat live failure.
-    return { error: `DEBUG(postgres/claims): ${(err as Error)?.message ?? String(err)}`, customToken: null };
+    return { error: "Could not create your account. Please try again.", customToken: null };
   }
 }
