@@ -3,6 +3,7 @@ import DashboardSidebar from "./DashboardSidebar";
 
 const LINKS = [
   { href: "/dashboard", label: "Dashboard" },
+  { href: "/analytics", label: "Analytics" },
   { href: "/notifications", label: "Notifications" },
   { href: "/sellers", label: "Sellers" },
   { href: "/sellers/applications", label: "Seller applications" },
