@@ -164,7 +164,7 @@ export default function QuickViewModal({ slug, onClose }: { slug: string; onClos
               </p>
 
               <div className="mt-4 flex items-center gap-2">
-                <div className="flex items-center rounded-md border border-[var(--border)]">
+                <div className="flex items-center rounded-lg border border-[var(--border)] transition-colors">
                   <button type="button" onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="px-2.5 py-1.5 text-slate-600">−</button>
                   <span className="w-8 text-center text-sm">{quantity}</span>
                   <button type="button" onClick={() => setQuantity((q) => Math.min(currentVariant?.available ?? 1, q + 1))} className="px-2.5 py-1.5 text-slate-600">+</button>

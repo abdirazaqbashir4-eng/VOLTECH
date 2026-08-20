@@ -106,7 +106,7 @@ export default function ProductPurchasePanel({
   return (
     <div className="space-y-5">
       <div className="flex items-baseline gap-3">
-        <span className="text-2xl font-bold text-slate-900">{formatKES(currentVariant.price)}</span>
+        <span className="font-display text-2xl font-bold text-slate-900">{formatKES(currentVariant.price)}</span>
         {currentVariant.compareAtPrice && currentVariant.compareAtPrice > currentVariant.price && (
           <span className="text-slate-400 line-through">{formatKES(currentVariant.compareAtPrice)}</span>
         )}
@@ -121,7 +121,7 @@ export default function ProductPurchasePanel({
                 key={val}
                 type="button"
                 onClick={() => setSelected((s) => ({ ...s, [key]: val }))}
-                className={`rounded-md border px-3 py-1.5 text-sm ${
+                className={`rounded-lg border px-3 py-1.5 text-sm transition-colors ${
                   selected[key] === val ? "border-brand-teal bg-brand-teal/10 text-brand-teal-dark" : "border-[var(--border)] text-slate-700 hover:border-brand-teal"
                 }`}
               >
@@ -141,7 +141,7 @@ export default function ProductPurchasePanel({
       )}
 
       <div className="flex items-center gap-3">
-        <div className="flex items-center rounded-md border border-[var(--border)]">
+        <div className="flex items-center rounded-lg border border-[var(--border)] transition-colors">
           <button type="button" onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="px-3 py-2 text-slate-600 hover:bg-[var(--surface)]">
             −
           </button>
@@ -159,7 +159,7 @@ export default function ProductPurchasePanel({
           type="button"
           disabled={outOfStock || isPending}
           onClick={handleAddToCart}
-          className="flex-1 rounded-md border border-brand-teal py-2.5 font-semibold text-brand-teal hover:bg-brand-teal/5 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex-1 rounded-lg border border-brand-teal py-2.5 transition-colors font-semibold text-brand-teal hover:bg-brand-teal/5 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isPending ? "Adding..." : "Add to cart"}
         </button>
@@ -177,7 +177,7 @@ export default function ProductPurchasePanel({
           type="button"
           onClick={handleWishlist}
           aria-label="Toggle wishlist"
-          className={`rounded-md border px-3 py-2.5 ${wishlisted ? "border-brand-amber text-brand-amber-dark" : "border-[var(--border)] text-slate-500"}`}
+          className={`rounded-lg border px-3 py-2.5 transition-colors ${wishlisted ? "border-brand-amber text-brand-amber-dark" : "border-[var(--border)] text-slate-500"}`}
         >
           {wishlisted ? "♥" : "♡"}
         </button>
@@ -193,7 +193,7 @@ export default function ProductPurchasePanel({
           type="button"
           disabled={outOfStock || isPending}
           onClick={handleAddToCart}
-          className="rounded-md border border-brand-teal px-3 py-2 text-sm font-semibold text-brand-teal disabled:opacity-50"
+          className="rounded-lg border border-brand-teal px-3 py-2 transition-colors text-sm font-semibold text-brand-teal disabled:opacity-50"
         >
           Add to cart
         </button>

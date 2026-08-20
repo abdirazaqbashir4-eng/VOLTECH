@@ -79,7 +79,7 @@ export default async function SellerAnalyticsPage({ searchParams }: PageProps<"/
             <Link
               key={r.key}
               href={`/analytics?range=${r.key}`}
-              className={`rounded-md border px-3 py-1.5 text-sm ${
+              className={`rounded-lg border px-3 py-1.5 text-sm transition-colors ${
                 String(rangeDays) === r.key ? "border-brand-teal bg-brand-teal/10 text-brand-teal-dark" : "border-[var(--border)] text-slate-600"
               }`}
             >
@@ -102,11 +102,11 @@ export default async function SellerAnalyticsPage({ searchParams }: PageProps<"/
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-lg border border-[var(--border)] bg-white p-5">
+        <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">Revenue over time</h2>
           <SalesLineChart data={chartData} />
         </div>
-        <div className="rounded-lg border border-[var(--border)] bg-white p-5">
+        <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">Top products by units sold</h2>
           {topProducts.length === 0 ? (
             <p className="py-16 text-center text-sm text-slate-500">No sales in this period yet.</p>
@@ -122,7 +122,7 @@ export default async function SellerAnalyticsPage({ searchParams }: PageProps<"/
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-lg border border-[var(--border)] bg-white p-4">
-      <p className="text-2xl font-bold text-slate-900">{value}</p>
+      <p className="font-display text-2xl font-bold text-slate-900">{value}</p>
       <p className="text-sm text-slate-500">{label}</p>
     </div>
   );

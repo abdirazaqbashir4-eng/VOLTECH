@@ -8,7 +8,7 @@ export default function PlatformPromotionForm({ categories, products }: { catego
   const [scope, setScope] = useState<"PLATFORM" | "CATEGORY" | "FLASH_SALE">("PLATFORM");
 
   return (
-    <form action={formAction} className="max-w-lg space-y-3 rounded-lg border border-[var(--border)] bg-white p-5">
+    <form action={formAction} className="max-w-lg space-y-3 rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
       <h2 className="font-semibold text-slate-900">Create platform promotion</h2>
       <input name="name" placeholder="Promotion name" required className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm" />
       <select name="scope" value={scope} onChange={(e) => setScope(e.target.value as typeof scope)} className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm">

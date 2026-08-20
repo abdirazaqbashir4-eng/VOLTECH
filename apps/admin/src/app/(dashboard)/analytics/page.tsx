@@ -94,7 +94,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps<"/a
             <Link
               key={r.key}
               href={`/analytics?range=${r.key}`}
-              className={`rounded-md border px-3 py-1.5 text-sm ${
+              className={`rounded-lg border px-3 py-1.5 text-sm transition-colors ${
                 String(rangeDays) === r.key ? "border-brand-teal bg-brand-teal/10 text-brand-teal-dark" : "border-[var(--border)] text-slate-600"
               }`}
             >
@@ -116,26 +116,26 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps<"/a
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-lg border border-[var(--border)] bg-white p-5">
+        <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">GMV over time</h2>
           <TimeSeriesChart data={gmvSeries} valueLabel="GMV" formatValue={(v) => formatKES(v)} />
         </div>
-        <div className="rounded-lg border border-[var(--border)] bg-white p-5">
+        <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">Orders over time</h2>
           <TimeSeriesChart data={orderSeries} valueLabel="Orders" color="#f59e0b" />
         </div>
-        <div className="rounded-lg border border-[var(--border)] bg-white p-5">
+        <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">Customer growth</h2>
           <TimeSeriesChart data={customerSeries} valueLabel="New customers" color="#0b1220" />
         </div>
-        <div className="rounded-lg border border-[var(--border)] bg-white p-5">
+        <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">Seller growth</h2>
           <TimeSeriesChart data={sellerSeries} valueLabel="New sellers" color="#0f766e" />
         </div>
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        <div className="rounded-lg border border-[var(--border)] bg-white p-5">
+        <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">Top categories</h2>
           <ul className="space-y-2 text-sm">
             {topCategories.map((c) => (
@@ -146,7 +146,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps<"/a
             ))}
           </ul>
         </div>
-        <div className="rounded-lg border border-[var(--border)] bg-white p-5">
+        <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">Top-rated sellers</h2>
           <ul className="space-y-2 text-sm">
             {topSellers.map((s) => (
@@ -157,7 +157,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps<"/a
             ))}
           </ul>
         </div>
-        <div className="rounded-lg border border-[var(--border)] bg-white p-5">
+        <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">Top products (all-time)</h2>
           <ul className="space-y-2 text-sm">
             {topProducts.map((p) => (
@@ -176,7 +176,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps<"/a
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-lg border border-[var(--border)] bg-white p-4">
-      <p className="text-2xl font-bold text-slate-900">{value}</p>
+      <p className="font-display text-2xl font-bold text-slate-900">{value}</p>
       <p className="text-sm text-slate-500">{label}</p>
     </div>
   );

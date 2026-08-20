@@ -11,7 +11,7 @@ export default function SellerLandingPage() {
           <p className="mx-auto mt-3 max-w-xl text-white/80">
             List products, manage orders and inventory, and get paid — all from one seller dashboard.
           </p>
-          <Link href="/apply" className="mt-6 inline-block rounded-md bg-brand-amber px-6 py-3 font-semibold text-brand-ink hover:bg-brand-amber-dark">
+          <Link href="/apply" className="mt-6 inline-block rounded-lg bg-brand-amber shadow-sm transition-colors px-6 py-3 font-semibold text-brand-ink hover:bg-brand-amber-dark">
             Apply to sell
           </Link>
         </section>

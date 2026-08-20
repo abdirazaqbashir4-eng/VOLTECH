@@ -20,7 +20,7 @@ export default async function ApplicationDetailPage({ params }: PageProps<"/sell
       <h1 className="mb-1 text-xl font-bold text-slate-900">{application.storeName}</h1>
       <p className="mb-6 text-sm text-slate-500">Applicant: {application.user.fullName} ({application.user.email})</p>
 
-      <div className="space-y-4 rounded-lg border border-[var(--border)] bg-white p-5 text-sm">
+      <div className="space-y-4 rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs text-sm">
         <Row label="Store description" value={application.storeDescription} />
         <Row label="Business type" value={application.businessType} />
         {application.businessRegistrationNumber && <Row label="Registration number" value={application.businessRegistrationNumber} />}

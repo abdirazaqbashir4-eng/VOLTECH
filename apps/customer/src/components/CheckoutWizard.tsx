@@ -174,7 +174,7 @@ export default function CheckoutWizard({
               </label>
             ))}
             <div className="flex gap-3">
-              <button type="button" onClick={() => setStep("address")} className="rounded-md border border-[var(--border)] px-5 py-2.5 text-slate-700">
+              <button type="button" onClick={() => setStep("address")} className="rounded-lg border border-[var(--border)] px-5 py-2.5 text-slate-700 transition-colors hover:bg-[var(--surface)]">
                 Back
               </button>
               <button type="button" onClick={() => setStep("payment")} className="rounded-lg bg-brand-teal shadow-sm transition-colors px-5 py-2.5 font-semibold text-white hover:bg-brand-teal-dark">
@@ -199,7 +199,7 @@ export default function CheckoutWizard({
               </p>
             )}
             <div className="flex gap-3">
-              <button type="button" onClick={() => setStep("delivery")} className="rounded-md border border-[var(--border)] px-5 py-2.5 text-slate-700">
+              <button type="button" onClick={() => setStep("delivery")} className="rounded-lg border border-[var(--border)] px-5 py-2.5 text-slate-700 transition-colors hover:bg-[var(--surface)]">
                 Back
               </button>
               <button type="button" onClick={() => setStep("review")} className="rounded-lg bg-brand-teal shadow-sm transition-colors px-5 py-2.5 font-semibold text-white hover:bg-brand-teal-dark">
@@ -233,14 +233,14 @@ export default function CheckoutWizard({
             </div>
             {error && <p className="text-sm text-red-600">{error}</p>}
             <div className="flex gap-3">
-              <button type="button" onClick={() => setStep("payment")} className="rounded-md border border-[var(--border)] px-5 py-2.5 text-slate-700">
+              <button type="button" onClick={() => setStep("payment")} className="rounded-lg border border-[var(--border)] px-5 py-2.5 text-slate-700 transition-colors hover:bg-[var(--surface)]">
                 Back
               </button>
               <button
                 type="button"
                 disabled={isPending}
                 onClick={placeOrder}
-                className="rounded-md bg-brand-amber px-5 py-2.5 font-semibold text-brand-ink hover:bg-brand-amber-dark disabled:opacity-50"
+                className="rounded-lg bg-brand-amber shadow-sm transition-colors px-5 py-2.5 font-semibold text-brand-ink hover:bg-brand-amber-dark disabled:opacity-50"
               >
                 {isPending ? "Placing order..." : "Place order"}
               </button>

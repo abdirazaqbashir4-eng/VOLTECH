@@ -32,7 +32,7 @@ export default async function OrderHistoryPage() {
           {orders.map((o) => {
             const sellerNames = Array.from(new Set(o.sellerOrders.map((so) => so.seller.storeName)));
             return (
-              <div key={o.id} className="rounded-lg border border-[var(--border)] p-4">
+              <div key={o.id} className="rounded-lg border border-[var(--border)] bg-white p-4 shadow-xs transition-shadow hover:shadow-sm">
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div>
                     <p className="font-medium text-slate-900">{o.orderNumber}</p>

@@ -7,7 +7,7 @@ export default function StoreSettingsForm({ storeDescription, logoUrl, bannerUrl
   const [state, formAction, isPending] = useActionState(updateStoreSettingsAction, { success: false });
 
   return (
-    <form action={formAction} className="max-w-lg space-y-3 rounded-lg border border-[var(--border)] bg-white p-5">
+    <form action={formAction} className="max-w-lg space-y-3 rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
       <div>
         <label className="mb-1 block text-sm font-medium text-slate-700">Store description</label>
         <textarea name="storeDescription" defaultValue={storeDescription} rows={3} className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm" />

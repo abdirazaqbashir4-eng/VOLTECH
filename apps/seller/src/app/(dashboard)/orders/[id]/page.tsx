@@ -26,7 +26,7 @@ export default async function SellerOrderDetailPage({ params }: PageProps<"/orde
         <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">{so.status}</span>
       </div>
 
-      <div className="rounded-lg border border-[var(--border)] bg-white p-5">
+      <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
         <ul className="space-y-2 text-sm">
           {so.items.map((item) => (
             <li key={item.id} className="flex justify-between">
@@ -45,7 +45,7 @@ export default async function SellerOrderDetailPage({ params }: PageProps<"/orde
         )}
       </div>
 
-      <div className="mt-4 rounded-lg border border-[var(--border)] bg-white p-5 text-sm">
+      <div className="mt-4 rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs text-sm">
         <h2 className="mb-2 font-semibold text-slate-900">Customer</h2>
         <p className="text-slate-600">{so.order.customer.fullName} — {so.order.customer.phone}</p>
         <p className="mt-2 text-slate-600">

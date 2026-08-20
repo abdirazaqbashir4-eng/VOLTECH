@@ -27,7 +27,7 @@ export default async function FinancePage() {
       </div>
 
       <h2 className="mb-2 mt-8 font-semibold text-slate-900">Ledger</h2>
-      <div className="overflow-x-auto rounded-lg border border-[var(--border)] bg-white">
+      <div className="overflow-x-auto rounded-lg border border-[var(--border)] bg-white shadow-xs">
         <table className="w-full text-sm">
           <thead className="border-b border-[var(--border)] bg-[var(--surface)] text-left text-xs uppercase text-slate-500">
             <tr>

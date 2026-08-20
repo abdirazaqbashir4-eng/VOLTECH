@@ -70,14 +70,32 @@ export default async function OrderDetailPage({ params }: PageProps<"/account/or
       </div>
 
       <div className="mt-6">
-        <h2 className="mb-2 font-medium text-slate-900">Order timeline</h2>
-        <ul className="space-y-1 text-sm text-slate-600">
-          {order.timeline.map((ev) => (
-            <li key={ev.id}>
-              {new Date(ev.createdAt).toLocaleString()} — {ev.status}{ev.note ? `: ${ev.note}` : ""}
-            </li>
-          ))}
-        </ul>
+        <h2 className="mb-3 font-medium text-slate-900">Order timeline</h2>
+        <ol className="relative">
+          {order.timeline.map((ev, i) => {
+            const isLast = i === order.timeline.length - 1;
+            return (
+              <li key={ev.id} className="relative flex gap-3 pb-6 last:pb-0">
+                {!isLast && <span aria-hidden className="absolute left-[9px] top-5 h-full w-px bg-brand-teal" />}
+                <span
+                  aria-hidden
+                  className={`relative z-10 mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white ${
+                    isLast ? "bg-brand-teal ring-4 ring-brand-teal/15" : "bg-brand-teal"
+                  }`}
+                >
+                  ✓
+                </span>
+                <div>
+                  <p className={`text-sm ${isLast ? "font-semibold text-slate-900" : "text-slate-700"}`}>
+                    {ev.status.replaceAll("_", " ").toLowerCase().replace(/^./, (c) => c.toUpperCase())}
+                    {ev.note ? ` — ${ev.note}` : ""}
+                  </p>
+                  <p className="text-xs text-slate-400">{new Date(ev.createdAt).toLocaleString()}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
       </div>
     </div>
   );

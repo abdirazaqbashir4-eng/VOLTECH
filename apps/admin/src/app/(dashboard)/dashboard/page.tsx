@@ -58,18 +58,18 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <Link href="/sellers/applications" className={`rounded-lg border p-4 ${pendingApplications > 0 ? "border-brand-amber bg-brand-amber/10" : "border-[var(--border)] bg-white"}`}>
-          <p className="text-2xl font-bold text-slate-900">{pendingApplications}</p>
+        <Link href="/sellers/applications" className={`rounded-xl border p-4 shadow-xs transition-all hover:-translate-y-0.5 hover:shadow-sm ${pendingApplications > 0 ? "border-brand-amber bg-brand-amber/10" : "border-[var(--border)] bg-white"}`}>
+          <p className="font-display text-2xl font-bold text-slate-900">{pendingApplications}</p>
           <p className="text-sm text-slate-500">Pending seller applications</p>
         </Link>
-        <Link href="/products" className={`rounded-lg border p-4 ${pendingProducts > 0 ? "border-brand-amber bg-brand-amber/10" : "border-[var(--border)] bg-white"}`}>
-          <p className="text-2xl font-bold text-slate-900">{pendingProducts}</p>
+        <Link href="/products" className={`rounded-xl border p-4 shadow-xs transition-all hover:-translate-y-0.5 hover:shadow-sm ${pendingProducts > 0 ? "border-brand-amber bg-brand-amber/10" : "border-[var(--border)] bg-white"}`}>
+          <p className="font-display text-2xl font-bold text-slate-900">{pendingProducts}</p>
           <p className="text-sm text-slate-500">Products awaiting approval</p>
         </Link>
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-lg border border-[var(--border)] bg-white p-5">
+        <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">Top-rated sellers</h2>
           <ul className="space-y-2 text-sm">
             {topSellers.map((s) => (
@@ -80,7 +80,7 @@ export default async function AdminDashboardPage() {
             ))}
           </ul>
         </div>
-        <div className="rounded-lg border border-[var(--border)] bg-white p-5">
+        <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">Top categories by product count</h2>
           <ul className="space-y-2 text-sm">
             {topCategories.map((c) => (
@@ -97,10 +97,10 @@ export default async function AdminDashboardPage() {
 }
 
 function Stat({ label, value, href, accent }: { label: string; value: string; href?: string; accent?: boolean }) {
-  const className = `rounded-lg border p-4 ${accent ? "border-brand-amber bg-brand-amber/10" : "border-[var(--border)] bg-white"} ${href ? "hover:border-brand-teal" : ""}`;
+  const className = `rounded-xl border p-4 shadow-xs transition-all ${accent ? "border-brand-amber bg-brand-amber/10" : "border-[var(--border)] bg-white"} ${href ? "hover:-translate-y-0.5 hover:border-brand-teal hover:shadow-sm" : ""}`;
   const content = (
     <>
-      <p className="text-2xl font-bold text-slate-900">{value}</p>
+      <p className="font-display text-2xl font-bold text-slate-900">{value}</p>
       <p className="text-sm text-slate-500">{label}</p>
     </>
   );

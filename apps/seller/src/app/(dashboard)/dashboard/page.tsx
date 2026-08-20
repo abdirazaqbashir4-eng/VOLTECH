@@ -48,7 +48,7 @@ export default async function SellerDashboardPage() {
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-lg border border-[var(--border)] bg-white p-5">
+        <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">Recent orders</h2>
           {recentOrders.length === 0 ? (
             <p className="text-sm text-slate-500">No orders yet.</p>
@@ -66,7 +66,7 @@ export default async function SellerDashboardPage() {
           )}
         </div>
 
-        <div className="rounded-lg border border-[var(--border)] bg-white p-5">
+        <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">Low stock</h2>
           {lowStock.length === 0 ? (
             <p className="text-sm text-slate-500">No low-stock items.</p>
@@ -90,8 +90,13 @@ export default async function SellerDashboardPage() {
 
 function Stat({ label, value, href, accent }: { label: string; value: string; href: string; accent?: boolean }) {
   return (
-    <Link href={href} className={`rounded-lg border p-4 hover:border-brand-teal ${accent ? "border-brand-teal bg-brand-teal/5" : "border-[var(--border)] bg-white"}`}>
-      <p className="text-2xl font-bold text-slate-900">{value}</p>
+    <Link
+      href={href}
+      className={`rounded-xl border p-4 shadow-xs transition-all hover:-translate-y-0.5 hover:shadow-sm ${
+        accent ? "border-brand-teal bg-brand-teal/5 hover:border-brand-teal-dark" : "border-[var(--border)] bg-white hover:border-brand-teal"
+      }`}
+    >
+      <p className="font-display text-2xl font-bold text-slate-900">{value}</p>
       <p className="text-sm text-slate-500">{label}</p>
     </Link>
   );

@@ -38,7 +38,7 @@ export default function SellerCard({
       <p className="mt-2 text-sm text-slate-500">{productCount} product{productCount === 1 ? "" : "s"}</p>
       <Link
         href={`/store/${storeSlug}`}
-        className="mt-3 block rounded-md border border-[var(--border)] py-2 text-center text-sm font-medium text-slate-700 hover:border-brand-teal hover:text-brand-teal"
+        className="mt-3 block rounded-lg border border-[var(--border)] py-2 text-center text-sm font-medium text-slate-700 transition-colors hover:border-brand-teal hover:text-brand-teal"
       >
         View store
       </Link>

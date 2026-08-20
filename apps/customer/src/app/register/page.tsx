@@ -14,7 +14,7 @@ export default async function RegisterPage({ searchParams }: PageProps<"/registe
       <Header />
       <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center bg-[var(--surface)] px-4 py-12">
         <div className="rounded-2xl border border-[var(--border)] bg-white p-7 shadow-sm sm:p-8">
-          <h1 className="mb-1 text-center text-2xl font-bold text-slate-900">Create your account</h1>
+          <h1 className="mb-1 text-center font-display text-2xl font-bold text-slate-900">Create your account</h1>
           <p className="mb-6 text-center text-sm text-slate-500">Join VOLTECH to start shopping</p>
           <RegisterForm callbackUrl={callbackUrl} />
         </div>

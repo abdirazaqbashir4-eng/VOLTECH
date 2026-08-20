@@ -38,7 +38,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps<"/pr
         ))}
       </div>
 
-      <div className="overflow-x-auto rounded-lg border border-[var(--border)] bg-white">
+      <div className="overflow-x-auto rounded-lg border border-[var(--border)] bg-white shadow-xs">
         <table className="w-full text-sm">
           <thead className="border-b border-[var(--border)] bg-[var(--surface)] text-left text-xs uppercase text-slate-500">
             <tr>

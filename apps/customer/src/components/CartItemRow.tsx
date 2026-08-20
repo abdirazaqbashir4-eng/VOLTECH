@@ -61,7 +61,7 @@ export default function CartItemRow({ item }: { item: CartRowData }) {
         {!item.inStock && <p className="text-xs text-red-600">Only {item.availableStock} left in stock</p>}
 
         <div className="mt-1 flex flex-wrap items-center gap-4">
-          <div className="flex items-center rounded-md border border-[var(--border)]">
+          <div className="flex items-center rounded-lg border border-[var(--border)] transition-colors">
             <button disabled={isPending} onClick={() => update(item.quantity - 1)} className="px-2.5 py-1 text-slate-600 hover:bg-[var(--surface)]">
               −
             </button>

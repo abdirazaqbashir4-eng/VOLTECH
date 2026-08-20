@@ -32,7 +32,7 @@ export default function FlashSaleCard({ product }: { product: FlashProduct }) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group flex flex-col overflow-hidden rounded-md border border-[var(--border)] bg-white transition-shadow hover:shadow-md"
+      className="group flex flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-white transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:shadow-md"
     >
       <div className="relative aspect-square w-full overflow-hidden bg-slate-100">
         {product.images[0] ? (

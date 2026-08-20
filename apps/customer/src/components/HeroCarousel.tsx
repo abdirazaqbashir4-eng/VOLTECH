@@ -52,7 +52,7 @@ export default function HeroCarousel() {
       <div className="relative mt-5 flex flex-wrap gap-2.5">
         <Link
           href={slide.cta.href}
-          className="inline-flex w-fit items-center rounded-md bg-brand-amber px-4 py-2.5 text-sm font-semibold text-brand-ink shadow-sm transition-colors hover:bg-brand-amber-dark"
+          className="inline-flex w-fit items-center rounded-lg bg-brand-amber px-4 py-2.5 text-sm font-semibold text-brand-ink shadow-sm transition-colors hover:bg-brand-amber-dark"
         >
           {slide.cta.label}
         </Link>

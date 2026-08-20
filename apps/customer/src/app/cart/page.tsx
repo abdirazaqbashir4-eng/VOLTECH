@@ -95,7 +95,7 @@ async function CartContent({ userId }: { userId: string }) {
           <Link
             href="/checkout"
             aria-disabled={!allInStock}
-            className={`mt-4 block rounded-md py-2.5 text-center font-semibold text-white ${allInStock ? "bg-brand-teal hover:bg-brand-teal-dark" : "pointer-events-none bg-slate-300"}`}
+            className={`mt-4 block rounded-lg py-2.5 text-center font-semibold text-white shadow-sm transition-colors ${allInStock ? "bg-brand-teal hover:bg-brand-teal-dark" : "pointer-events-none bg-slate-300"}`}
           >
             Proceed to checkout
           </Link>

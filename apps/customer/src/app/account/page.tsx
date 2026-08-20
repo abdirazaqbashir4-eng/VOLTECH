@@ -33,20 +33,21 @@ export default async function AccountOverviewPage() {
     }),
   ]);
 
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+  const firstName = session.user.name?.split(" ")[0] ?? "there";
+
   return (
     <div>
-      <h1 className="mb-4 text-xl font-bold text-slate-900">My account</h1>
-      <div className="rounded-lg border border-[var(--border)] p-5">
-        <p className="font-medium text-slate-900">{session.user.name}</p>
-        <p className="text-sm text-slate-500">{session.user.email}</p>
-      </div>
+      <h1 className="mb-1 font-display text-2xl font-bold text-slate-900">{greeting}, {firstName} 👋</h1>
+      <p className="mb-4 text-sm text-slate-500">{session.user.email}</p>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <Link href="/account/orders" className="rounded-lg border border-[var(--border)] p-5 hover:border-brand-teal">
-          <p className="text-2xl font-bold text-slate-900">{orderCount}</p>
+        <Link href="/account/orders" className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-xs transition-all hover:-translate-y-0.5 hover:border-brand-teal hover:shadow-sm">
+          <p className="font-display text-2xl font-bold text-slate-900">{orderCount}</p>
           <p className="text-sm text-slate-500">Orders placed</p>
         </Link>
-        <Link href="/wishlist" className="rounded-lg border border-[var(--border)] p-5 hover:border-brand-teal">
-          <p className="text-2xl font-bold text-slate-900">{wishlistCount}</p>
+        <Link href="/wishlist" className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-xs transition-all hover:-translate-y-0.5 hover:border-brand-teal hover:shadow-sm">
+          <p className="font-display text-2xl font-bold text-slate-900">{wishlistCount}</p>
           <p className="text-sm text-slate-500">Wishlist items</p>
         </Link>
       </div>
@@ -62,7 +63,7 @@ export default async function AccountOverviewPage() {
               <Link
                 key={o.id}
                 href={`/account/orders/${o.id}`}
-                className="flex items-center justify-between rounded-lg border border-[var(--border)] p-3 text-sm hover:border-brand-teal"
+                className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-white p-3 text-sm transition-colors hover:border-brand-teal"
               >
                 <span className="font-medium text-slate-900">{o.orderNumber}</span>
                 <span className="text-slate-500">{formatKES(o.grandTotal)}</span>
