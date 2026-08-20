@@ -47,6 +47,28 @@ function getFirebaseApp(): App {
  * "DECODER routines::unsupported" error.
  */
 function normalizePrivateKey(raw: string): string {
+  // Safe diagnostic (structure only, never the key content) — logged to
+  // stderr, which is what shows up in Render's log viewer, so the exact
+  // shape of what Render is actually injecting is visible without ever
+  // printing key material.
+  console.error(
+    "FIREBASE_PRIVATE_KEY diagnostic:",
+    JSON.stringify({
+      rawLength: raw.length,
+      trimmedLength: raw.trim().length,
+      startsWithQuote: raw.trim().startsWith('"') || raw.trim().startsWith("'"),
+      endsWithQuote: raw.trim().endsWith('"') || raw.trim().endsWith("'"),
+      containsLiteralBackslashN: raw.includes("\\n"),
+      containsRealNewline: raw.includes("\n"),
+      containsBeginMarkerRaw: raw.includes("BEGIN PRIVATE KEY"),
+      containsEndMarkerRaw: raw.includes("END PRIVATE KEY"),
+      // Deliberately no character-content fields (even "first N chars") —
+      // in exactly the failure case this diagnostic exists for (a missing
+      // BEGIN marker), the leading characters ARE real key material, not
+      // boilerplate, so printing any of it would leak actual secret bytes.
+    }),
+  );
+
   let key = raw.trim();
 
   // Strip a single layer of wrapping quotes, if the whole value is quoted
@@ -60,11 +82,11 @@ function normalizePrivateKey(raw: string): string {
 
   const beginMarker = "-----BEGIN PRIVATE KEY-----";
   const endMarker = "-----END PRIVATE KEY-----";
-  if (!key.includes(beginMarker) || !key.includes(endMarker)) {
+  const hasBegin = key.includes(beginMarker);
+  const hasEnd = key.includes(endMarker);
+  if (!hasBegin || !hasEnd) {
     throw new Error(
-      `FIREBASE_PRIVATE_KEY doesn't look like a complete PEM key (missing ${
-        !key.includes(beginMarker) ? "the BEGIN marker" : "the END marker"
-      }) — re-paste the full "private_key" value from the service account JSON, including both marker lines.`,
+      `FIREBASE_PRIVATE_KEY doesn't look like a complete PEM key (exists=true, length=${key.length}, containsBeginMarker=${hasBegin}, containsEndMarker=${hasEnd}) — re-paste the full "private_key" value from the service account JSON, including both marker lines. See the "FIREBASE_PRIVATE_KEY diagnostic" log line just above this error for more detail on what was actually received.`,
     );
   }
 
