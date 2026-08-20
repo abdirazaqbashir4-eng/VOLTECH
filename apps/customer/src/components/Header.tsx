@@ -6,6 +6,9 @@ import { getCartView } from "@voltech/core/marketplace/cart";
 import { SELLER_CENTER_URL } from "@/lib/links";
 import SearchBar from "./SearchBar";
 import MobileMenu from "./MobileMenu";
+import MegaMenu from "./MegaMenu";
+import NotificationBell from "./NotificationBell";
+import AccountMenu from "./AccountMenu";
 
 export default async function Header() {
   const session = await auth();
@@ -13,12 +16,21 @@ export default async function Header() {
     where: { status: "ACTIVE", parentId: null },
     orderBy: { sortOrder: "asc" },
     take: 10,
+    include: { children: { where: { status: "ACTIVE" }, orderBy: { sortOrder: "asc" }, take: 8 } },
   });
 
   let cartCount = 0;
+  let notifications: { id: string; title: string; body: string; linkUrl: string | null; readAt: Date | null; createdAt: Date }[] = [];
+  let unreadCount = 0;
   if (session?.user) {
-    const cart = await getCartView(session.user.id);
+    const [cart, notifs, unread] = await Promise.all([
+      getCartView(session.user.id),
+      db.notification.findMany({ where: { userId: session.user.id }, orderBy: { createdAt: "desc" }, take: 8 }),
+      db.notification.count({ where: { userId: session.user.id, readAt: null } }),
+    ]);
     cartCount = cart.itemCount;
+    notifications = notifs;
+    unreadCount = unread;
   }
 
   return (
@@ -60,10 +72,16 @@ export default async function Header() {
             Wishlist
           </Link>
 
+          {session?.user && <NotificationBell items={notifications.map((n) => ({ ...n, linkUrl: n.linkUrl, readAt: n.readAt?.toISOString() ?? null, createdAt: n.createdAt.toISOString() }))} unreadCount={unreadCount} />}
+
           {session?.user ? (
-            <Link href="/account" className="hidden sm:inline hover:text-brand-teal">
-              {session.user.name?.split(" ")[0] ?? "Account"}
-            </Link>
+            <AccountMenu
+              userName={session.user.name || "Account"}
+              onSignOut={async () => {
+                "use server";
+                await signOut({ redirectTo: "/" });
+              }}
+            />
           ) : (
             <Link href="/login" className="hidden sm:inline hover:text-brand-teal">
               Sign in
@@ -79,27 +97,12 @@ export default async function Header() {
               </span>
             )}
           </Link>
-
-          {session?.user && (
-            <form
-              action={async () => {
-                "use server";
-                await signOut({ redirectTo: "/" });
-              }}
-            >
-              <button type="submit" className="hidden text-white/70 hover:text-white sm:inline">
-                Sign out
-              </button>
-            </form>
-          )}
         </nav>
       </div>
 
       <div className="border-t border-white/10 bg-brand-ink/95">
         <div className="mx-auto flex max-w-7xl items-center gap-5 overflow-x-auto px-4 py-2 text-sm text-white/80 sm:px-6">
-          <Link href="/categories" className="shrink-0 font-medium text-white">
-            All Categories
-          </Link>
+          <MegaMenu categories={categories} />
           {categories.map((c) => (
             <Link key={c.id} href={`/categories/${c.slug}`} className="shrink-0 hover:text-white">
               {c.name}

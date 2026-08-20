@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import MobileBottomNavClient from "@/components/MobileBottomNavClient";
+import CompareBar from "@/components/CompareBar";
+import QuickViewProvider from "@/contexts/QuickViewContext";
 
 // Every page here reads the session (via Header/account/proxy) and live
 // marketplace data (stock, pricing, promotions) — none of it should be
@@ -20,7 +22,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-white text-[var(--foreground)] pb-14 md:pb-0">
-        {children}
+        <QuickViewProvider>
+          {children}
+          <CompareBar />
+        </QuickViewProvider>
         <MobileBottomNavClient />
       </body>
     </html>

@@ -71,6 +71,23 @@ export default function ProductPurchasePanel({
     });
   }
 
+  function handleBuyNow() {
+    if (!isAuthenticated) {
+      router.push(`/login?callbackUrl=${encodeURIComponent(window.location.pathname)}`);
+      return;
+    }
+    if (!currentVariant) return;
+    setMessage(null);
+    startTransition(async () => {
+      const result = await addToCartAction(currentVariant.id, quantity);
+      if (result.ok) {
+        router.push("/checkout");
+      } else {
+        setMessage({ type: "error", text: result.error });
+      }
+    });
+  }
+
   function handleWishlist() {
     if (!isAuthenticated) {
       router.push(`/login?callbackUrl=${encodeURIComponent(window.location.pathname)}`);
@@ -142,9 +159,18 @@ export default function ProductPurchasePanel({
           type="button"
           disabled={outOfStock || isPending}
           onClick={handleAddToCart}
-          className="flex-1 rounded-md bg-brand-teal py-2.5 font-semibold text-white hover:bg-brand-teal-dark disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex-1 rounded-md border border-brand-teal py-2.5 font-semibold text-brand-teal hover:bg-brand-teal/5 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isPending ? "Adding..." : "Add to cart"}
+        </button>
+
+        <button
+          type="button"
+          disabled={outOfStock || isPending}
+          onClick={handleBuyNow}
+          className="flex-1 rounded-md bg-brand-teal py-2.5 font-semibold text-white hover:bg-brand-teal-dark disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Buy now
         </button>
 
         <button
@@ -158,6 +184,28 @@ export default function ProductPurchasePanel({
       </div>
 
       {message && <p className={message.type === "error" ? "text-sm text-red-600" : "text-sm text-green-700"}>{message.text}</p>}
+
+      {/* Sticky mobile purchase bar — stays reachable while scrolling through
+          description/specs/reviews below. Sits above the app's bottom nav. */}
+      <div className="fixed inset-x-0 bottom-14 z-30 flex items-center gap-2 border-t border-[var(--border)] bg-white p-3 shadow-[0_-2px_8px_rgba(0,0,0,0.06)] md:hidden">
+        <span className="min-w-0 flex-1 truncate text-base font-bold text-slate-900">{formatKES(currentVariant.price)}</span>
+        <button
+          type="button"
+          disabled={outOfStock || isPending}
+          onClick={handleAddToCart}
+          className="rounded-md border border-brand-teal px-3 py-2 text-sm font-semibold text-brand-teal disabled:opacity-50"
+        >
+          Add to cart
+        </button>
+        <button
+          type="button"
+          disabled={outOfStock || isPending}
+          onClick={handleBuyNow}
+          className="rounded-md bg-brand-teal px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
+        >
+          Buy now
+        </button>
+      </div>
     </div>
   );
 }

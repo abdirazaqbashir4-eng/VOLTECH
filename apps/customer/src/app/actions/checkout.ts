@@ -40,6 +40,11 @@ export async function getShippingMethodsForAddress(addressId: string) {
   return resolveShippingMethods(address.county);
 }
 
+/** Same lookup as above, but by a plain county name — used on product pages for a "deliver to" estimate before the shopper has picked/entered an address. */
+export async function getShippingMethodsForCounty(county: string) {
+  return resolveShippingMethods(county);
+}
+
 export async function placeOrderAction(input: {
   addressId: string;
   shippingMethodId: string;

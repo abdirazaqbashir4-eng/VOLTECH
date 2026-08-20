@@ -4,6 +4,8 @@ import RatingStars from "./RatingStars";
 import PriceDisplay from "./PriceDisplay";
 import DiscountBadge from "./DiscountBadge";
 import WishlistButton from "./WishlistButton";
+import CompareButton from "./CompareButton";
+import QuickViewButton from "./QuickViewButton";
 
 export interface ProductCardData {
   slug: string;
@@ -59,10 +61,15 @@ export default function ProductCard({ product, isAuthenticated = false }: { prod
         </div>
 
         {product.id && (
-          <div className="absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+          <div className="absolute right-2 top-2 flex flex-col gap-1.5 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
             <WishlistButton productId={product.id} isAuthenticated={isAuthenticated} />
+            <CompareButton productId={product.id} />
           </div>
         )}
+
+        <div className="absolute inset-x-2 bottom-2 flex justify-center opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+          <QuickViewButton slug={product.slug} />
+        </div>
       </div>
       <div className="flex flex-1 flex-col gap-1 p-3">
         <p className="line-clamp-2 min-h-[2.5rem] text-sm text-slate-800">{product.name}</p>

@@ -10,7 +10,9 @@ import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
 import RatingStars from "@/components/RatingStars";
 import ReviewForm from "@/components/ReviewForm";
+import ReviewsSection from "@/components/ReviewsSection";
 import SellerCard from "@/components/SellerCard";
+import DeliveryEstimate from "@/components/DeliveryEstimate";
 import ProductTabs from "@/components/ProductTabs";
 import { toCardData } from "@/lib/catalog";
 import { availableStock } from "@voltech/core/marketplace/inventory";
@@ -61,7 +63,7 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
   }
   await db.product.update({ where: { id: product.id }, data: { viewCount: { increment: 1 } } }).catch(() => {});
 
-  const [wishlistItem, related, eligibleOrders, sellerProductCount] = await Promise.all([
+  const [wishlistItem, related, eligibleOrders, sellerProductCount, ratingGroups] = await Promise.all([
     session?.user ? db.wishlistItem.findUnique({ where: { userId_productId: { userId: session.user.id, productId: product.id } } }) : null,
     db.product.findMany({
       where: { categoryId: product.categoryId, status: "APPROVED", id: { not: product.id } },
@@ -70,7 +72,11 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
     }),
     session?.user ? getEligibleOrdersForReview(session.user.id, product.id) : Promise.resolve([]),
     db.product.count({ where: { sellerId: product.sellerId, status: "APPROVED" } }),
+    db.review.groupBy({ by: ["rating"], where: { productId: product.id, status: "PUBLISHED" }, _count: { rating: true } }),
   ]);
+
+  const distribution = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } as Record<1 | 2 | 3 | 4 | 5, number>;
+  for (const g of ratingGroups) distribution[g.rating as 1 | 2 | 3 | 4 | 5] = g._count.rating;
 
   const variantOptions = product.variants.map((v) => ({
     id: v.id,
@@ -108,7 +114,7 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Header />
-      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
+      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 pb-20 sm:px-6 md:pb-6">
         <nav className="mb-4 text-xs text-slate-500">
           <Link href="/" className="hover:text-brand-teal">Home</Link> /{" "}
           <Link href={`/categories/${product.category.slug}`} className="hover:text-brand-teal">{product.category.name}</Link> /{" "}
@@ -136,10 +142,13 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
               />
             </div>
 
-            {(product.warrantyInfo || product.shippingInfo) && (
-              <div className="mt-6 space-y-1 rounded-lg border border-[var(--border)] p-4 text-sm text-slate-600">
-                {product.shippingInfo && <p>🚚 {product.shippingInfo}</p>}
-                {product.warrantyInfo && <p>🛡️ {product.warrantyInfo}</p>}
+            <div className="mt-6">
+              <DeliveryEstimate />
+            </div>
+
+            {product.warrantyInfo && (
+              <div className="mt-4 rounded-lg border border-[var(--border)] p-4 text-sm text-slate-600">
+                🛡️ {product.warrantyInfo}
               </div>
             )}
           </div>
@@ -188,21 +197,22 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
                 id: "reviews",
                 label: `Reviews${product.ratingCount > 0 ? ` (${product.ratingCount})` : ""}`,
                 content: (
-                  <div className="grid gap-6 lg:grid-cols-2">
-                    <div className="space-y-4">
-                      {product.reviews.length === 0 && <p className="text-sm text-slate-500">No reviews yet.</p>}
-                      {product.reviews.map((r) => (
-                        <div key={r.id} className="border-b border-[var(--border)] pb-4">
-                          <div className="flex items-center gap-2">
-                            <RatingStars value={r.rating} />
-                            <span className="text-sm font-medium text-slate-800">{r.customer.fullName}</span>
-                            {r.verifiedPurchase && <span className="text-xs text-green-700">Verified purchase</span>}
-                          </div>
-                          {r.title && <p className="mt-1 font-medium text-slate-900">{r.title}</p>}
-                          {r.body && <p className="mt-1 text-sm text-slate-600">{r.body}</p>}
-                        </div>
-                      ))}
-                    </div>
+                  <div className="grid gap-8 lg:grid-cols-2">
+                    <ReviewsSection
+                      productId={product.id}
+                      initialReviews={product.reviews.map((r) => ({
+                        id: r.id,
+                        rating: r.rating,
+                        title: r.title,
+                        body: r.body,
+                        images: JSON.parse(r.imagesJson) as string[],
+                        verifiedPurchase: r.verifiedPurchase,
+                        createdAt: r.createdAt.toISOString(),
+                        customerName: r.customer.fullName,
+                      }))}
+                      distribution={distribution}
+                      ratingCount={product.ratingCount}
+                    />
                     <ReviewForm productId={product.id} productSlug={product.slug} orders={eligibleOrders.map((o) => ({ id: o.id, orderNumber: o.orderNumber }))} />
                   </div>
                 ),
