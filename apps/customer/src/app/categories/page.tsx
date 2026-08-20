@@ -21,7 +21,7 @@ export default async function CategoriesIndexPage() {
         <h1 className="mb-6 text-lg font-bold text-slate-900">All categories</h1>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((cat) => (
-            <div key={cat.id} className="rounded-lg border border-[var(--border)] p-4">
+            <div key={cat.id} className="rounded-xl border border-[var(--border)] bg-white p-4 shadow-xs transition-all hover:-translate-y-0.5 hover:shadow-sm">
               <Link href={`/categories/${cat.slug}`} className="flex items-center gap-3">
                 {cat.imageUrl ? (
                   <Image src={cat.imageUrl} alt={cat.name} width={40} height={40} className="h-10 w-10 rounded object-cover" />

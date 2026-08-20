@@ -14,12 +14,15 @@ export default function AccountMenu({
 
   return (
     <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-      <button type="button" onClick={() => setOpen((o) => !o)} className="hidden sm:inline hover:text-brand-teal">
+      <button type="button" onClick={() => setOpen((o) => !o)} className="hidden items-center gap-1.5 text-white/85 transition-colors hover:text-white sm:flex">
+        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-xs font-semibold">
+          {(userName.split(" ")[0] || "A").charAt(0).toUpperCase()}
+        </span>
         {userName.split(" ")[0] || "Account"}
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full z-50 w-56 rounded-md border border-[var(--border)] bg-white py-2 text-sm text-slate-800 shadow-xl">
+        <div className="absolute right-0 top-full z-50 w-56 overflow-hidden rounded-xl border border-[var(--border)] bg-white py-2 text-sm text-slate-800 shadow-xl">
           <div className="border-b border-[var(--border)] px-4 pb-2">
             <p className="font-medium text-slate-900">Hi, {userName.split(" ")[0] || "there"}</p>
           </div>

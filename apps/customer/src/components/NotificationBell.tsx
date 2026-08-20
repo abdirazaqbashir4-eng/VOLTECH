@@ -45,7 +45,7 @@ export default function NotificationBell({ items, unreadCount }: { items: Notifi
       {open && (
         <>
           <button aria-label="Close" className="fixed inset-0 z-40 cursor-default" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-full z-50 mt-2 w-80 max-w-[90vw] rounded-md border border-[var(--border)] bg-white text-slate-800 shadow-xl">
+          <div className="absolute right-0 top-full z-50 mt-2 w-80 max-w-[90vw] overflow-hidden rounded-xl border border-[var(--border)] bg-white text-slate-800 shadow-xl">
             <div className="flex items-center justify-between border-b border-[var(--border)] px-4 py-2.5">
               <p className="text-sm font-semibold">Notifications</p>
               {unreadCount > 0 && (

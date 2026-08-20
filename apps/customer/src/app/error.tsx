@@ -23,7 +23,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
         >
           Retry
         </button>
-        <Link href="/" className="rounded-md border border-[var(--border)] px-5 py-2.5 text-sm font-medium text-slate-700 hover:border-brand-teal">
+        <Link href="/" className="rounded-lg border border-[var(--border)] px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:border-brand-teal">
           Go home
         </Link>
       </div>

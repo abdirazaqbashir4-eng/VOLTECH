@@ -15,7 +15,7 @@ interface Props {
 
 export default function FilterSidebar({ brands, basePath, current }: Props) {
   return (
-    <form action={basePath} method="get" className="w-full shrink-0 space-y-6 text-sm lg:w-56">
+    <form action={basePath} method="get" className="w-full shrink-0 space-y-6 rounded-xl border border-[var(--border)] bg-white p-4 text-sm shadow-xs lg:w-56">
       {current.q && <input type="hidden" name="q" value={current.q} />}
       {current.sort && <input type="hidden" name="sort" value={current.sort} />}
 
@@ -27,7 +27,7 @@ export default function FilterSidebar({ brands, basePath, current }: Props) {
             name="minPrice"
             placeholder="Min"
             defaultValue={current.minPrice}
-            className="w-full rounded border border-[var(--border)] px-2 py-1"
+            className="w-full rounded-lg border border-[var(--border)] px-2.5 py-1.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15"
           />
           <span>-</span>
           <input
@@ -35,7 +35,7 @@ export default function FilterSidebar({ brands, basePath, current }: Props) {
             name="maxPrice"
             placeholder="Max"
             defaultValue={current.maxPrice}
-            className="w-full rounded border border-[var(--border)] px-2 py-1"
+            className="w-full rounded-lg border border-[var(--border)] px-2.5 py-1.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15"
           />
         </div>
       </div>
@@ -43,7 +43,7 @@ export default function FilterSidebar({ brands, basePath, current }: Props) {
       {brands.length > 0 && (
         <div>
           <h3 className="mb-2 font-semibold text-slate-900">Brand</h3>
-          <select name="brand" defaultValue={current.brand ?? ""} className="w-full rounded border border-[var(--border)] px-2 py-1.5">
+          <select name="brand" defaultValue={current.brand ?? ""} className="w-full rounded-lg border border-[var(--border)] px-2.5 py-1.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15">
             <option value="">All brands</option>
             {brands.map((b) => (
               <option key={b.slug} value={b.slug}>
@@ -56,7 +56,7 @@ export default function FilterSidebar({ brands, basePath, current }: Props) {
 
       <div>
         <h3 className="mb-2 font-semibold text-slate-900">Minimum rating</h3>
-        <select name="minRating" defaultValue={current.minRating ?? ""} className="w-full rounded border border-[var(--border)] px-2 py-1.5">
+        <select name="minRating" defaultValue={current.minRating ?? ""} className="w-full rounded-lg border border-[var(--border)] px-2.5 py-1.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15">
           <option value="">Any rating</option>
           <option value="4">4★ & up</option>
           <option value="3">3★ & up</option>

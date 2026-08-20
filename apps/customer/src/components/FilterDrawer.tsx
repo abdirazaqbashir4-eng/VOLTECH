@@ -10,7 +10,7 @@ export default function FilterDrawer({ children }: { children: React.ReactNode }
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="mb-4 flex w-full items-center justify-center gap-2 rounded-md border border-[var(--border)] py-2 text-sm font-medium text-slate-700"
+        className="mb-4 flex w-full items-center justify-center gap-2 rounded-lg border border-[var(--border)] bg-white py-2 text-sm font-medium text-slate-700 shadow-xs transition-colors"
       >
         <span aria-hidden>⚙</span> Filters
       </button>

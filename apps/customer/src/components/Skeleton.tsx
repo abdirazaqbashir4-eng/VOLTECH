@@ -1,11 +1,11 @@
 export function ProductCardSkeleton() {
   return (
-    <div className="flex flex-col overflow-hidden rounded-md border border-[var(--border)] bg-white">
-      <div className="aspect-square w-full animate-pulse bg-slate-200" />
-      <div className="flex flex-col gap-2 p-3">
-        <div className="h-3.5 w-full animate-pulse rounded bg-slate-200" />
-        <div className="h-3.5 w-2/3 animate-pulse rounded bg-slate-200" />
-        <div className="h-4 w-1/2 animate-pulse rounded bg-slate-200" />
+    <div className="flex flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-white">
+      <div className="aspect-square w-full animate-pulse bg-[var(--surface-2)]" />
+      <div className="flex flex-col gap-2 p-3.5">
+        <div className="h-3.5 w-full animate-pulse rounded bg-[var(--surface-2)]" />
+        <div className="h-3.5 w-2/3 animate-pulse rounded bg-[var(--surface-2)]" />
+        <div className="h-4 w-1/2 animate-pulse rounded bg-[var(--surface-2)]" />
       </div>
     </div>
   );

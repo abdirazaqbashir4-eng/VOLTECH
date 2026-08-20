@@ -70,7 +70,7 @@ export default async function StorePage({ params, searchParams }: PageProps<"/st
     <>
       <Header />
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
-        <div className="overflow-hidden rounded-lg border border-[var(--border)]">
+        <div className="overflow-hidden rounded-xl border border-[var(--border)] shadow-xs">
           <div className="h-28 bg-gradient-to-r from-[var(--brand-ink)] to-slate-700 sm:h-36">
             {seller.bannerUrl && (
               <Image src={seller.bannerUrl} alt="" fill={false} width={1200} height={200} className="h-full w-full object-cover" />
