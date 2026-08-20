@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signInWithCustomToken } from "firebase/auth";
 import { firebaseAuth } from "@/lib/firebaseClient";
@@ -9,7 +8,6 @@ import { establishSession, friendlyAuthError } from "@/lib/authClient";
 import { registerAction } from "@/app/actions/auth";
 
 export default function RegisterForm({ callbackUrl }: { callbackUrl: string }) {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -27,8 +25,11 @@ export default function RegisterForm({ callbackUrl }: { callbackUrl: string }) {
       try {
         const credential = await signInWithCustomToken(firebaseAuth, result.customToken);
         await establishSession(credential.user);
-        router.push(callbackUrl);
-        router.refresh();
+        // A full navigation, not router.push: the target route may have
+        // been prefetched while signed out (e.g. a nav link to /account),
+        // and the client Router Cache would replay that stale redirect-to-
+        // login instead of re-running proxy with the new session cookie.
+        window.location.assign(callbackUrl);
       } catch (err) {
         setError(friendlyAuthError(err));
       }

@@ -1,13 +1,11 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { firebaseAuth } from "@/lib/firebaseClient";
 import { establishSession, friendlyAuthError } from "@/lib/authClient";
 
 export default function LoginForm() {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -22,8 +20,11 @@ export default function LoginForm() {
       try {
         const credential = await signInWithEmailAndPassword(firebaseAuth, email, password);
         await establishSession(credential.user);
-        router.push("/dashboard");
-        router.refresh();
+        // Full navigation, not router.push: /dashboard may have been
+        // prefetched while signed out and the client Router Cache would
+        // replay that stale redirect-to-login instead of re-running proxy
+        // with the new session cookie.
+        window.location.assign("/dashboard");
       } catch (err) {
         setError(friendlyAuthError(err));
       }
