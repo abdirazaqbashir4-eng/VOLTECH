@@ -103,7 +103,7 @@ export default function QuickViewModal({ slug, onClose }: { slug: string; onClos
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       <button aria-label="Close" className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white shadow-2xl">
+      <div className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl">
         <button type="button" aria-label="Close" onClick={onClose} className="absolute right-3 top-3 z-10 text-xl text-slate-400 hover:text-slate-700">
           ✕
         </button>
@@ -119,7 +119,7 @@ export default function QuickViewModal({ slug, onClose }: { slug: string; onClos
           </div>
         ) : (
           <div className="grid gap-6 p-6 sm:grid-cols-2">
-            <div className="relative aspect-square w-full overflow-hidden rounded bg-slate-100">
+            <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[var(--surface)]">
               {data.images[0] && <Image src={data.images[0]} alt={data.name} fill sizes="(max-width: 640px) 90vw, 400px" className="object-cover" />}
             </div>
             <div>
@@ -131,7 +131,7 @@ export default function QuickViewModal({ slug, onClose }: { slug: string; onClos
 
               {currentVariant && (
                 <div className="mt-3 flex items-baseline gap-3">
-                  <span className="text-xl font-bold text-slate-900">{formatKES(currentVariant.price)}</span>
+                  <span className="font-display text-xl font-bold text-slate-900">{formatKES(currentVariant.price)}</span>
                   {currentVariant.compareAtPrice && currentVariant.compareAtPrice > currentVariant.price && (
                     <span className="text-slate-400 line-through">{formatKES(currentVariant.compareAtPrice)}</span>
                   )}
@@ -147,7 +147,7 @@ export default function QuickViewModal({ slug, onClose }: { slug: string; onClos
                         key={val}
                         type="button"
                         onClick={() => setSelected((s) => ({ ...s, [key]: val }))}
-                        className={`rounded-md border px-2.5 py-1 text-xs ${
+                        className={`rounded-lg border px-2.5 py-1 text-xs transition-colors ${
                           selected[key] === val ? "border-brand-teal bg-brand-teal/10 text-brand-teal-dark" : "border-[var(--border)] text-slate-700"
                         }`}
                       >

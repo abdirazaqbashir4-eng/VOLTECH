@@ -7,7 +7,7 @@ export default function PayoutRequestForm({ availableBalance }: { availableBalan
   const [state, formAction, isPending] = useActionState(requestPayoutAction, { error: null as string | null });
 
   return (
-    <form action={formAction} className="flex flex-wrap items-end gap-3 rounded-lg border border-[var(--border)] bg-white p-4">
+    <form action={formAction} className="flex flex-wrap items-end gap-3 rounded-lg border border-[var(--border)] bg-white p-4 shadow-xs">
       <div>
         <label className="mb-1 block text-xs text-slate-500">Amount (KES) — available: {availableBalance.toLocaleString()}</label>
         <input name="amount" type="number" step="0.01" max={availableBalance} required className="rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm" />

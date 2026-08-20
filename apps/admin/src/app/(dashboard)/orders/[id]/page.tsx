@@ -30,7 +30,7 @@ export default async function AdminOrderDetailPage({ params }: PageProps<"/order
 
       <div className="space-y-4">
         {order.sellerOrders.map((so) => (
-          <div key={so.id} className="rounded-lg border border-[var(--border)] bg-white p-4 text-sm">
+          <div key={so.id} className="rounded-lg border border-[var(--border)] bg-white p-4 text-sm shadow-xs">
             <div className="flex items-center justify-between">
               <p className="font-medium text-slate-900">{so.seller.storeName}</p>
               <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">{so.status}</span>
@@ -48,7 +48,7 @@ export default async function AdminOrderDetailPage({ params }: PageProps<"/order
         ))}
       </div>
 
-      <div className="mt-4 rounded-lg border border-[var(--border)] bg-white p-4 text-sm">
+      <div className="mt-4 rounded-lg border border-[var(--border)] bg-white p-4 text-sm shadow-xs">
         <p>Payment: {order.payment?.provider} — {order.payment?.status}</p>
         <p>Total: {formatKES(order.grandTotal)}</p>
         <p className="mt-2 text-slate-600">Delivery: {order.address.recipientName}, {order.address.street}, {order.address.city}, {order.address.county}</p>

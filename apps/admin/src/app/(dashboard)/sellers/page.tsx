@@ -30,7 +30,7 @@ export default async function SellersPage() {
           </thead>
           <tbody>
             {sellers.map((s) => (
-              <tr key={s.id} className="border-b border-[var(--border)] last:border-0">
+              <tr key={s.id} className="border-b border-[var(--border)] transition-colors last:border-0 hover:bg-[var(--surface)]">
                 <td className="px-4 py-3">
                   <Link href={`/sellers/${s.id}`} className="font-medium text-slate-900 hover:text-brand-teal">
                     {s.storeName}

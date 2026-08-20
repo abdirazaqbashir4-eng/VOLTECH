@@ -17,7 +17,7 @@ export default async function SellerApplicationsPage() {
           <Link
             key={a.id}
             href={`/sellers/applications/${a.id}`}
-            className="block rounded-lg border border-[var(--border)] bg-white p-4 hover:border-brand-teal"
+            className="block rounded-lg border border-[var(--border)] bg-white p-4 shadow-xs transition-all hover:-translate-y-0.5 hover:border-brand-teal hover:shadow-sm"
           >
             <div className="flex items-center justify-between">
               <div>

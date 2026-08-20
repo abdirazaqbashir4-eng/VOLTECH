@@ -121,7 +121,7 @@ export default async function SellerAnalyticsPage({ searchParams }: PageProps<"/
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-[var(--border)] bg-white p-4">
+    <div className="rounded-lg border border-[var(--border)] bg-white p-4 shadow-xs">
       <p className="font-display text-2xl font-bold text-slate-900">{value}</p>
       <p className="text-sm text-slate-500">{label}</p>
     </div>

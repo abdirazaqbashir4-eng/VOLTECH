@@ -26,7 +26,7 @@ export default async function AdminPromotionsPage() {
           <h2 className="mb-2 font-semibold text-slate-900">Active &amp; scheduled</h2>
           <div className="space-y-3">
             {promotions.map((p) => (
-              <div key={p.id} className="rounded-lg border border-[var(--border)] bg-white p-4 text-sm">
+              <div key={p.id} className="rounded-lg border border-[var(--border)] bg-white p-4 text-sm shadow-xs">
                 <div className="flex items-center justify-between">
                   <p className="font-medium text-slate-900">{p.name}</p>
                   <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">{p.status}</span>

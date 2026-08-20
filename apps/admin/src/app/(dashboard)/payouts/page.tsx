@@ -27,7 +27,7 @@ export default async function AdminPayoutsPage() {
           </thead>
           <tbody>
             {payouts.map((p) => (
-              <tr key={p.id} className="border-b border-[var(--border)] last:border-0">
+              <tr key={p.id} className="border-b border-[var(--border)] transition-colors last:border-0 hover:bg-[var(--surface)]">
                 <td className="px-4 py-2">{p.payoutReference}</td>
                 <td className="px-4 py-2">{p.seller.storeName}</td>
                 <td className="px-4 py-2">{formatKES(p.amount)}</td>

@@ -33,7 +33,7 @@ export default function ReviewForm({ productId, productSlug, orders }: { product
     >
       <p className="font-medium text-slate-900">Write a review</p>
       {orders.length > 1 && (
-        <select value={orderId} onChange={(e) => setOrderId(e.target.value)} className="w-full rounded border border-[var(--border)] px-2 py-1.5 text-sm">
+        <select value={orderId} onChange={(e) => setOrderId(e.target.value)} className="w-full rounded-lg border border-[var(--border)] px-3 py-2 text-sm outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15">
           {orders.map((o) => (
             <option key={o.id} value={o.id}>
               Order {o.orderNumber}
@@ -52,14 +52,14 @@ export default function ReviewForm({ productId, productSlug, orders }: { product
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Title (optional)"
-        className="w-full rounded border border-[var(--border)] px-2 py-1.5 text-sm"
+        className="w-full rounded-lg border border-[var(--border)] px-3 py-2 text-sm outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15"
       />
       <textarea
         value={body}
         onChange={(e) => setBody(e.target.value)}
         placeholder="Share your experience with this product"
         rows={3}
-        className="w-full rounded border border-[var(--border)] px-2 py-1.5 text-sm"
+        className="w-full rounded-lg border border-[var(--border)] px-3 py-2 text-sm outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15"
       />
       {message && <p className="text-sm text-red-600">{message}</p>}
       <button type="submit" disabled={isPending} className="rounded-lg bg-brand-teal shadow-sm transition-colors px-4 py-2 text-sm font-medium text-white hover:bg-brand-teal-dark">

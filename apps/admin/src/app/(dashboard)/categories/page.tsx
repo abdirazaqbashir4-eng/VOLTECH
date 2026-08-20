@@ -31,7 +31,7 @@ export default async function CategoriesPage() {
               </thead>
               <tbody>
                 {categories.map((c) => (
-                  <tr key={c.id} className="border-b border-[var(--border)] last:border-0">
+                  <tr key={c.id} className="border-b border-[var(--border)] transition-colors last:border-0 hover:bg-[var(--surface)]">
                     <td className="px-4 py-2 font-medium text-slate-900">{c.name}</td>
                     <td className="px-4 py-2 text-slate-500">{c.parent?.name ?? "—"}</td>
                     <td className="px-4 py-2">{c._count.products}</td>

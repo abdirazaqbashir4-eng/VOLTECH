@@ -17,7 +17,7 @@ export default function VariantRow({
   const optionsLabel = Object.entries(variant.options).map(([k, v]) => `${k}: ${v}`).join(", ") || "Default";
 
   return (
-    <tr className="border-b border-[var(--border)] last:border-0">
+    <tr className="border-b border-[var(--border)] transition-colors last:border-0 hover:bg-[var(--surface)]">
       <td className="px-4 py-2 text-sm">
         <p className="font-medium text-slate-900">{optionsLabel}</p>
         <p className="text-xs text-slate-500">{variant.sku}</p>

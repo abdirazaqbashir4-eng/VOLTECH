@@ -19,7 +19,7 @@ export default function ApplicationDecisionForm({ applicationId }: { application
   }
 
   return (
-    <div className="space-y-3 rounded-lg border border-[var(--border)] bg-white p-4">
+    <div className="space-y-3 rounded-lg border border-[var(--border)] bg-white p-4 shadow-xs">
       <textarea
         value={notes}
         onChange={(e) => setNotes(e.target.value)}

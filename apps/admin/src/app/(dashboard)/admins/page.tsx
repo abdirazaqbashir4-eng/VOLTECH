@@ -26,7 +26,7 @@ export default async function AdminsPage() {
             </thead>
             <tbody>
               {admins.map((a) => (
-                <tr key={a.id} className="border-b border-[var(--border)] last:border-0">
+                <tr key={a.id} className="border-b border-[var(--border)] transition-colors last:border-0 hover:bg-[var(--surface)]">
                   <td className="px-4 py-2">
                     <p className="font-medium text-slate-900">{a.fullName}</p>
                     <p className="text-xs text-slate-500">{a.email}</p>

@@ -25,7 +25,7 @@ export default async function SellerNotificationsPage() {
       ) : (
         <div className="space-y-2">
           {notifications.map((n) => (
-            <div key={n.id} className="rounded-lg border border-[var(--border)] bg-white p-3 text-sm">
+            <div key={n.id} className="rounded-lg border border-[var(--border)] bg-white p-3 text-sm shadow-xs">
               <p className="font-medium text-slate-900">{n.title}</p>
               <p className="text-slate-600">{n.body}</p>
               <p className="mt-1 text-xs text-slate-400">{new Date(n.createdAt).toLocaleString()}</p>

@@ -63,7 +63,7 @@ export default async function AccountOverviewPage() {
               <Link
                 key={o.id}
                 href={`/account/orders/${o.id}`}
-                className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-white p-3 text-sm transition-colors hover:border-brand-teal"
+                className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-white p-3 text-sm shadow-xs transition-colors hover:border-brand-teal"
               >
                 <span className="font-medium text-slate-900">{o.orderNumber}</span>
                 <span className="text-slate-500">{formatKES(o.grandTotal)}</span>

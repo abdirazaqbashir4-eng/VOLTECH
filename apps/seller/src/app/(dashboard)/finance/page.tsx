@@ -40,7 +40,7 @@ export default async function FinancePage() {
           </thead>
           <tbody>
             {entries.map((e) => (
-              <tr key={e.id} className="border-b border-[var(--border)] last:border-0">
+              <tr key={e.id} className="border-b border-[var(--border)] transition-colors last:border-0 hover:bg-[var(--surface)]">
                 <td className="px-4 py-2 text-slate-500">{new Date(e.createdAt).toLocaleDateString()}</td>
                 <td className="px-4 py-2">{e.type}</td>
                 <td className="px-4 py-2 text-slate-600">{e.description}</td>

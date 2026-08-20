@@ -77,7 +77,7 @@ export default function CompareTable() {
                   Remove ✕
                 </button>
                 <Link href={`/products/${p.slug}`} className="block">
-                  <div className="relative aspect-square w-full overflow-hidden rounded bg-slate-100">
+                  <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-[var(--surface)]">
                     {p.imageUrl && <Image src={p.imageUrl} alt={p.name} fill sizes="200px" className="object-cover" />}
                   </div>
                   <p className="mt-2 line-clamp-2 font-medium text-slate-900">{p.name}</p>

@@ -32,7 +32,7 @@ export default async function CommissionsPage() {
               </thead>
               <tbody>
                 {rules.map((r) => (
-                  <tr key={r.id} className="border-b border-[var(--border)] last:border-0">
+                  <tr key={r.id} className="border-b border-[var(--border)] transition-colors last:border-0 hover:bg-[var(--surface)]">
                     <td className="px-4 py-2">{r.scope}</td>
                     <td className="px-4 py-2">{r.category?.name ?? r.seller?.storeName ?? "Platform-wide"}</td>
                     <td className="px-4 py-2 font-medium">{r.percentage}%</td>

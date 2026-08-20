@@ -20,7 +20,7 @@ export default function OrderStatusControl({ sellerOrderId, status }: { sellerOr
   return (
     <div className="mt-4 flex flex-wrap items-center gap-2">
       {next === "SHIPPED" && (
-        <input value={tracking} onChange={(e) => setTracking(e.target.value)} placeholder="Tracking number (optional)" className="rounded border border-[var(--border)] px-2 py-1.5 text-sm" />
+        <input value={tracking} onChange={(e) => setTracking(e.target.value)} placeholder="Tracking number (optional)" className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15" />
       )}
       <button
         disabled={isPending}

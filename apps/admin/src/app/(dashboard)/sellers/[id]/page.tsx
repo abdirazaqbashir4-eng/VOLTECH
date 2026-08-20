@@ -44,8 +44,8 @@ export default async function AdminSellerDetailPage({ params }: PageProps<"/sell
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-[var(--border)] bg-white p-4">
-      <p className="text-lg font-bold text-slate-900">{value}</p>
+    <div className="rounded-lg border border-[var(--border)] bg-white p-4 shadow-xs">
+      <p className="font-display text-lg font-bold text-slate-900">{value}</p>
       <p className="text-xs text-slate-500">{label}</p>
     </div>
   );

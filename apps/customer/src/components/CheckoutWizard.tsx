@@ -127,7 +127,7 @@ export default function CheckoutWizard({
           <div className="space-y-4">
             <h2 className="font-semibold text-slate-900">Delivery address</h2>
             {addresses.map((a) => (
-              <label key={a.id} className={`block cursor-pointer rounded-lg border p-4 text-sm ${selectedAddressId === a.id ? "border-brand-teal bg-brand-teal/5" : "border-[var(--border)]"}`}>
+              <label key={a.id} className={`block cursor-pointer rounded-lg border p-4 text-sm transition-colors ${selectedAddressId === a.id ? "border-brand-teal bg-brand-teal/5" : "border-[var(--border)]"}`}>
                 <input type="radio" name="address" className="mr-2" checked={selectedAddressId === a.id} onChange={() => setSelectedAddressId(a.id)} />
                 <span className="font-medium">{a.label}</span> — {a.recipientName}, {a.phone}
                 <br />
@@ -166,7 +166,7 @@ export default function CheckoutWizard({
           <div className="space-y-4">
             <h2 className="font-semibold text-slate-900">Delivery method</h2>
             {shippingMethods.map((m) => (
-              <label key={m.id} className={`block cursor-pointer rounded-lg border p-4 text-sm ${selectedShippingId === m.id ? "border-brand-teal bg-brand-teal/5" : "border-[var(--border)]"}`}>
+              <label key={m.id} className={`block cursor-pointer rounded-lg border p-4 text-sm transition-colors ${selectedShippingId === m.id ? "border-brand-teal bg-brand-teal/5" : "border-[var(--border)]"}`}>
                 <input type="radio" name="shipping" className="mr-2" checked={selectedShippingId === m.id} onChange={() => setSelectedShippingId(m.id)} />
                 <span className="font-medium">{m.name}</span> — {formatKES(m.fee)} per seller
                 <br />
@@ -188,7 +188,7 @@ export default function CheckoutWizard({
           <div className="space-y-4">
             <h2 className="font-semibold text-slate-900">Payment method</h2>
             {paymentOptions.map((p) => (
-              <label key={p.provider} className={`block cursor-pointer rounded-lg border p-4 text-sm ${paymentProvider === p.provider ? "border-brand-teal bg-brand-teal/5" : "border-[var(--border)]"}`}>
+              <label key={p.provider} className={`block cursor-pointer rounded-lg border p-4 text-sm transition-colors ${paymentProvider === p.provider ? "border-brand-teal bg-brand-teal/5" : "border-[var(--border)]"}`}>
                 <input type="radio" name="payment" className="mr-2" checked={paymentProvider === p.provider} onChange={() => setPaymentProvider(p.provider)} />
                 {p.label}
               </label>
@@ -296,24 +296,24 @@ function NewAddressForm({ onCancel, onSaved }: { onCancel: () => void; onSaved: 
       }}
     >
       <div className="grid gap-3 sm:grid-cols-2">
-        <input name="recipientName" placeholder="Recipient name" required className="rounded border border-[var(--border)] px-2 py-1.5 text-sm" />
-        <input name="phone" placeholder="Phone" required className="rounded border border-[var(--border)] px-2 py-1.5 text-sm" />
-        <select name="county" required className="rounded border border-[var(--border)] px-2 py-1.5 text-sm">
+        <input name="recipientName" placeholder="Recipient name" required className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15" />
+        <input name="phone" placeholder="Phone" required className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15" />
+        <select name="county" required className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15">
           {KENYA_COUNTIES.map((c) => (
             <option key={c} value={c}>
               {c}
             </option>
           ))}
         </select>
-        <input name="city" placeholder="City / Town" required className="rounded border border-[var(--border)] px-2 py-1.5 text-sm" />
-        <input name="street" placeholder="Street / Estate" required className="rounded border border-[var(--border)] px-2 py-1.5 text-sm sm:col-span-2" />
+        <input name="city" placeholder="City / Town" required className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15" />
+        <input name="street" placeholder="Street / Estate" required className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 sm:col-span-2" />
       </div>
       {error && <p className="text-sm text-red-600">{error}</p>}
       <div className="flex gap-2">
         <button type="submit" disabled={isPending} className="rounded-lg bg-brand-teal shadow-sm transition-colors px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-teal-dark">
           Save address
         </button>
-        <button type="button" onClick={onCancel} className="rounded-md border border-[var(--border)] px-4 py-1.5 text-sm text-slate-700">
+        <button type="button" onClick={onCancel} className="rounded-lg border border-[var(--border)] px-4 py-1.5 text-sm text-slate-700 transition-colors hover:bg-[var(--surface)]">
           Cancel
         </button>
       </div>
