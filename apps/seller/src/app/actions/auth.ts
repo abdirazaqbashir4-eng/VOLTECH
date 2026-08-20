@@ -29,9 +29,7 @@ export async function registerAction(_prevState: unknown, formData: FormData) {
       return { error: "An account with this email already exists.", customToken: null };
     }
     console.error("createFirebaseUser failed:", err);
-    // TEMPORARY: surfacing the real error message client-side to diagnose a
-    // live deploy issue where this always fails — remove once root-caused.
-    return { error: `DEBUG: ${(err as Error).message ?? String(err)}`, customToken: null };
+    return { error: "Could not create your account right now. Please try again shortly.", customToken: null };
   }
 
   try {
