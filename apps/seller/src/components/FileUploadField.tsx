@@ -54,10 +54,10 @@ export default function FileUploadField({
   return (
     <div>
       {value ? (
-        <div className="flex items-center gap-3 rounded-md border border-[var(--border)] p-2">
+        <div className="flex items-center gap-3 rounded-lg border border-[var(--border)] bg-[var(--success-light)] p-2.5">
           {accept.startsWith("image") ? (
             // eslint-disable-next-line @next/next/no-img-element -- arbitrary Storage download URLs, not part of the Next Image optimization pipeline
-            <img src={value} alt="" className="h-12 w-12 rounded object-cover" />
+            <img src={value} alt="" className="h-12 w-12 rounded-md object-cover" />
           ) : (
             <a href={value} target="_blank" rel="noreferrer" className="text-sm text-brand-teal hover:underline">
               View uploaded file
@@ -83,10 +83,16 @@ export default function FileUploadField({
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={progress !== null}
-            className="w-full rounded-md border border-dashed border-[var(--border)] py-2 text-sm text-slate-600 hover:border-brand-teal hover:text-brand-teal disabled:opacity-50"
+            className="w-full rounded-lg border border-dashed border-[var(--border-strong)] py-3 text-sm text-slate-600 transition-colors hover:border-brand-teal hover:bg-brand-teal/5 hover:text-brand-teal disabled:opacity-50"
           >
+            <span aria-hidden className="mr-1.5">📎</span>
             {progress !== null ? `Uploading... ${progress}%` : label}
           </button>
+          {progress !== null && (
+            <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[var(--surface-2)]">
+              <div className="h-full rounded-full bg-brand-teal transition-all" style={{ width: `${progress}%` }} />
+            </div>
+          )}
         </div>
       )}
       {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
