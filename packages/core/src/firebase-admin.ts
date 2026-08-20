@@ -28,14 +28,47 @@ function getFirebaseApp(): App {
       credential: cert({
         projectId,
         clientEmail,
-        // Render (and most platforms) can't store a literal newline in an
-        // env var — the key is set with escaped "\n" sequences and unescaped
-        // here.
-        privateKey: privateKey.replace(/\\n/g, "\n"),
+        privateKey: normalizePrivateKey(privateKey),
       }),
     });
   globalForFirebase.voltechFirebaseApp = app;
   return app;
+}
+
+/**
+ * Render (and most platforms) can't store a literal newline in an env var,
+ * so the service-account private key is pasted with escaped "\n" sequences
+ * and needs unescaping — but dashboard paste boxes also commonly introduce
+ * a few other artifacts: wrapping quotes copied along with the JSON string
+ * value, Windows-style \r\n, or stray leading/trailing whitespace. Handle
+ * all of those, then fail loudly with a specific (non-secret-leaking)
+ * message if the result still isn't a well-formed PEM block, rather than
+ * letting node's crypto layer fail deep inside with an opaque OpenSSL
+ * "DECODER routines::unsupported" error.
+ */
+function normalizePrivateKey(raw: string): string {
+  let key = raw.trim();
+
+  // Strip a single layer of wrapping quotes, if the whole value is quoted
+  // (happens when someone copies `"private_key": "...”` including the
+  // quote characters rather than just the string's contents).
+  if ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'"))) {
+    key = key.slice(1, -1);
+  }
+
+  key = key.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n").replace(/\r\n/g, "\n").trim();
+
+  const beginMarker = "-----BEGIN PRIVATE KEY-----";
+  const endMarker = "-----END PRIVATE KEY-----";
+  if (!key.includes(beginMarker) || !key.includes(endMarker)) {
+    throw new Error(
+      `FIREBASE_PRIVATE_KEY doesn't look like a complete PEM key (missing ${
+        !key.includes(beginMarker) ? "the BEGIN marker" : "the END marker"
+      }) — re-paste the full "private_key" value from the service account JSON, including both marker lines.`,
+    );
+  }
+
+  return key;
 }
 
 export interface AppClaims {

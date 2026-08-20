@@ -15,11 +15,28 @@ const db = new PrismaClient({ adapter });
 if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PRIVATE_KEY) {
   throw new Error("FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL and FIREBASE_PRIVATE_KEY must be set to seed demo accounts.");
 }
+
+// Same normalization as packages/core/src/firebase-admin.ts (duplicated,
+// not imported, for the circular-dependency reason above) — handles
+// escaped "\n", wrapping quotes, and \r\n, and fails loudly if the result
+// still isn't a complete PEM block instead of a cryptic OpenSSL error.
+function normalizePrivateKey(raw: string): string {
+  let key = raw.trim();
+  if ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'"))) {
+    key = key.slice(1, -1);
+  }
+  key = key.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n").replace(/\r\n/g, "\n").trim();
+  if (!key.includes("-----BEGIN PRIVATE KEY-----") || !key.includes("-----END PRIVATE KEY-----")) {
+    throw new Error("FIREBASE_PRIVATE_KEY doesn't look like a complete PEM key — re-paste the full private_key value from the service account JSON.");
+  }
+  return key;
+}
+
 const firebaseApp = initializeApp({
   credential: cert({
     projectId: process.env.FIREBASE_PROJECT_ID,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+    privateKey: normalizePrivateKey(process.env.FIREBASE_PRIVATE_KEY),
   }),
 });
 const firebaseAuth = getAuth(firebaseApp);
