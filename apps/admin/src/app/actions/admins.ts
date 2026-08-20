@@ -21,7 +21,8 @@ export async function createAdminAction(_prevState: unknown, formData: FormData)
   let firebaseUser;
   try {
     firebaseUser = await createFirebaseUser({ email, password, displayName: fullName });
-  } catch {
+  } catch (err) {
+    if ((err as { code?: string }).code !== "auth/email-already-exists") console.error("createFirebaseUser failed:", err);
     return { error: "A user with this email already exists." };
   }
 

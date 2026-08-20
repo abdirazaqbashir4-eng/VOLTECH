@@ -21,8 +21,16 @@ export async function registerAction(_prevState: unknown, formData: FormData) {
   let firebaseUser;
   try {
     firebaseUser = await createFirebaseUser({ email, password, displayName: fullName });
-  } catch {
-    return { error: "An account with this email already exists.", customToken: null };
+  } catch (err) {
+    if ((err as { code?: string }).code === "auth/email-already-exists") {
+      return { error: "An account with this email already exists.", customToken: null };
+    }
+    // Any other failure (bad Admin SDK credentials, network, etc.) — log the
+    // real cause server-side instead of misreporting it as a duplicate email.
+    console.error("createFirebaseUser failed:", err);
+    // TEMPORARY: surfacing the real error message client-side to diagnose a
+    // live deploy issue where this always fails — remove once root-caused.
+    return { error: `DEBUG: ${(err as Error).message ?? String(err)}`, customToken: null };
   }
 
   try {
