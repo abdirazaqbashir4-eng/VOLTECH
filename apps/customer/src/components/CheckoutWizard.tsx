@@ -155,7 +155,7 @@ export default function CheckoutWizard({
               type="button"
               disabled={isPending}
               onClick={goToDelivery}
-              className="rounded-md bg-brand-teal px-5 py-2.5 font-semibold text-white hover:bg-brand-teal-dark disabled:opacity-50"
+              className="rounded-lg bg-brand-teal shadow-sm transition-colors px-5 py-2.5 font-semibold text-white hover:bg-brand-teal-dark disabled:opacity-50"
             >
               Continue to delivery
             </button>
@@ -177,7 +177,7 @@ export default function CheckoutWizard({
               <button type="button" onClick={() => setStep("address")} className="rounded-md border border-[var(--border)] px-5 py-2.5 text-slate-700">
                 Back
               </button>
-              <button type="button" onClick={() => setStep("payment")} className="rounded-md bg-brand-teal px-5 py-2.5 font-semibold text-white hover:bg-brand-teal-dark">
+              <button type="button" onClick={() => setStep("payment")} className="rounded-lg bg-brand-teal shadow-sm transition-colors px-5 py-2.5 font-semibold text-white hover:bg-brand-teal-dark">
                 Continue to payment
               </button>
             </div>
@@ -202,7 +202,7 @@ export default function CheckoutWizard({
               <button type="button" onClick={() => setStep("delivery")} className="rounded-md border border-[var(--border)] px-5 py-2.5 text-slate-700">
                 Back
               </button>
-              <button type="button" onClick={() => setStep("review")} className="rounded-md bg-brand-teal px-5 py-2.5 font-semibold text-white hover:bg-brand-teal-dark">
+              <button type="button" onClick={() => setStep("review")} className="rounded-lg bg-brand-teal shadow-sm transition-colors px-5 py-2.5 font-semibold text-white hover:bg-brand-teal-dark">
                 Review order
               </button>
             </div>
@@ -228,7 +228,7 @@ export default function CheckoutWizard({
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                 placeholder="e.g. WELCOME10"
-                className="w-full max-w-xs rounded-md border border-[var(--border)] px-3 py-2 text-sm uppercase"
+                className="w-full max-w-xs rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm uppercase"
               />
             </div>
             {error && <p className="text-sm text-red-600">{error}</p>}
@@ -310,7 +310,7 @@ function NewAddressForm({ onCancel, onSaved }: { onCancel: () => void; onSaved: 
       </div>
       {error && <p className="text-sm text-red-600">{error}</p>}
       <div className="flex gap-2">
-        <button type="submit" disabled={isPending} className="rounded-md bg-brand-teal px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-teal-dark">
+        <button type="submit" disabled={isPending} className="rounded-lg bg-brand-teal shadow-sm transition-colors px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-teal-dark">
           Save address
         </button>
         <button type="button" onClick={onCancel} className="rounded-md border border-[var(--border)] px-4 py-1.5 text-sm text-slate-700">

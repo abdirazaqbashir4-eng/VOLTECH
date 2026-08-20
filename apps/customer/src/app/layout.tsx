@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import MobileBottomNavClient from "@/components/MobileBottomNavClient";
 import CompareBar from "@/components/CompareBar";
 import QuickViewProvider from "@/contexts/QuickViewContext";
+
+const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
+const display = Space_Grotesk({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-display", display: "swap" });
 
 // Every page here reads the session (via Header/account/proxy) and live
 // marketplace data (stock, pricing, promotions) — none of it should be
@@ -20,7 +24,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="en" className={`h-full antialiased ${sans.variable} ${display.variable}`}>
       <body className="min-h-full flex flex-col bg-white text-[var(--foreground)] pb-14 md:pb-0">
         <QuickViewProvider>
           {children}

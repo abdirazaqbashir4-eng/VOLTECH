@@ -15,7 +15,7 @@ export default function PriceDisplay({
 
   return (
     <div className="flex flex-wrap items-baseline gap-2">
-      <span className={`font-bold text-slate-900 ${priceClass}`}>{formatKES(price)}</span>
+      <span className={`font-display font-bold text-slate-900 ${priceClass}`}>{formatKES(price)}</span>
       {hasDiscount && <span className={`text-slate-400 line-through ${compareClass}`}>{formatKES(compareAtPrice)}</span>}
     </div>
   );

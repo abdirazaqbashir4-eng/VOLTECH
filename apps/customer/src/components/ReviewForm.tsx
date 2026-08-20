@@ -62,7 +62,7 @@ export default function ReviewForm({ productId, productSlug, orders }: { product
         className="w-full rounded border border-[var(--border)] px-2 py-1.5 text-sm"
       />
       {message && <p className="text-sm text-red-600">{message}</p>}
-      <button type="submit" disabled={isPending} className="rounded-md bg-brand-teal px-4 py-2 text-sm font-medium text-white hover:bg-brand-teal-dark">
+      <button type="submit" disabled={isPending} className="rounded-lg bg-brand-teal shadow-sm transition-colors px-4 py-2 text-sm font-medium text-white hover:bg-brand-teal-dark">
         {isPending ? "Posting..." : "Post review"}
       </button>
     </form>

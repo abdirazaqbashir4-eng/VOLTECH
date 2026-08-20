@@ -40,23 +40,23 @@ export default function RegisterForm({ callbackUrl }: { callbackUrl: string }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label className="mb-1 block text-sm font-medium text-slate-700">Full name</label>
-        <input name="fullName" required className="w-full rounded-md border border-[var(--border)] px-3 py-2" />
+        <input name="fullName" required className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15" />
       </div>
       <div>
         <label className="mb-1 block text-sm font-medium text-slate-700">Email</label>
-        <input name="email" type="email" required className="w-full rounded-md border border-[var(--border)] px-3 py-2" />
+        <input name="email" type="email" required className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15" />
       </div>
       <div>
         <label className="mb-1 block text-sm font-medium text-slate-700">Phone (optional)</label>
-        <input name="phone" type="tel" className="w-full rounded-md border border-[var(--border)] px-3 py-2" />
+        <input name="phone" type="tel" className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15" />
       </div>
       <div>
         <label className="mb-1 block text-sm font-medium text-slate-700">Password</label>
-        <input name="password" type="password" required minLength={8} className="w-full rounded-md border border-[var(--border)] px-3 py-2" />
+        <input name="password" type="password" required minLength={8} className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15" />
         <p className="mt-1 text-xs text-slate-500">At least 8 characters.</p>
       </div>
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      <button type="submit" disabled={isPending} className="w-full rounded-md bg-brand-teal py-2.5 font-semibold text-white hover:bg-brand-teal-dark disabled:opacity-50">
+      {error && <p className="rounded-lg bg-[var(--danger-light)] px-3 py-2 text-sm text-[var(--danger-dark)]">{error}</p>}
+      <button type="submit" disabled={isPending} className="w-full rounded-lg bg-brand-teal py-2.5 font-semibold text-white shadow-sm transition-colors hover:bg-brand-teal-dark disabled:cursor-not-allowed disabled:opacity-50">
         {isPending ? "Creating account..." : "Create account"}
       </button>
       <p className="text-center text-sm text-slate-500">

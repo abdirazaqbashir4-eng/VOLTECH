@@ -25,14 +25,14 @@ export default function ApplicationDecisionForm({ applicationId }: { application
         onChange={(e) => setNotes(e.target.value)}
         placeholder="Review notes (shown to applicant if rejected)"
         rows={2}
-        className="w-full rounded-md border border-[var(--border)] px-3 py-2 text-sm"
+        className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm"
       />
       {error && <p className="text-sm text-red-600">{error}</p>}
       <div className="flex gap-2">
-        <button disabled={isPending} onClick={() => decide("APPROVED")} className="rounded-md bg-brand-teal px-4 py-2 text-sm font-medium text-white hover:bg-brand-teal-dark">
+        <button disabled={isPending} onClick={() => decide("APPROVED")} className="rounded-lg bg-brand-teal shadow-sm transition-colors px-4 py-2 text-sm font-medium text-white hover:bg-brand-teal-dark">
           Approve
         </button>
-        <button disabled={isPending} onClick={() => decide("REJECTED")} className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700">
+        <button disabled={isPending} onClick={() => decide("REJECTED")} className="rounded-lg bg-red-600 shadow-sm transition-colors px-4 py-2 text-sm font-medium text-white hover:bg-red-700">
           Reject
         </button>
       </div>

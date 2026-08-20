@@ -2,26 +2,70 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #14171c;
-  --brand-ink: #0b1220;
+  --foreground: #0f172a;
+
+  /* VOLTECH brand: deep ink navy for chrome/nav, teal for brand/trust,
+     amber for CTAs and deal energy. Distinct from generic AI blue/purple,
+     Jumia orange, and Amazon black/orange. */
+  --brand-ink: #0a0f1c;
+  --brand-ink-2: #131b2e;
   --brand-teal: #0d9488;
   --brand-teal-dark: #0f766e;
+  --brand-teal-light: #e6f7f5;
   --brand-amber: #f59e0b;
   --brand-amber-dark: #d97706;
+  --brand-amber-light: #fef3c7;
+  --danger: #dc2626;
+  --danger-dark: #b91c1c;
+  --danger-light: #fef2f2;
+  --success: #16a34a;
+  --success-light: #f0fdf4;
+
   --surface: #f6f7f9;
-  --border: #e5e7eb;
+  --surface-2: #eef1f4;
+  --border: #e6e8ec;
+  --border-strong: #d7dae0;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-brand-ink: var(--brand-ink);
+  --color-brand-ink-2: var(--brand-ink-2);
   --color-brand-teal: var(--brand-teal);
   --color-brand-teal-dark: var(--brand-teal-dark);
+  --color-brand-teal-light: var(--brand-teal-light);
   --color-brand-amber: var(--brand-amber);
   --color-brand-amber-dark: var(--brand-amber-dark);
+  --color-brand-amber-light: var(--brand-amber-light);
+  --color-danger: var(--danger);
+  --color-danger-dark: var(--danger-dark);
+  --color-danger-light: var(--danger-light);
+  --color-success: var(--success);
+  --color-success-light: var(--success-light);
   --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  /* A slightly softer, more premium radius scale than Tailwind's default —
+     applies retroactively to every existing rounded-* utility in the app. */
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+
+  /* Ink-tinted, low-contrast shadows read as premium; Tailwind's pure-black
+     defaults read flat/generic. Overriding the shadow-* scale upgrades
+     every existing shadow-sm/md/lg usage sitewide. */
+  --shadow-xs: 0 1px 2px 0 rgba(10, 15, 28, 0.04);
+  --shadow-sm: 0 1px 3px 0 rgba(10, 15, 28, 0.07), 0 1px 2px -1px rgba(10, 15, 28, 0.06);
+  --shadow-md: 0 6px 20px -6px rgba(10, 15, 28, 0.14), 0 2px 6px -3px rgba(10, 15, 28, 0.08);
+  --shadow-lg: 0 16px 40px -12px rgba(10, 15, 28, 0.20), 0 4px 12px -4px rgba(10, 15, 28, 0.10);
+  --shadow-xl: 0 28px 64px -20px rgba(10, 15, 28, 0.30);
+
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
 }
 
 /* Cascade layers: Tailwind wraps its own rules in @layer (theme/base/
@@ -31,12 +75,21 @@
    applied to a <body> or <a> descendant would be silently overridden. */
 @layer base {
   body {
-    background: var(--surface);
     color: var(--foreground);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-sans), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   }
 
   a {
     color: inherit;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
+    letter-spacing: -0.015em;
+  }
+
+  ::selection {
+    background: var(--brand-teal);
+    color: white;
   }
 }

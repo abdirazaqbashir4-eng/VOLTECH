@@ -38,16 +38,16 @@ export default function ProductForm({ categories, brands }: { categories: { id: 
 
       <section className="space-y-3 rounded-lg border border-[var(--border)] bg-white p-5">
         <h2 className="font-semibold text-slate-900">Basic information</h2>
-        <input name="name" placeholder="Product name" required className="w-full rounded-md border border-[var(--border)] px-3 py-2 text-sm" />
-        <textarea name="description" placeholder="Description" required rows={4} className="w-full rounded-md border border-[var(--border)] px-3 py-2 text-sm" />
+        <input name="name" placeholder="Product name" required className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm" />
+        <textarea name="description" placeholder="Description" required rows={4} className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm" />
         <div className="grid gap-3 sm:grid-cols-2">
-          <select name="categoryId" required className="rounded-md border border-[var(--border)] px-3 py-2 text-sm">
+          <select name="categoryId" required className="rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm">
             <option value="">Select category</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>{c.name}</option>
             ))}
           </select>
-          <select name="brandId" className="rounded-md border border-[var(--border)] px-3 py-2 text-sm">
+          <select name="brandId" className="rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm">
             <option value="">No brand</option>
             {brands.map((b) => (
               <option key={b.id} value={b.id}>{b.name}</option>
@@ -59,12 +59,12 @@ export default function ProductForm({ categories, brands }: { categories: { id: 
       <section className="space-y-3 rounded-lg border border-[var(--border)] bg-white p-5">
         <h2 className="font-semibold text-slate-900">Pricing &amp; shipping</h2>
         <div className="grid gap-3 sm:grid-cols-2">
-          <input name="basePrice" type="number" step="0.01" placeholder="Base price (KES)" required className="rounded-md border border-[var(--border)] px-3 py-2 text-sm" />
-          <input name="compareAtPrice" type="number" step="0.01" placeholder="Compare-at price (optional)" className="rounded-md border border-[var(--border)] px-3 py-2 text-sm" />
-          <input name="weightGrams" type="number" placeholder="Weight (grams)" className="rounded-md border border-[var(--border)] px-3 py-2 text-sm" />
-          <input name="warrantyInfo" placeholder="Warranty info" className="rounded-md border border-[var(--border)] px-3 py-2 text-sm" />
+          <input name="basePrice" type="number" step="0.01" placeholder="Base price (KES)" required className="rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm" />
+          <input name="compareAtPrice" type="number" step="0.01" placeholder="Compare-at price (optional)" className="rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm" />
+          <input name="weightGrams" type="number" placeholder="Weight (grams)" className="rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm" />
+          <input name="warrantyInfo" placeholder="Warranty info" className="rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm" />
         </div>
-        <input name="shippingInfo" placeholder="Shipping info (e.g. Ships within 2 days)" className="w-full rounded-md border border-[var(--border)] px-3 py-2 text-sm" />
+        <input name="shippingInfo" placeholder="Shipping info (e.g. Ships within 2 days)" className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm" />
       </section>
 
       <section className="space-y-3 rounded-lg border border-[var(--border)] bg-white p-5">
@@ -163,7 +163,7 @@ export default function ProductForm({ categories, brands }: { categories: { id: 
       </section>
 
       {state.error && <p className="text-sm text-red-600">{state.error}</p>}
-      <button type="submit" disabled={isPending} className="rounded-md bg-brand-teal px-6 py-2.5 font-semibold text-white hover:bg-brand-teal-dark disabled:opacity-50">
+      <button type="submit" disabled={isPending} className="rounded-lg bg-brand-teal shadow-sm transition-colors px-6 py-2.5 font-semibold text-white hover:bg-brand-teal-dark disabled:opacity-50">
         {isPending ? "Submitting..." : "Submit for approval"}
       </button>
     </form>

@@ -12,19 +12,19 @@ export default function ProductDecisionForm({ productId, status }: { productId: 
   if (status === "PENDING_APPROVAL") {
     return (
       <div className="space-y-3 rounded-lg border border-[var(--border)] bg-white p-4">
-        <textarea value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Rejection reason (if rejecting)" rows={2} className="w-full rounded-md border border-[var(--border)] px-3 py-2 text-sm" />
+        <textarea value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Rejection reason (if rejecting)" rows={2} className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm" />
         <div className="flex gap-2">
           <button
             disabled={isPending}
             onClick={() => startTransition(async () => { await decideProductAction(productId, "APPROVED"); router.refresh(); })}
-            className="rounded-md bg-brand-teal px-4 py-2 text-sm font-medium text-white hover:bg-brand-teal-dark"
+            className="rounded-lg bg-brand-teal shadow-sm transition-colors px-4 py-2 text-sm font-medium text-white hover:bg-brand-teal-dark"
           >
             Approve
           </button>
           <button
             disabled={isPending}
             onClick={() => startTransition(async () => { await decideProductAction(productId, "REJECTED", reason || undefined); router.refresh(); })}
-            className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+            className="rounded-lg bg-red-600 shadow-sm transition-colors px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
           >
             Reject
           </button>
@@ -38,7 +38,7 @@ export default function ProductDecisionForm({ productId, status }: { productId: 
       <button
         disabled={isPending}
         onClick={() => startTransition(async () => { await suspendProductAction(productId); router.refresh(); })}
-        className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+        className="rounded-lg bg-red-600 shadow-sm transition-colors px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
       >
         Suspend listing
       </button>

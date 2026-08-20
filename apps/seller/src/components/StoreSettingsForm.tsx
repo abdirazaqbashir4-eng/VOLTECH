@@ -10,18 +10,18 @@ export default function StoreSettingsForm({ storeDescription, logoUrl, bannerUrl
     <form action={formAction} className="max-w-lg space-y-3 rounded-lg border border-[var(--border)] bg-white p-5">
       <div>
         <label className="mb-1 block text-sm font-medium text-slate-700">Store description</label>
-        <textarea name="storeDescription" defaultValue={storeDescription} rows={3} className="w-full rounded-md border border-[var(--border)] px-3 py-2 text-sm" />
+        <textarea name="storeDescription" defaultValue={storeDescription} rows={3} className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm" />
       </div>
       <div>
         <label className="mb-1 block text-sm font-medium text-slate-700">Logo URL</label>
-        <input name="logoUrl" defaultValue={logoUrl ?? ""} className="w-full rounded-md border border-[var(--border)] px-3 py-2 text-sm" />
+        <input name="logoUrl" defaultValue={logoUrl ?? ""} className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm" />
       </div>
       <div>
         <label className="mb-1 block text-sm font-medium text-slate-700">Banner URL</label>
-        <input name="bannerUrl" defaultValue={bannerUrl ?? ""} className="w-full rounded-md border border-[var(--border)] px-3 py-2 text-sm" />
+        <input name="bannerUrl" defaultValue={bannerUrl ?? ""} className="w-full rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-sm" />
       </div>
       {state.success && <p className="text-sm text-green-700">Saved.</p>}
-      <button type="submit" disabled={isPending} className="rounded-md bg-brand-teal px-4 py-2 text-sm font-medium text-white hover:bg-brand-teal-dark disabled:opacity-50">
+      <button type="submit" disabled={isPending} className="rounded-lg bg-brand-teal shadow-sm transition-colors px-4 py-2 text-sm font-medium text-white hover:bg-brand-teal-dark disabled:opacity-50">
         {isPending ? "Saving..." : "Save changes"}
       </button>
     </form>

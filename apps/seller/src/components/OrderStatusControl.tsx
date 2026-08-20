@@ -31,7 +31,7 @@ export default function OrderStatusControl({ sellerOrderId, status }: { sellerOr
             else setError(result.error);
           })
         }
-        className="rounded-md bg-brand-teal px-4 py-2 text-sm font-medium text-white hover:bg-brand-teal-dark disabled:opacity-50"
+        className="rounded-lg bg-brand-teal shadow-sm transition-colors px-4 py-2 text-sm font-medium text-white hover:bg-brand-teal-dark disabled:opacity-50"
       >
         Mark as {next.replace(/_/g, " ").toLowerCase()}
       </button>

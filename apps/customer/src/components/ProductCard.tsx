@@ -32,16 +32,16 @@ export default function ProductCard({ product, isAuthenticated = false }: { prod
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group flex flex-col overflow-hidden rounded-md border border-[var(--border)] bg-white transition-shadow hover:shadow-md"
+      className="group flex flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-white transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:shadow-md"
     >
-      <div className="relative aspect-square w-full overflow-hidden bg-slate-100">
+      <div className="relative aspect-square w-full overflow-hidden bg-[var(--surface)]">
         {product.imageUrl ? (
           <Image
             src={product.imageUrl}
             alt={product.name}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
-            className="object-cover transition-transform duration-200 group-hover:scale-105"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-xs text-slate-400">No image</div>
@@ -50,13 +50,13 @@ export default function ProductCard({ product, isAuthenticated = false }: { prod
         <div className="absolute left-2 top-2 flex flex-col items-start gap-1">
           {discountPct !== null && <DiscountBadge percent={discountPct} />}
           {product.isFlashSale && (
-            <span className="rounded bg-red-600 px-1.5 py-0.5 text-xs font-semibold text-white">Flash Sale</span>
+            <span className="rounded-full bg-red-600 px-2 py-0.5 text-[11px] font-semibold text-white">Flash Sale</span>
           )}
           {product.isBestSeller && (
-            <span className="rounded bg-brand-ink px-1.5 py-0.5 text-xs font-semibold text-white">Best Seller</span>
+            <span className="rounded-full bg-brand-ink px-2 py-0.5 text-[11px] font-semibold text-white">Best Seller</span>
           )}
           {product.isNew && !product.isBestSeller && (
-            <span className="rounded bg-brand-teal px-1.5 py-0.5 text-xs font-semibold text-white">New</span>
+            <span className="rounded-full bg-brand-teal px-2 py-0.5 text-[11px] font-semibold text-white">New</span>
           )}
         </div>
 
@@ -71,7 +71,7 @@ export default function ProductCard({ product, isAuthenticated = false }: { prod
           <QuickViewButton slug={product.slug} />
         </div>
       </div>
-      <div className="flex flex-1 flex-col gap-1 p-3">
+      <div className="flex flex-1 flex-col gap-1.5 p-3.5">
         <p className="line-clamp-2 min-h-[2.5rem] text-sm text-slate-800">{product.name}</p>
         <PriceDisplay price={product.price} compareAtPrice={product.compareAtPrice} size="sm" />
         {product.ratingCount > 0 && <RatingStars value={product.ratingAvg} count={product.ratingCount} size="sm" />}

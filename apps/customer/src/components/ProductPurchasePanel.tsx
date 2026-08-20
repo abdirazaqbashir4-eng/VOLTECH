@@ -168,7 +168,7 @@ export default function ProductPurchasePanel({
           type="button"
           disabled={outOfStock || isPending}
           onClick={handleBuyNow}
-          className="flex-1 rounded-md bg-brand-teal py-2.5 font-semibold text-white hover:bg-brand-teal-dark disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex-1 rounded-lg bg-brand-teal shadow-sm transition-colors py-2.5 font-semibold text-white hover:bg-brand-teal-dark disabled:cursor-not-allowed disabled:opacity-50"
         >
           Buy now
         </button>
@@ -201,7 +201,7 @@ export default function ProductPurchasePanel({
           type="button"
           disabled={outOfStock || isPending}
           onClick={handleBuyNow}
-          className="rounded-md bg-brand-teal px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
+          className="rounded-lg bg-brand-teal shadow-sm transition-colors px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
         >
           Buy now
         </button>

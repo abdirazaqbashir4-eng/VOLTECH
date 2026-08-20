@@ -173,11 +173,11 @@ export default function QuickViewModal({ slug, onClose }: { slug: string; onClos
                   type="button"
                   disabled={outOfStock || isPending}
                   onClick={handleAddToCart}
-                  className="flex-1 rounded-md bg-brand-teal py-2 text-sm font-semibold text-white hover:bg-brand-teal-dark disabled:opacity-50"
+                  className="flex-1 rounded-lg bg-brand-teal shadow-sm transition-colors py-2 text-sm font-semibold text-white hover:bg-brand-teal-dark disabled:opacity-50"
                 >
                   Add to cart
                 </button>
-                <button type="button" onClick={handleWishlist} className="rounded-md border border-[var(--border)] px-3 py-2 text-slate-500">♡</button>
+                <button type="button" onClick={handleWishlist} className="rounded-lg border border-[var(--border)] px-3.5 py-2.5 outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15 text-slate-500">♡</button>
               </div>
 
               {message && <p className={`mt-2 text-xs ${message.type === "error" ? "text-red-600" : "text-green-700"}`}>{message.text}</p>}

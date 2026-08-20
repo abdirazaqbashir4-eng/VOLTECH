@@ -27,7 +27,7 @@ export default async function ProductsPage() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-xl font-bold text-slate-900">Products</h1>
-        <Link href="/products/new" className="rounded-md bg-brand-teal px-4 py-2 text-sm font-medium text-white hover:bg-brand-teal-dark">
+        <Link href="/products/new" className="rounded-lg bg-brand-teal shadow-sm transition-colors px-4 py-2 text-sm font-medium text-white hover:bg-brand-teal-dark">
           + Add product
         </Link>
       </div>

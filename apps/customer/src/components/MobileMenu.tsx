@@ -53,7 +53,7 @@ export default function MobileMenu({
                 <Link
                   href="/login"
                   onClick={() => setOpen(false)}
-                  className="block rounded-md bg-brand-teal px-4 py-2 text-center font-medium text-white"
+                  className="block rounded-lg bg-brand-teal shadow-sm transition-colors px-4 py-2 text-center font-medium text-white"
                 >
                   Sign in
                 </Link>

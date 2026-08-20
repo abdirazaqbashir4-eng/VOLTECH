@@ -19,20 +19,21 @@ export default function MegaMenu({ categories }: { categories: Category[] }) {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="shrink-0 font-medium text-white hover:text-white/80"
+        className="flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1 font-medium text-white transition-colors hover:bg-white/10"
       >
+        <span aria-hidden className="text-base leading-none">☰</span>
         All Categories
       </button>
 
       {open && categories.length > 0 && (
-        <div className="absolute left-0 top-full z-50 flex w-[640px] overflow-hidden rounded-b-md border border-t-0 border-[var(--border)] bg-white text-slate-800 shadow-xl">
-          <div className="w-56 shrink-0 border-r border-[var(--border)] py-2">
+        <div className="absolute left-0 top-full z-50 mt-2 flex w-[640px] overflow-hidden rounded-xl border border-[var(--border)] bg-white text-slate-800 shadow-xl">
+          <div className="w-56 shrink-0 border-r border-[var(--border)] bg-[var(--surface)]/60 py-2">
             {categories.map((c, i) => (
               <button
                 key={c.id}
                 onMouseEnter={() => setActive(i)}
-                className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-sm ${
-                  active === i ? "bg-[var(--surface)] font-medium text-brand-teal" : "text-slate-700"
+                className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-sm transition-colors ${
+                  active === i ? "bg-white font-medium text-brand-teal shadow-[inset_2px_0_0_var(--brand-teal)]" : "text-slate-700"
                 }`}
               >
                 <Link href={`/categories/${c.slug}`} className="flex-1">{c.name}</Link>
@@ -41,7 +42,7 @@ export default function MegaMenu({ categories }: { categories: Category[] }) {
             ))}
           </div>
           <div className="flex-1 p-5">
-            <p className="mb-3 font-semibold text-slate-900">{categories[active]?.name}</p>
+            <p className="mb-3 font-display font-semibold text-slate-900">{categories[active]?.name}</p>
             {categories[active]?.children.length ? (
               <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                 {categories[active].children.map((child) => (

@@ -21,7 +21,7 @@ export default function EmptyState({
       <p className="mt-4 font-semibold text-slate-900">{title}</p>
       {description && <p className="mt-1 max-w-sm text-sm text-slate-500">{description}</p>}
       {actionHref && actionLabel && (
-        <Link href={actionHref} className="mt-5 rounded-md bg-brand-teal px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-teal-dark">
+        <Link href={actionHref} className="mt-5 rounded-lg bg-brand-teal shadow-sm transition-colors px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-teal-dark">
           {actionLabel}
         </Link>
       )}

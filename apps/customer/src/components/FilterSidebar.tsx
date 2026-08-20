@@ -69,7 +69,7 @@ export default function FilterSidebar({ brands, basePath, current }: Props) {
         On discount only
       </label>
 
-      <button type="submit" className="w-full rounded-md bg-brand-teal py-2 font-medium text-white hover:bg-brand-teal-dark">
+      <button type="submit" className="w-full rounded-lg bg-brand-teal shadow-sm transition-colors py-2 font-medium text-white hover:bg-brand-teal-dark">
         Apply filters
       </button>
       <a href={basePath} className="block text-center text-xs text-slate-500 hover:text-brand-teal">

@@ -66,12 +66,12 @@ export default async function HomePage() {
       <Header />
       <main className="flex-1">
         <section className="bg-[var(--surface)]">
-          <div className="mx-auto grid max-w-7xl gap-4 px-4 py-6 sm:px-6 lg:grid-cols-[220px_1fr_260px]">
-            <aside className="hidden rounded-lg border border-[var(--border)] bg-white lg:block">
+          <div className="mx-auto grid max-w-7xl gap-4 px-4 py-8 sm:px-6 lg:grid-cols-[220px_1fr_260px]">
+            <aside className="hidden overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-sm lg:block">
               <ul className="divide-y divide-[var(--border)] text-sm">
                 {categories.map((c) => (
                   <li key={c.id}>
-                    <Link href={`/categories/${c.slug}`} className="flex items-center justify-between px-4 py-2.5 text-slate-700 hover:bg-[var(--surface)] hover:text-brand-teal">
+                    <Link href={`/categories/${c.slug}`} className="flex items-center justify-between px-4 py-2.5 text-slate-700 transition-colors hover:bg-[var(--surface)] hover:text-brand-teal">
                       {c.name}
                       <span aria-hidden className="text-slate-300">›</span>
                     </Link>
@@ -83,19 +83,19 @@ export default async function HomePage() {
             <HeroCarousel />
 
             <div className="flex flex-col gap-4">
-              <div className="flex flex-1 flex-col justify-end rounded-lg bg-brand-teal p-5 text-white">
-                <h2 className="text-lg font-bold">Become a seller</h2>
+              <div className="flex flex-1 flex-col justify-end rounded-xl bg-brand-teal p-5 text-white shadow-sm">
+                <h2 className="font-display text-lg font-bold">Become a seller</h2>
                 <p className="mt-1 text-sm text-white/90">Reach thousands of buyers. Set up your store in minutes.</p>
                 <a
                   href={`${SELLER_CENTER_URL}/apply`}
-                  className="mt-3 inline-flex w-fit items-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-brand-teal-dark hover:bg-white/90"
+                  className="mt-3 inline-flex w-fit items-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-brand-teal-dark transition-colors hover:bg-white/90"
                 >
                   Apply now
                 </a>
               </div>
               {flashSale.length > 0 && (
-                <Link href="#flash-sale" className="flex flex-1 flex-col justify-end rounded-lg bg-red-600 p-5 text-white hover:bg-red-700">
-                  <h2 className="text-lg font-bold">Flash Sale is live</h2>
+                <Link href="#flash-sale" className="flex flex-1 flex-col justify-end rounded-xl bg-red-600 p-5 text-white shadow-sm transition-colors hover:bg-red-700">
+                  <h2 className="font-display text-lg font-bold">Flash Sale is live</h2>
                   <p className="mt-1 text-sm text-white/90">{flashSale.length} deals at limited-time prices.</p>
                   <span className="mt-3 inline-flex w-fit items-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-red-700">
                     Shop the sale
@@ -106,17 +106,17 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+        <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
           <h2 className="mb-4 text-lg font-bold text-slate-900">Shop by category</h2>
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-10">
             {categories.map((c) => (
               <Link
                 key={c.id}
                 href={`/categories/${c.slug}`}
-                className="flex flex-col items-center gap-2 rounded-lg border border-[var(--border)] p-3 text-center text-xs text-slate-700 hover:border-brand-teal hover:text-brand-teal"
+                className="flex flex-col items-center gap-2 rounded-xl border border-[var(--border)] p-3 text-center text-xs text-slate-700 transition-all hover:-translate-y-0.5 hover:border-brand-teal hover:text-brand-teal hover:shadow-sm"
               >
                 {c.imageUrl ? (
-                  <Image src={c.imageUrl} alt={c.name} width={40} height={40} className="h-10 w-10 rounded object-cover" />
+                  <Image src={c.imageUrl} alt={c.name} width={40} height={40} className="h-10 w-10 rounded-lg object-cover" />
                 ) : (
                   <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--surface)] text-lg font-semibold text-brand-teal">
                     {c.name.charAt(0)}
@@ -129,12 +129,12 @@ export default async function HomePage() {
         </section>
 
         {flashSale.length > 0 && earliestFlashEnd && (
-          <section id="flash-sale" className="scroll-mt-20 bg-red-50/60 py-6">
+          <section id="flash-sale" className="scroll-mt-20 bg-red-50/60 py-8">
             <div className="mx-auto max-w-7xl px-4 sm:px-6">
               <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <h2 className="text-lg font-bold text-slate-900">⚡ Flash Sale</h2>
-                  <span className="rounded bg-red-600 px-2 py-0.5 text-xs font-semibold text-white">Limited time</span>
+                  <span className="rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-semibold text-white">Limited time</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-700">
                   <span className="text-sm">Ends in</span>

@@ -71,7 +71,7 @@ export default async function OrderConfirmationPage({ params }: PageProps<"/chec
           <Link href="/account/orders" className="rounded-md border border-[var(--border)] px-5 py-2.5 text-slate-700">
             View my orders
           </Link>
-          <Link href="/" className="rounded-md bg-brand-teal px-5 py-2.5 font-semibold text-white hover:bg-brand-teal-dark">
+          <Link href="/" className="rounded-lg bg-brand-teal shadow-sm transition-colors px-5 py-2.5 font-semibold text-white hover:bg-brand-teal-dark">
             Continue shopping
           </Link>
         </div>
