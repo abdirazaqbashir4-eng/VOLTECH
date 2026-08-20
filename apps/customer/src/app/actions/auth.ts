@@ -28,7 +28,7 @@ export async function registerAction(_prevState: unknown, formData: FormData) {
     // Any other failure (bad Admin SDK credentials, network, etc.) — log the
     // real cause server-side instead of misreporting it as a duplicate email.
     console.error("createFirebaseUser failed:", err);
-    return { error: "Could not create your account right now. Please try again shortly.", customToken: null };
+    return { error: `DEBUG(createFirebaseUser): ${(err as Error)?.message ?? String(err)}`, customToken: null };
   }
 
   try {

@@ -14,9 +14,12 @@ function getFirebaseApp(): App {
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
   const privateKey = process.env.FIREBASE_PRIVATE_KEY;
   if (!projectId || !clientEmail || !privateKey) {
-    throw new Error(
-      "FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL and FIREBASE_PRIVATE_KEY must be set (from a Firebase service account key) to verify sessions or manage users.",
-    );
+    const missing = [
+      !projectId && "FIREBASE_PROJECT_ID",
+      !clientEmail && "FIREBASE_CLIENT_EMAIL",
+      !privateKey && "FIREBASE_PRIVATE_KEY",
+    ].filter(Boolean);
+    throw new Error(`Missing env var(s): ${missing.join(", ")} — set from a Firebase service account key to verify sessions or manage users.`);
   }
 
   const app =
