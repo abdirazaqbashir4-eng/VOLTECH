@@ -41,9 +41,12 @@ export default function CompareTable() {
   }
 
   useEffect(() => {
-    load();
-    return onCompareChange(load);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const handle = setTimeout(load, 0);
+    const unsubscribe = onCompareChange(load);
+    return () => {
+      clearTimeout(handle);
+      unsubscribe();
+    };
   }, []);
 
   const specKeys = Array.from(new Set((products ?? []).flatMap((p) => Object.keys(p.specifications))));

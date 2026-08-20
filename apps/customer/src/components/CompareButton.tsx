@@ -1,13 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { isInCompare, toggleCompare } from "@/lib/compareStore";
+import { isInCompare, toggleCompare, onCompareChange } from "@/lib/compareStore";
 
 export default function CompareButton({ productId, className = "" }: { productId: string; className?: string }) {
+  // Starts false (matching SSR, where localStorage isn't available) rather
+  // than a lazy initializer reading it — avoids a hydration mismatch when
+  // the product is already in the compare list. Synced client-side below.
   const [active, setActive] = useState(false);
   const [full, setFull] = useState(false);
 
-  useEffect(() => setActive(isInCompare(productId)), [productId]);
+  // Subscribes to the compare list so this button also reflects changes
+  // made elsewhere (the /compare page, another card for the same product).
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setActive(isInCompare(productId));
+    return onCompareChange(() => setActive(isInCompare(productId)));
+  }, [productId]);
 
   function handleClick(e: React.MouseEvent) {
     e.preventDefault();

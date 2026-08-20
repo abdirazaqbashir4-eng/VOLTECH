@@ -7,7 +7,12 @@ import { getCompareIds, clearCompare, onCompareChange } from "@/lib/compareStore
 export default function CompareBar() {
   const [count, setCount] = useState(0);
 
+  // Deliberately not a lazy initializer: localStorage is unavailable during
+  // SSR, so the initial state must match the server's (0/hidden) to avoid a
+  // hydration mismatch — the real count is only readable client-side, which
+  // is exactly what an effect is for.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCount(getCompareIds().length);
     return onCompareChange(() => setCount(getCompareIds().length));
   }, []);

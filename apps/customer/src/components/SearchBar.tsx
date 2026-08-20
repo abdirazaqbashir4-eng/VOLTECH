@@ -38,13 +38,9 @@ export default function SearchBar() {
   const [categories, setCategories] = useState<LinkSuggestion[]>([]);
   const [brands, setBrands] = useState<LinkSuggestion[]>([]);
   const [trending, setTrending] = useState<string[]>([]);
-  const [recent, setRecent] = useState<string[]>([]);
+  const [recent, setRecent] = useState<string[]>(() => readLocalRecent());
   const [open, setOpen] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setRecent((server) => (server.length ? server : readLocalRecent()));
-  }, []);
 
   useEffect(() => {
     const handle = setTimeout(async () => {
@@ -92,7 +88,7 @@ export default function SearchBar() {
         action="/search"
         method="get"
         className="flex w-full"
-        onSubmit={(e) => {
+        onSubmit={() => {
           if (value.trim()) pushLocalRecent(value.trim());
         }}
       >
