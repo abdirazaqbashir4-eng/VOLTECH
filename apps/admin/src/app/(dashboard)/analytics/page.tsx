@@ -118,7 +118,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps<"/a
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">GMV over time</h2>
-          <TimeSeriesChart data={gmvSeries} valueLabel="GMV" formatValue={(v) => formatKES(v)} />
+          <TimeSeriesChart data={gmvSeries} valueLabel="GMV" currency />
         </div>
         <div className="rounded-lg border border-[var(--border)] bg-white p-5 shadow-xs">
           <h2 className="mb-3 font-semibold text-slate-900">Orders over time</h2>
