@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import MobileBottomNavClient from "@/components/MobileBottomNavClient";
 import CompareBar from "@/components/CompareBar";
 import QuickViewProvider from "@/contexts/QuickViewContext";
 
-const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
-const display = Space_Grotesk({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-display", display: "swap" });
+const sans = Inter({ subsets: ["latin"], weight: ["400", "600", "700", "900"], variable: "--font-sans", display: "swap" });
 
 // Every page here reads the session (via Header/account/proxy) and live
 // marketplace data (stock, pricing, promotions) — none of it should be
@@ -24,13 +22,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`h-full antialiased ${sans.variable} ${display.variable}`}>
-      <body className="min-h-full flex flex-col bg-white text-[var(--foreground)] pb-14 md:pb-0">
+    <html lang="en" className={`h-full antialiased ${sans.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+      </head>
+      <body className="min-h-full flex flex-col bg-background text-on-background">
         <QuickViewProvider>
           {children}
           <CompareBar />
         </QuickViewProvider>
-        <MobileBottomNavClient />
       </body>
     </html>
   );

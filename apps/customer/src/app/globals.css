@@ -1,34 +1,151 @@
 @import "tailwindcss";
 
+/* VOLTECH "Industrial Engine" — the Google Stitch-generated design spec
+   (light-mode, Corporate/Modern/High-Density Minimalism). Token names/
+   values are copied verbatim from the Stitch export's DESIGN.md and each
+   screen's embedded tailwind.config, so that class strings pasted directly
+   out of the Stitch HTML (bg-primary-container, text-on-surface-variant,
+   px-margin-mobile, font-headline-md text-headline-md, ...) work
+   unmodified. Do not rename/simplify these — fidelity to the approved
+   design depends on the exact token names. */
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
+  --background: #f8f9fa;
+  --on-background: #191c1d;
+  --surface: #f8f9fa;
+  --surface-dim: #d9dadb;
+  --surface-bright: #f8f9fa;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f3f4f5;
+  --surface-container: #edeeef;
+  --surface-container-high: #e7e8e9;
+  --surface-container-highest: #e1e3e4;
+  --surface-variant: #e1e3e4;
+  --on-surface: #191c1d;
+  --on-surface-variant: #44474e;
+  --inverse-surface: #2e3132;
+  --inverse-on-surface: #f0f1f2;
+  --outline: #74777f;
+  --outline-variant: #c4c6cf;
+  --surface-tint: #495f84;
 
-  /* VOLTECH brand: deep ink navy for chrome/nav, teal for brand/trust,
-     amber for CTAs and deal energy. Distinct from generic AI blue/purple,
-     Jumia orange, and Amazon black/orange. */
-  --brand-ink: #0a0f1c;
-  --brand-ink-2: #131b2e;
-  --brand-teal: #0d9488;
-  --brand-teal-dark: #0f766e;
-  --brand-teal-light: #e6f7f5;
-  --brand-amber: #f59e0b;
-  --brand-amber-dark: #d97706;
-  --brand-amber-light: #fef3c7;
-  --danger: #dc2626;
-  --danger-dark: #b91c1c;
-  --danger-light: #fef2f2;
-  --success: #16a34a;
-  --success-light: #f0fdf4;
+  --primary: #000000;
+  --on-primary: #ffffff;
+  --primary-container: #001b3d;
+  --on-primary-container: #6f84ac;
+  --inverse-primary: #b1c7f2;
+  --primary-fixed: #d6e3ff;
+  --primary-fixed-dim: #b1c7f2;
+  --on-primary-fixed: #001b3d;
+  --on-primary-fixed-variant: #31476b;
 
-  --surface: #f6f7f9;
-  --surface-2: #eef1f4;
-  --border: #e6e8ec;
-  --border-strong: #d7dae0;
+  --secondary: #115cb9;
+  --on-secondary: #ffffff;
+  --secondary-container: #659dfe;
+  --on-secondary-container: #003370;
+  --secondary-fixed: #d7e2ff;
+  --secondary-fixed-dim: #acc7ff;
+  --on-secondary-fixed: #001a40;
+  --on-secondary-fixed-variant: #004591;
+
+  --tertiary: #000000;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #002106;
+  --on-tertiary-container: #0e9838;
+  --tertiary-fixed: #83fc8e;
+  --tertiary-fixed-dim: #67df74;
+  --on-tertiary-fixed: #002106;
+  --on-tertiary-fixed-variant: #00531a;
+
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  --on-error-container: #93000a;
+  --error-industrial: #ba1a1a;
+
+  --electric-cyan: #659dfe;
+  --success-green: #0e9838;
+
+  /* --- Back-compat aliases -------------------------------------------
+     Earlier work this session (the original light-teal redesign, and a
+     since-abandoned dark Stitch pass) left many components using these
+     variable names. Screens get migrated to the new token names above
+     one at a time per the implementation plan; until a given component
+     is migrated, these aliases keep it rendering instead of breaking. */
+  --foreground: var(--on-background);
+  --brand-ink: var(--primary-container);
+  --brand-ink-2: var(--on-primary-fixed-variant);
+  --brand-teal: var(--secondary);
+  --brand-teal-dark: var(--on-secondary-fixed-variant);
+  --brand-teal-light: var(--secondary-fixed);
+  --brand-amber: var(--secondary);
+  --brand-amber-dark: var(--on-secondary-fixed-variant);
+  --brand-amber-light: var(--secondary-fixed);
+  --danger: var(--error);
+  --danger-dark: var(--on-error-container);
+  --danger-light: var(--error-container);
+  --success: var(--success-green);
+  --success-light: var(--tertiary-container);
+  --surface-2: var(--surface-container);
+  --border: var(--outline-variant);
+  --border-strong: var(--outline);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-on-background: var(--on-background);
+  --color-surface: var(--surface);
+  --color-surface-dim: var(--surface-dim);
+  --color-surface-bright: var(--surface-bright);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+  --color-surface-variant: var(--surface-variant);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-inverse-surface: var(--inverse-surface);
+  --color-inverse-on-surface: var(--inverse-on-surface);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-surface-tint: var(--surface-tint);
+
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
+  --color-inverse-primary: var(--inverse-primary);
+  --color-primary-fixed: var(--primary-fixed);
+  --color-primary-fixed-dim: var(--primary-fixed-dim);
+  --color-on-primary-fixed: var(--on-primary-fixed);
+  --color-on-primary-fixed-variant: var(--on-primary-fixed-variant);
+
+  --color-secondary: var(--secondary);
+  --color-on-secondary: var(--on-secondary);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+  --color-secondary-fixed: var(--secondary-fixed);
+  --color-secondary-fixed-dim: var(--secondary-fixed-dim);
+  --color-on-secondary-fixed: var(--on-secondary-fixed);
+  --color-on-secondary-fixed-variant: var(--on-secondary-fixed-variant);
+
+  --color-tertiary: var(--tertiary);
+  --color-on-tertiary: var(--on-tertiary);
+  --color-tertiary-container: var(--tertiary-container);
+  --color-on-tertiary-container: var(--on-tertiary-container);
+  --color-tertiary-fixed: var(--tertiary-fixed);
+  --color-tertiary-fixed-dim: var(--tertiary-fixed-dim);
+  --color-on-tertiary-fixed: var(--on-tertiary-fixed);
+  --color-on-tertiary-fixed-variant: var(--on-tertiary-fixed-variant);
+
+  --color-error: var(--error);
+  --color-on-error: var(--on-error);
+  --color-error-container: var(--error-container);
+  --color-on-error-container: var(--on-error-container);
+  --color-error-industrial: var(--error-industrial);
+  --color-electric-cyan: var(--electric-cyan);
+  --color-success-green: var(--success-green);
+
   --color-foreground: var(--foreground);
   --color-brand-ink: var(--brand-ink);
   --color-brand-ink-2: var(--brand-ink-2);
@@ -43,55 +160,137 @@
   --color-danger-light: var(--danger-light);
   --color-success: var(--success);
   --color-success-light: var(--success-light);
-  --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
 
-  /* A slightly softer, more premium radius scale than Tailwind's default —
-     applies retroactively to every existing rounded-* utility in the app. */
-  --radius-md: 0.625rem;
-  --radius-lg: 0.875rem;
-  --radius-xl: 1.25rem;
-  --radius-2xl: 1.5rem;
+  /* Radius scale — exact values from the Stitch tailwind.config overrides
+     (a much tighter, "disciplined" grid than either prior design). */
+  --radius-sm: 0.125rem;
+  --radius-md: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
 
-  /* Ink-tinted, low-contrast shadows read as premium; Tailwind's pure-black
-     defaults read flat/generic. Overriding the shadow-* scale upgrades
-     every existing shadow-sm/md/lg usage sitewide. */
-  --shadow-xs: 0 1px 2px 0 rgba(10, 15, 28, 0.04);
-  --shadow-sm: 0 1px 3px 0 rgba(10, 15, 28, 0.07), 0 1px 2px -1px rgba(10, 15, 28, 0.06);
-  --shadow-md: 0 6px 20px -6px rgba(10, 15, 28, 0.14), 0 2px 6px -3px rgba(10, 15, 28, 0.08);
-  --shadow-lg: 0 16px 40px -12px rgba(10, 15, 28, 0.20), 0 4px 12px -4px rgba(10, 15, 28, 0.10);
-  --shadow-xl: 0 28px 64px -20px rgba(10, 15, 28, 0.30);
+  /* Spacing tokens as literal utility keys, matching Stitch's own class
+     strings (px-margin-mobile, gap-gutter-mobile, gap-stack-md,
+     h-touch-target-min) unmodified. */
+  --spacing-base-unit: 4px;
+  --spacing-margin-mobile: 16px;
+  --spacing-gutter-mobile: 12px;
+  --spacing-stack-xs: 4px;
+  --spacing-stack-sm: 8px;
+  --spacing-stack-md: 16px;
+  --spacing-stack-lg: 24px;
+  --spacing-touch-target-min: 44px;
 
   --font-sans: var(--font-sans);
-  --font-display: var(--font-display);
+
+  /* Type scale — single typeface (Inter) throughout, per this design's
+     DESIGN.md (no secondary display font this time). Each entry pairs a
+     font-family utility with a matching font-size utility carrying line-
+     height/weight/tracking, mirroring how Stitch applies both classes
+     together, e.g. class="font-headline-md text-headline-md". */
+  --font-headline-lg: var(--font-sans);
+  --text-headline-lg: 24px;
+  --text-headline-lg--line-height: 32px;
+  --text-headline-lg--font-weight: 700;
+  --text-headline-lg--letter-spacing: -0.02em;
+
+  --font-headline-lg-mobile: var(--font-sans);
+  --text-headline-lg-mobile: 22px;
+  --text-headline-lg-mobile--line-height: 28px;
+  --text-headline-lg-mobile--font-weight: 700;
+  --text-headline-lg-mobile--letter-spacing: -0.02em;
+
+  --font-headline-md: var(--font-sans);
+  --text-headline-md: 20px;
+  --text-headline-md--line-height: 28px;
+  --text-headline-md--font-weight: 600;
+  --text-headline-md--letter-spacing: -0.01em;
+
+  --font-headline-sm: var(--font-sans);
+  --text-headline-sm: 16px;
+  --text-headline-sm--line-height: 24px;
+  --text-headline-sm--font-weight: 600;
+
+  --font-body-lg: var(--font-sans);
+  --text-body-lg: 16px;
+  --text-body-lg--line-height: 24px;
+  --text-body-lg--font-weight: 400;
+
+  --font-body-md: var(--font-sans);
+  --text-body-md: 14px;
+  --text-body-md--line-height: 20px;
+  --text-body-md--font-weight: 400;
+
+  --font-body-sm: var(--font-sans);
+  --text-body-sm: 13px;
+  --text-body-sm--line-height: 18px;
+  --text-body-sm--font-weight: 400;
+
+  --font-label-lg: var(--font-sans);
+  --text-label-lg: 12px;
+  --text-label-lg--line-height: 16px;
+  --text-label-lg--font-weight: 700;
+  --text-label-lg--letter-spacing: 0.04em;
+
+  --font-label-md: var(--font-sans);
+  --text-label-md: 11px;
+  --text-label-md--line-height: 14px;
+  --text-label-md--font-weight: 600;
+  --text-label-md--letter-spacing: 0.02em;
+
+  --text-label-sm: 10px;
+  --text-label-sm--line-height: 14px;
+  --text-label-sm--font-weight: 500;
+
+  --font-display: var(--font-sans);
+  --text-display: 28px;
+  --text-display--line-height: 36px;
+  --text-display--font-weight: 900;
+  --text-display--letter-spacing: -0.03em;
 }
 
-/* Cascade layers: Tailwind wraps its own rules in @layer (theme/base/
-   components/utilities). An unlayered rule beats ALL layered rules
-   regardless of selector specificity or source order — so these base
-   styles must live in @layer base too, or every text-color utility
-   (`text-brand-teal`, `hover:text-brand-teal`, ...) applied to a <body>
-   or <a> descendant would be silently overridden by these instead. */
 @layer base {
   body {
-    background: var(--background);
-    color: var(--foreground);
+    background-color: var(--background);
+    color: var(--on-background);
     font-family: var(--font-sans), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-tap-highlight-color: transparent;
   }
 
   a {
     color: inherit;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
-    letter-spacing: -0.015em;
+  ::selection {
+    background: var(--secondary);
+    color: var(--on-secondary);
   }
 
-  ::selection {
-    background: var(--brand-teal);
-    color: white;
+  .material-symbols-outlined {
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: "liga";
+    font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+    font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+  }
+
+  .hide-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
