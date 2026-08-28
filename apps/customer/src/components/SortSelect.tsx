@@ -25,7 +25,7 @@ export default function SortSelect({ current }: { current?: string }) {
         params.set("sort", e.target.value);
         router.push(`${pathname}?${params.toString()}`);
       }}
-      className="rounded-lg border border-[var(--border)] px-2.5 py-1.5 text-sm outline-none transition-colors focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/15"
+      className="bg-transparent border-none font-label-md text-label-md text-secondary outline-none cursor-pointer"
     >
       {OPTIONS.map((o) => (
         <option key={o.value} value={o.value}>

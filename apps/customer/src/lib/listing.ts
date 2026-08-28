@@ -83,7 +83,7 @@ export async function queryListing(filters: ListingFilters) {
 
   const include = {
     images: { orderBy: { sortOrder: "asc" as const }, take: 1 },
-    variants: { where: { status: "ACTIVE" as const } },
+    variants: { where: { status: "ACTIVE" as const }, include: { inventory: true } },
     seller: { select: { storeName: true, status: true } },
   };
 
