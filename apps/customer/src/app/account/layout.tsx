@@ -1,33 +1,40 @@
 import Link from "next/link";
-import Header from "@/components/Header";
+import TopAppBar from "@/components/TopAppBar";
+import BottomNavBar from "@/components/BottomNavBar";
 import Footer from "@/components/Footer";
+import { auth } from "@/auth";
+import { getCartView } from "@voltech/core/marketplace/cart";
 
 const LINKS = [
-  { href: "/account", label: "Overview" },
-  { href: "/account/orders", label: "Order history" },
-  { href: "/account/addresses", label: "Addresses" },
-  { href: "/account/notifications", label: "Notifications" },
+  { href: "/account", label: "Overview", icon: "person" },
+  { href: "/account/orders", label: "Order history", icon: "package_2" },
+  { href: "/account/addresses", label: "Addresses", icon: "location_on" },
+  { href: "/account/notifications", label: "Notifications", icon: "notifications" },
+  { href: "/account/settings", label: "Settings", icon: "settings" },
 ];
 
-export default function AccountLayout({ children }: LayoutProps<"/account">) {
+export default async function AccountLayout({ children }: LayoutProps<"/account">) {
+  const session = await auth();
+  const cartCount = session?.user ? (await getCartView(session.user.id)).itemCount : 0;
+
   return (
     <>
-      <Header />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
-        <div className="flex flex-col gap-8 md:flex-row">
-          <aside className="w-full shrink-0 md:w-48">
-            <nav className="space-y-1 text-sm">
-              {LINKS.map((l) => (
-                <Link key={l.href} href={l.href} className="block rounded-md px-3 py-2 text-slate-700 hover:bg-[var(--surface)]">
-                  {l.label}
-                </Link>
-              ))}
-            </nav>
-          </aside>
-          <div className="flex-1">{children}</div>
-        </div>
+      <TopAppBar variant="home" />
+      <main className="flex-1 pb-24 md:flex md:max-w-6xl md:mx-auto md:w-full md:gap-stack-lg md:px-6 md:py-stack-lg">
+        <aside className="hidden md:block w-56 shrink-0">
+          <nav className="space-y-1">
+            {LINKS.map((l) => (
+              <Link key={l.href} href={l.href} className="flex items-center gap-2 rounded px-3 py-2 font-body-md text-body-md text-on-surface-variant hover:bg-surface-container-low">
+                <span className="material-symbols-outlined text-[20px]">{l.icon}</span>
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+        </aside>
+        <div className="flex-1">{children}</div>
       </main>
       <Footer />
+      <BottomNavBar cartCount={cartCount} />
     </>
   );
 }
