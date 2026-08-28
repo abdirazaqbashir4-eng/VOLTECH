@@ -1,11 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { auth } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { db } from "@voltech/database";
-import { formatKES } from "@voltech/core/money";
-import StatusBadge from "@/components/StatusBadge";
-import ProductCard from "@/components/ProductCard";
-import { toCardData } from "@/lib/catalog";
 
 export const metadata: Metadata = { title: "My account" };
 
@@ -13,77 +9,96 @@ export default async function AccountOverviewPage() {
   const session = await auth();
   if (!session?.user) return null;
 
-  const [orderCount, wishlistCount, recentOrders, recentlyViewed] = await Promise.all([
+  const [orderCount, wishlistCount, reviewCount] = await Promise.all([
     db.order.count({ where: { customerId: session.user.id } }),
     db.wishlistItem.count({ where: { userId: session.user.id } }),
-    db.order.findMany({ where: { customerId: session.user.id }, orderBy: { createdAt: "desc" }, take: 3 }),
-    db.recentlyViewed.findMany({
-      where: { userId: session.user.id },
-      orderBy: { viewedAt: "desc" },
-      take: 5,
-      include: {
-        product: {
-          include: {
-            images: { take: 1, orderBy: { sortOrder: "asc" } },
-            variants: { where: { status: "ACTIVE" } },
-            seller: { select: { storeName: true, status: true } },
-          },
-        },
-      },
-    }),
+    db.review.count({ where: { customerId: session.user.id } }),
   ]);
 
-  const hour = new Date().getHours();
-  const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
-  const firstName = session.user.name?.split(" ")[0] ?? "there";
+  async function handleSignOut() {
+    "use server";
+    await signOut({ redirectTo: "/" });
+  }
 
   return (
     <div>
-      <h1 className="mb-1 font-display text-2xl font-bold text-slate-900">{greeting}, {firstName} 👋</h1>
-      <p className="mb-4 text-sm text-slate-500">{session.user.email}</p>
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <Link href="/account/orders" className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-xs transition-all hover:-translate-y-0.5 hover:border-brand-teal hover:shadow-sm">
-          <p className="font-display text-2xl font-bold text-slate-900">{orderCount}</p>
-          <p className="text-sm text-slate-500">Orders placed</p>
-        </Link>
-        <Link href="/wishlist" className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-xs transition-all hover:-translate-y-0.5 hover:border-brand-teal hover:shadow-sm">
-          <p className="font-display text-2xl font-bold text-slate-900">{wishlistCount}</p>
-          <p className="text-sm text-slate-500">Wishlist items</p>
-        </Link>
+      {/* Profile Hero */}
+      <section className="bg-surface-container-lowest border border-outline-variant rounded-xl px-margin-mobile py-stack-lg mb-stack-md">
+        <div className="flex items-center gap-margin-mobile mb-stack-lg">
+          <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-surface-container-high bg-surface-container flex-shrink-0 flex items-center justify-center">
+            <span className="material-symbols-outlined text-4xl text-on-surface-variant">person</span>
+          </div>
+          <div className="flex flex-col">
+            <h1 className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">{session.user.name}</h1>
+            <div className="flex items-center gap-stack-xs mt-1">
+              <span className="font-body-sm text-body-sm text-on-surface-variant">{session.user.email}</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-margin-mobile">
+          <Link href="/account/orders" className="flex-1 bg-surface-container-low rounded-lg p-stack-sm flex flex-col items-center justify-center border border-surface-variant">
+            <span className="font-headline-md text-headline-md text-primary">{orderCount}</span>
+            <span className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Orders</span>
+          </Link>
+          <Link href="/wishlist" className="flex-1 bg-surface-container-low rounded-lg p-stack-sm flex flex-col items-center justify-center border border-surface-variant">
+            <span className="font-headline-md text-headline-md text-primary">{wishlistCount}</span>
+            <span className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Wishlist</span>
+          </Link>
+          <div className="flex-1 bg-surface-container-low rounded-lg p-stack-sm flex flex-col items-center justify-center border border-surface-variant">
+            <span className="font-headline-md text-headline-md text-primary">{reviewCount}</span>
+            <span className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Reviews</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Navigation Menu Groups */}
+      <div className="flex flex-col gap-stack-md pb-stack-lg">
+        <MenuGroup title="Account Settings">
+          <MenuLink href="/account/addresses" icon="location_on" label="Addresses" />
+          <MenuLink href="/account/orders" icon="receipt_long" label="Order History" last />
+        </MenuGroup>
+
+        <MenuGroup title="Security">
+          <MenuLink href="/account/settings" icon="lock" label="Password & Security" last />
+        </MenuGroup>
+
+        <MenuGroup title="Marketplace Preferences">
+          <MenuLink href="/account/notifications" icon="notifications_active" label="Notification Preferences" last />
+        </MenuGroup>
+
+        <form action={handleSignOut}>
+          <button
+            type="submit"
+            className="w-full bg-surface-container-lowest border border-error text-error font-headline-sm text-headline-sm rounded-lg h-[48px] flex items-center justify-center hover:bg-error-container transition-colors active:scale-95"
+          >
+            <span className="material-symbols-outlined mr-2">logout</span> Log Out
+          </button>
+        </form>
       </div>
-
-      {recentOrders.length > 0 && (
-        <div className="mt-8">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="font-semibold text-slate-900">Recent orders</h2>
-            <Link href="/account/orders" className="text-sm text-brand-teal hover:underline">View all</Link>
-          </div>
-          <div className="space-y-2">
-            {recentOrders.map((o) => (
-              <Link
-                key={o.id}
-                href={`/account/orders/${o.id}`}
-                className="flex items-center justify-between rounded-lg border border-[var(--border)] bg-white p-3 text-sm shadow-xs transition-colors hover:border-brand-teal"
-              >
-                <span className="font-medium text-slate-900">{o.orderNumber}</span>
-                <span className="text-slate-500">{formatKES(o.grandTotal)}</span>
-                <StatusBadge status={o.status} />
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {recentlyViewed.length > 0 && (
-        <div className="mt-8">
-          <h2 className="mb-3 font-semibold text-slate-900">Recently viewed</h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-            {recentlyViewed.filter((v) => v.product.variants.length > 0).map((v) => (
-              <ProductCard key={v.id} product={toCardData(v.product)} isAuthenticated />
-            ))}
-          </div>
-        </div>
-      )}
     </div>
+  );
+}
+
+function MenuGroup({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden">
+      <div className="bg-surface-container-low px-stack-md py-stack-sm border-b border-outline-variant">
+        <h2 className="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-widest">{title}</h2>
+      </div>
+      <div className="flex flex-col">{children}</div>
+    </div>
+  );
+}
+
+function MenuLink({ href, icon, label, last }: { href: string; icon: string; label: string; last?: boolean }) {
+  return (
+    <Link
+      href={href}
+      className={`flex items-center px-stack-md py-stack-sm hover:bg-surface-container-high transition-colors active:bg-surface-variant min-h-[48px] ${!last ? "border-b border-outline-variant" : ""}`}
+    >
+      <span className="material-symbols-outlined text-on-surface-variant mr-stack-md">{icon}</span>
+      <span className="font-body-md text-body-md text-on-surface flex-1 text-left">{label}</span>
+      <span className="material-symbols-outlined text-outline-variant">chevron_right</span>
+    </Link>
   );
 }
