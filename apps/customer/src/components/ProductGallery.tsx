@@ -8,27 +8,25 @@ export default function ProductGallery({ images, name }: { images: { url: string
   const shown = images.length > 0 ? images : [{ url: "" }];
 
   return (
-    <div>
-      <div className="relative aspect-square w-full overflow-hidden rounded-lg border border-[var(--border)] bg-slate-100">
-        {shown[active]?.url ? (
-          <Image src={shown[active].url} alt={name} fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover" priority />
-        ) : (
-          <div className="flex h-full items-center justify-center text-slate-400">No image</div>
-        )}
-      </div>
-      {images.length > 1 && (
-        <div className="mt-3 flex gap-2 overflow-x-auto">
-          {images.map((img, i) => (
+    <section className="relative bg-surface-container-lowest w-full aspect-[4/3] flex items-center justify-center border-b border-outline-variant overflow-hidden">
+      {shown[active]?.url ? (
+        <Image src={shown[active].url} alt={name} fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover p-4" priority />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center text-on-surface-variant">No image</div>
+      )}
+      {shown.length > 1 && (
+        <div className="absolute bottom-4 left-0 w-full flex justify-center gap-2">
+          {shown.map((img, i) => (
             <button
               key={img.url + i}
+              type="button"
+              aria-label={`Show image ${i + 1}`}
               onClick={() => setActive(i)}
-              className={`relative h-16 w-16 shrink-0 overflow-hidden rounded border ${i === active ? "border-brand-teal" : "border-[var(--border)]"}`}
-            >
-              <Image src={img.url} alt="" fill sizes="64px" className="object-cover" />
-            </button>
+              className={`w-2 h-2 rounded-full ${i === active ? "bg-secondary" : "bg-outline-variant"}`}
+            />
           ))}
         </div>
       )}
-    </div>
+    </section>
   );
 }

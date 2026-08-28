@@ -104,25 +104,42 @@ export default function ProductPurchasePanel({
   const outOfStock = currentVariant.available <= 0 || currentVariant.status !== "ACTIVE";
 
   return (
-    <div className="space-y-5">
-      <div className="flex items-baseline gap-3">
-        <span className="font-display text-2xl font-bold text-slate-900">{formatKES(currentVariant.price)}</span>
-        {currentVariant.compareAtPrice && currentVariant.compareAtPrice > currentVariant.price && (
-          <span className="text-slate-400 line-through">{formatKES(currentVariant.compareAtPrice)}</span>
-        )}
+    <div className="flex flex-col">
+      <div className="flex items-end justify-between gap-3">
+        <div className="flex items-end gap-3">
+          <span className="font-headline-lg text-headline-lg text-on-surface">{formatKES(currentVariant.price)}</span>
+          {currentVariant.compareAtPrice && currentVariant.compareAtPrice > currentVariant.price && (
+            <span className="font-body-sm text-body-sm text-on-surface-variant line-through mb-1">{formatKES(currentVariant.compareAtPrice)}</span>
+          )}
+        </div>
+        <button type="button" onClick={handleWishlist} aria-label="Toggle wishlist" className={`p-1 ${wishlisted ? "text-error" : "text-on-surface-variant"}`}>
+          <span className="material-symbols-outlined" style={wishlisted ? { fontVariationSettings: "'FILL' 1" } : undefined}>
+            {wishlisted ? "favorite" : "favorite_border"}
+          </span>
+        </button>
+      </div>
+
+      <div className="mt-stack-md flex items-center gap-2">
+        <span className={`material-symbols-outlined ${outOfStock ? "text-error" : "text-tertiary-fixed-dim"}`}>
+          {outOfStock ? "cancel" : "check_circle"}
+        </span>
+        <span className="font-label-md text-label-md text-on-surface uppercase tracking-wider">{outOfStock ? "Out of stock" : "In Stock"}</span>
+        {!outOfStock && <span className="font-body-sm text-body-sm text-on-surface-variant">({currentVariant.available} available)</span>}
       </div>
 
       {optionKeys.map((key) => (
-        <div key={key}>
-          <p className="mb-1.5 text-sm font-medium text-slate-700">{key}</p>
-          <div className="flex flex-wrap gap-2">
+        <div key={key} className="mt-stack-md">
+          <h3 className="font-headline-sm text-headline-sm text-on-surface mb-stack-sm">
+            {key}: {selected[key]}
+          </h3>
+          <div className="flex flex-wrap gap-gutter-mobile">
             {valuesFor(key).map((val) => (
               <button
                 key={val}
                 type="button"
                 onClick={() => setSelected((s) => ({ ...s, [key]: val }))}
-                className={`rounded-lg border px-3 py-1.5 text-sm transition-colors ${
-                  selected[key] === val ? "border-brand-teal bg-brand-teal/10 text-brand-teal-dark" : "border-[var(--border)] text-slate-700 hover:border-brand-teal"
+                className={`py-2 px-4 rounded font-label-md text-label-md text-center border ${
+                  selected[key] === val ? "border-secondary text-secondary bg-secondary-container/10" : "border-outline-variant text-on-surface-variant"
                 }`}
               >
                 {val}
@@ -132,78 +149,45 @@ export default function ProductPurchasePanel({
         </div>
       ))}
 
-      <p className="text-sm text-slate-500">SKU: {currentVariant.sku}</p>
-
-      {outOfStock ? (
-        <p className="font-medium text-red-600">Out of stock</p>
-      ) : (
-        <p className="text-sm text-green-700">In stock ({currentVariant.available} available)</p>
-      )}
-
-      <div className="flex items-center gap-3">
-        <div className="flex items-center rounded-lg border border-[var(--border)] transition-colors">
-          <button type="button" onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="px-3 py-2 text-slate-600 hover:bg-[var(--surface)]">
+      <div className="mt-stack-md flex items-center gap-gutter-mobile">
+        <span className="font-body-sm text-body-sm text-on-surface-variant">SKU: {currentVariant.sku}</span>
+        <div className="ml-auto flex items-center border border-outline-variant rounded">
+          <button type="button" onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="px-3 py-1.5 text-on-surface-variant">
             −
           </button>
-          <span className="w-10 text-center text-sm">{quantity}</span>
+          <span className="w-8 text-center font-body-md text-body-md">{quantity}</span>
           <button
             type="button"
             onClick={() => setQuantity((q) => Math.min(currentVariant.available, q + 1))}
-            className="px-3 py-2 text-slate-600 hover:bg-[var(--surface)]"
+            className="px-3 py-1.5 text-on-surface-variant"
           >
             +
           </button>
         </div>
-
-        <button
-          type="button"
-          disabled={outOfStock || isPending}
-          onClick={handleAddToCart}
-          className="flex-1 rounded-lg border border-brand-teal py-2.5 transition-colors font-semibold text-brand-teal hover:bg-brand-teal/5 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {isPending ? "Adding..." : "Add to cart"}
-        </button>
-
-        <button
-          type="button"
-          disabled={outOfStock || isPending}
-          onClick={handleBuyNow}
-          className="flex-1 rounded-lg bg-brand-teal shadow-sm transition-colors py-2.5 font-semibold text-white hover:bg-brand-teal-dark disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          Buy now
-        </button>
-
-        <button
-          type="button"
-          onClick={handleWishlist}
-          aria-label="Toggle wishlist"
-          className={`rounded-lg border px-3 py-2.5 transition-colors ${wishlisted ? "border-brand-amber text-brand-amber-dark" : "border-[var(--border)] text-slate-500"}`}
-        >
-          {wishlisted ? "♥" : "♡"}
-        </button>
       </div>
 
-      {message && <p className={message.type === "error" ? "text-sm text-red-600" : "text-sm text-green-700"}>{message.text}</p>}
+      {message && (
+        <p className={`mt-stack-sm font-body-sm text-body-sm ${message.type === "error" ? "text-error" : "text-on-tertiary-container"}`}>{message.text}</p>
+      )}
 
-      {/* Sticky mobile purchase bar — stays reachable while scrolling through
-          description/specs/reviews below. Sits above the app's bottom nav. */}
-      <div className="fixed inset-x-0 bottom-14 z-30 flex items-center gap-2 border-t border-[var(--border)] bg-white p-3 shadow-[0_-2px_8px_rgba(0,0,0,0.06)] md:hidden">
-        <span className="min-w-0 flex-1 truncate text-base font-bold text-slate-900">{formatKES(currentVariant.price)}</span>
+      {/* Sticky Bottom Actions — matches voltech_product_detail_mobile exactly. */}
+      <div className="fixed bottom-0 left-0 w-full bg-surface-container-lowest border-t border-outline-variant p-margin-mobile flex gap-gutter-mobile z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
         <button
           type="button"
           disabled={outOfStock || isPending}
           onClick={handleAddToCart}
-          className="rounded-lg border border-brand-teal px-3 py-2 transition-colors text-sm font-semibold text-brand-teal disabled:opacity-50"
+          className="flex-1 h-touch-target-min border border-outline-variant text-secondary font-label-md text-label-md uppercase tracking-wider rounded flex items-center justify-center gap-2 hover:bg-surface-container-high transition-colors disabled:opacity-50"
         >
-          Add to cart
+          <span className="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+          {isPending ? "Adding..." : "Add to Cart"}
         </button>
         <button
           type="button"
           disabled={outOfStock || isPending}
           onClick={handleBuyNow}
-          className="rounded-lg bg-brand-teal shadow-sm transition-colors px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
+          className="flex-1 h-touch-target-min bg-secondary text-on-primary font-label-md text-label-md uppercase tracking-wider rounded flex items-center justify-center hover:bg-on-secondary-fixed-variant transition-colors disabled:opacity-50"
         >
-          Buy now
+          Buy Now
         </button>
       </div>
     </div>

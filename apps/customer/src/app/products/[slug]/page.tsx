@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { db } from "@voltech/database";
-import Header from "@/components/Header";
+import TopAppBar from "@/components/TopAppBar";
 import Footer from "@/components/Footer";
 import ProductGallery from "@/components/ProductGallery";
 import ProductPurchasePanel from "@/components/ProductPurchasePanel";
@@ -12,7 +12,6 @@ import RatingStars from "@/components/RatingStars";
 import ReviewForm from "@/components/ReviewForm";
 import ReviewsSection from "@/components/ReviewsSection";
 import SellerCard from "@/components/SellerCard";
-import DeliveryEstimate from "@/components/DeliveryEstimate";
 import ProductTabs from "@/components/ProductTabs";
 import { toCardData } from "@/lib/catalog";
 import { availableStock } from "@voltech/core/marketplace/inventory";
@@ -113,47 +112,46 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Header />
-      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 pb-20 sm:px-6 md:pb-6">
-        <nav className="mb-4 text-xs text-slate-500">
-          <Link href="/" className="hover:text-brand-teal">Home</Link> /{" "}
-          <Link href={`/categories/${product.category.slug}`} className="hover:text-brand-teal">{product.category.name}</Link> /{" "}
-          <span className="text-slate-700">{product.name}</span>
-        </nav>
-
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_320px]">
+      <TopAppBar variant="subpage" title={product.name} backHref={`/categories/${product.category.slug}`} />
+      <main className="pb-32">
+        <div className="lg:mx-auto lg:max-w-7xl lg:grid lg:gap-8 lg:px-6 lg:py-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_320px]">
           <ProductGallery images={product.images} name={product.name} />
 
-          <div>
-            <h1 className="text-xl font-bold text-slate-900">{product.name}</h1>
-            <div className="mt-2 flex items-center gap-3">
+          {/* Product Header */}
+          <section className="px-margin-mobile py-stack-md bg-surface-container-lowest border-b border-outline-variant lg:border lg:rounded-lg">
+            <h1 className="font-headline-md text-headline-md text-on-surface mb-stack-xs">{product.name}</h1>
+            <p className="font-body-sm text-body-sm text-on-surface-variant mb-stack-sm">SKU: {product.variants[0]?.sku}</p>
+            <div className="flex items-center gap-2 mb-stack-md">
               {product.ratingCount > 0 && <RatingStars value={product.ratingAvg} count={product.ratingCount} />}
-              <Link href={`/store/${product.seller.storeSlug}`} className="text-sm text-brand-teal hover:underline">
+              <Link href={`/store/${product.seller.storeSlug}`} className="font-body-sm text-body-sm text-secondary underline decoration-outline-variant">
                 {product.seller.storeName}
               </Link>
             </div>
 
-            <div className="mt-5">
-              <ProductPurchasePanel
-                productId={product.id}
-                variants={variantOptions}
-                initiallyWishlisted={!!wishlistItem}
-                isAuthenticated={!!session?.user}
-              />
-            </div>
+            <ProductPurchasePanel
+              productId={product.id}
+              variants={variantOptions}
+              initiallyWishlisted={!!wishlistItem}
+              isAuthenticated={!!session?.user}
+            />
 
-            <div className="mt-6">
-              <DeliveryEstimate />
+            <div className="mt-stack-lg flex items-start gap-2 text-on-surface-variant">
+              <span className="material-symbols-outlined text-[20px]">local_shipping</span>
+              <div>
+                <p className="font-body-sm text-body-sm text-on-surface font-semibold">
+                  {product.shippingInfo || "Delivery fee and date confirmed at checkout"}
+                </p>
+              </div>
             </div>
 
             {product.warrantyInfo && (
-              <div className="mt-4 rounded-lg border border-[var(--border)] p-4 text-sm text-slate-600">
+              <div className="mt-stack-md rounded border border-outline-variant p-stack-md font-body-sm text-body-sm text-on-surface-variant">
                 🛡️ {product.warrantyInfo}
               </div>
             )}
-          </div>
+          </section>
 
-          <div>
+          <div className="px-margin-mobile py-stack-md lg:px-0 lg:py-0">
             <SellerCard
               storeName={product.seller.storeName}
               storeSlug={product.seller.storeSlug}
@@ -165,7 +163,7 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
           </div>
         </div>
 
-        <section className="mt-10">
+        <section className="mt-4 px-margin-mobile lg:mx-auto lg:max-w-7xl lg:px-6">
           <ProductTabs
             tabs={[
               {
@@ -246,13 +244,15 @@ export default async function ProductDetailPage({ params }: PageProps<"/products
         </section>
 
         {related.length > 0 && (
-          <ProductCarousel title="You may also like">
-            {related.filter((p) => p.variants.length > 0).map((p) => (
-              <div key={p.slug} className="w-[46%] shrink-0 sm:w-[31%] lg:w-[19%]">
-                <ProductCard product={toCardData(p)} isAuthenticated={!!session?.user} />
-              </div>
-            ))}
-          </ProductCarousel>
+          <div className="px-margin-mobile lg:mx-auto lg:max-w-7xl lg:px-6">
+            <ProductCarousel title="You may also like">
+              {related.filter((p) => p.variants.length > 0).map((p) => (
+                <div key={p.slug} className="w-[46%] shrink-0 sm:w-[31%] lg:w-[19%]">
+                  <ProductCard product={toCardData(p)} isAuthenticated={!!session?.user} />
+                </div>
+              ))}
+            </ProductCarousel>
+          </div>
         )}
       </main>
       <Footer />

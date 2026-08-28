@@ -49,40 +49,40 @@ export default function CartItemRow({ item }: { item: CartRowData }) {
   const options = Object.entries(item.variantOptions).map(([k, v]) => `${k}: ${v}`).join(", ");
 
   return (
-    <div className="flex gap-4 border-b border-[var(--border)] py-4">
-      <Link href={`/products/${item.productSlug}`} className="relative h-20 w-20 shrink-0 overflow-hidden rounded bg-slate-100">
-        {item.imageUrl && <Image src={item.imageUrl} alt={item.productName} fill sizes="80px" className="object-cover" />}
+    <div className="bg-surface-container-lowest border border-outline-variant rounded flex gap-stack-md p-stack-sm relative">
+      <Link href={`/products/${item.productSlug}`} className="w-24 h-24 shrink-0 rounded bg-surface-container-high overflow-hidden relative">
+        {item.imageUrl && <Image src={item.imageUrl} alt={item.productName} fill sizes="96px" className="object-cover" />}
       </Link>
-      <div className="flex flex-1 flex-col gap-1">
-        <Link href={`/products/${item.productSlug}`} className="text-sm font-medium text-slate-900 hover:text-brand-teal">
-          {item.productName}
-        </Link>
-        {options && <p className="text-xs text-slate-500">{options}</p>}
-        {!item.inStock && <p className="text-xs text-red-600">Only {item.availableStock} left in stock</p>}
-
-        <div className="mt-1 flex flex-wrap items-center gap-4">
-          <div className="flex items-center rounded-lg border border-[var(--border)] transition-colors">
-            <button disabled={isPending} onClick={() => update(item.quantity - 1)} className="px-2.5 py-1 text-slate-600 hover:bg-[var(--surface)]">
-              −
-            </button>
-            <span className="w-8 text-center text-sm">{item.quantity}</span>
-            <button disabled={isPending} onClick={() => update(item.quantity + 1)} className="px-2.5 py-1 text-slate-600 hover:bg-[var(--surface)]">
-              +
-            </button>
+      <div className="flex flex-col justify-between flex-grow min-w-0">
+        <div className="flex justify-between items-start gap-2">
+          <div className="min-w-0">
+            <Link href={`/products/${item.productSlug}`} className="font-headline-sm text-headline-sm line-clamp-2">
+              {item.productName}
+            </Link>
+            {options && <p className="font-body-sm text-body-sm text-on-surface-variant">{options}</p>}
+            {!item.inStock && <p className="font-body-sm text-body-sm text-error">Only {item.availableStock} left</p>}
           </div>
-          <button disabled={isPending} onClick={remove} className="text-xs text-slate-500 hover:text-red-600">
-            Remove
-          </button>
-          <button disabled={isPending} onClick={saveForLater} className="text-xs text-slate-500 hover:text-brand-teal">
-            Save for later
+          <button disabled={isPending} onClick={remove} aria-label="Remove item" className="text-error p-1 -mr-2 -mt-2 shrink-0">
+            <span className="material-symbols-outlined">delete</span>
           </button>
         </div>
-      </div>
-      <div className="text-right">
-        <p className="font-semibold text-slate-900">{formatKES(item.lineSubtotal)}</p>
-        {item.compareAtPrice && item.compareAtPrice > item.unitPrice && (
-          <p className="text-xs text-slate-400 line-through">{formatKES(item.compareAtPrice * item.quantity)}</p>
-        )}
+        <div className="flex justify-between items-end mt-2">
+          <div className="flex flex-col">
+            <span className="font-headline-sm text-headline-sm">{formatKES(item.lineSubtotal)}</span>
+            <button disabled={isPending} onClick={saveForLater} className="font-body-sm text-body-sm text-secondary underline w-fit">
+              Save for later
+            </button>
+          </div>
+          <div className="flex items-center border border-outline-variant rounded">
+            <button disabled={isPending} onClick={() => update(item.quantity - 1)} className="w-8 h-8 flex items-center justify-center text-on-surface-variant">
+              <span className="material-symbols-outlined text-[16px]">remove</span>
+            </button>
+            <span className="w-8 text-center font-label-lg text-label-lg">{item.quantity}</span>
+            <button disabled={isPending} onClick={() => update(item.quantity + 1)} className="w-8 h-8 flex items-center justify-center text-on-surface-variant">
+              <span className="material-symbols-outlined text-[16px]">add</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
